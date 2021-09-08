@@ -15,7 +15,8 @@ async def on_command_error(ctx, error):
 
 @bot.command()
 async def ping(ctx):
-    await ctx.send(f":ping_pong:Pong! {round(bot.latency * 1000)}ms")
+    embed = discord.Embed(title=f':ping_pong:Pong!',description=f'{round(bot.latency * 1000)}ms',color='#006400')
+    await ctx.send(embed=embed)
 
 
 bot.run(token)
