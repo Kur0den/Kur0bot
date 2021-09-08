@@ -33,7 +33,7 @@ async def ping(ctx):
 
 # スレッド通知
 @client.event
-async def discord.on_thread_join():
+async def on_thread_join():
     channel = client.get_channel(734540948024852491)
     await channel.send('でーん')
 
