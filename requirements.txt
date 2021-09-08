@@ -1,1 +1,1 @@
-discord.py[voice]>=1.3.2
+discord.py[voice]>=2.0
