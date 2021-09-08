@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 import os
 import traceback
+import client
 
 bot = commands.Bot(command_prefix='k/')
 token = os.environ['DISCORD_BOT_TOKEN']
