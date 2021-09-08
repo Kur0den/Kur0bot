@@ -16,6 +16,15 @@ async def on_ready():
     user = client.get_user(699414261075804201)
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
 
+@client.command(name='eval', pass_context=True)
+@commands.is_owner()
+async def eval_(ctx, *, command):
+    res = eval(command)
+    if inspect.isawaitable(res):
+        await ctx.send(await res)
+    else:
+        await ctx.send(res)
+        
 @bot.event
 async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
