@@ -8,14 +8,17 @@ token = os.environ['DISCORD_BOT_TOKEN']
 
 intents = discord.Intents.default()
 intents.members = True
-
-client = discord.Client(intents=intents)
+client = discord.Client(intents=discord.Intents.all())
 # 起動メッセージ
-# ちなみに動かない()
 @client.event
 async def on_ready():
-    user = client.get_user(699414261075804201)
-    await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
+  print(f'ready: {client.user} (ID: {client.user.id})')
+
+# ちなみに動かない()
+# @client.event
+# async def on_ready():
+#     user = client.get_user(699414261075804201)
+#     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
 
 # エラー表示するやつ
 @bot.event
@@ -32,10 +35,12 @@ async def ping(ctx):
     await ctx.send(embed=embed)
 
 # スレッド通知
+# @client.event
+# async def on_thread_join():
+#     channel = client.get_channel(734540948024852491)
+#     await channel.send('でーん')
 @client.event
-async def on_thread_join():
-    channel = client.get_channel(734540948024852491)
-    await channel.send('でーん')
-
+async def on_thread_join(thread):
+  await thread.send('くろぼっとが参加したよ！')
 
 bot.run(token)
