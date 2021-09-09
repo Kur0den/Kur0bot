@@ -5,7 +5,7 @@ import traceback
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-
+client = discord.Client(intents = discord.Intents.all())
 # 起動メッセージ
 @bot.event
 async def on_ready():
