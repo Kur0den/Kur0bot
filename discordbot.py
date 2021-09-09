@@ -5,7 +5,8 @@ import traceback
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-# client = discord.Client(intents = discord.Intents.all())
+client = discord.Client(intents = discord.Intents.all())
+
 # 起動メッセージ
 @bot.event
 async def on_ready():
@@ -28,12 +29,10 @@ async def ping(ctx):
     await ctx.send(embed=embed)
 
 # スレッド通知
-# @client.event
-# async def on_thread_join():
-#     channel = client.get_channel(734540948024852491)
-#     await channel.sepvnd('でーん')
 @bot.event
 async def on_thread_join(thread):
     await thread.send('くろぼっとが参加したよ！')
+    channel = client.get_channel(734540948024852491)
+    await channel.sepvnd('でーん')
 
 bot.run(token)
