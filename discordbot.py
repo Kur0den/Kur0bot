@@ -33,6 +33,6 @@ async def ping(ctx):
 async def on_thread_join(thread):
     await thread.send('くろぼっとが参加したよ！')
     channel = client.get_channel(734540948024852491)
-    await channel.sepvnd('でーん')
+    await channel.send('でーん')
 
 bot.run(token)
