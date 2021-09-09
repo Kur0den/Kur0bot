@@ -12,7 +12,7 @@ client = discord.Client(intents=discord.Intents.all())
 # 起動メッセージ
 @client.event
 async def on_ready():
-  print(f'ready: {client.user} (ID: {client.user.id})')
+    print(f'ready: {client.user} (ID: {client.user.id})')
 
 # ちなみに動かない()
 # @client.event
@@ -41,6 +41,6 @@ async def ping(ctx):
 #     await channel.send('でーん')
 @client.event
 async def on_thread_join(thread):
-  await thread.send('くろぼっとが参加したよ！')
+    await thread.send('くろぼっとが参加したよ！')
 
 bot.run(token)
