@@ -39,8 +39,7 @@ async def on_thread_join(thread):
 @commands.is_owner()
 async def test(ctx, im):
     ex = eval(im)
-    await ctx.send(f'{ex
-    }\nだよ')
+    await ctx.send(f'{ex}\nだよ')
     
 
 
