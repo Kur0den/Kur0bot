@@ -32,8 +32,8 @@ async def ping(ctx):
 @bot.event
 async def on_thread_join(thread):
     await thread.send('くろぼっとが参加したよ！')
-    notice = client.get_channel(733707711228674102)
-    await notice.send('でーん')
+    thnotice = client.get_channel(733707711228674102)
+    await thnotice.send('でーん')
 
 @bot.command()
 @commands.is_owner()
