@@ -37,7 +37,7 @@ async def on_thread_join(thread):
 
 @bot.command()
 @commands.is_owner()
-async def test(ctx)
+async def test(ctx):
     await ctx.send('てすとだよ')
     
 
