@@ -37,9 +37,10 @@ async def on_thread_join(thread):
 
 @bot.command()
 @commands.is_owner()
-async def test(ctx, code):
-    eval(code)
-    await ctx.send(f'{code}\nだよ')
+async def test(ctx, im):
+    ex = eval(im)
+    await ctx.send(f'{ex
+    }\nだよ')
     
 
 
