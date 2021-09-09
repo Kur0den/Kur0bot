@@ -35,4 +35,11 @@ async def on_thread_join(thread):
     channel = client.get_channel(733707711228674102)
     await channel.send('でーん')
 
+@bot.command()
+@commands.is_owner()
+async def def test(ctx)
+    await ctx.send('てすとだよ')
+    
+
+
 bot.run(token)
