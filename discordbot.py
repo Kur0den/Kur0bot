@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord
 import os
 import traceback
-import datatime
+import datetime
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
