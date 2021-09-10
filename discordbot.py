@@ -65,7 +65,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
     elif sub == 'time':
         embed = discord.Embed(title='⏲Time', description=f'UTC `{utc_time}`\nJST `{jst_time}`\nEST `{est_time}`')
-        await ctx.send(embed=embed)== 
+        await ctx.send(embed=embed)
     else:
         embed = discord.Embed(title='📅Date&Time⏲', description=f'UTC `{utc_date} {utc_time}`\nJST `{jst_date} {jst_time}`\nEST `{est_date} {est_time}`')
         await ctx.send(embed=embed)
