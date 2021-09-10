@@ -56,11 +56,11 @@ async def time(ctx, sub = None):
     utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
     utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
     if sub == 'date':
-        await ctx.send(f'UTC `{utc_date}`\nJST `{jst_date}`')
+        await ctx.send(f'UTC `{utc_date}`\nJST `{jst_date}`\nEST `{est_date}`')
     elif sub == 'time':
-        await ctx.send(f'UTC `{utc_time}`\nJST `{jst_time}`')
+        await ctx.send(f'UTC `{utc_time}`\nJST `{jst_time}`\nEST `{est_time}`')
     else:
-        await ctx.send(f'UTC `{utc_date} {utc_time}`\nJST `{jst_date} {jst_time}`')
+        await ctx.send(f'UTC `{utc_date} {utc_time}`\nJST `{jst_date} {jst_time}`\nEST `{est_date} {est_time}`')
     
 
 
