@@ -25,7 +25,7 @@ async def on_ready():
 async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
     error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    await ctx.send(error_msg)
+    await ctx.send(error_msg)   
 
 # Pingコマンド
 @bot.command()
@@ -37,9 +37,10 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
-    await thread.send('くろぼっとが参加したよ！')
-    thnotice = bot.get_channel(733707711228674102)
-    await thnotice.send('でーん')
+    if thread.message_count == 0:
+        await thread.send('くろぼっとが参加したよ！')
+        thnotice = bot.get_channel(733707711228674102)
+        await thnotice.send('でーん')
 
 # evalもどき
 @bot.command()
