@@ -36,13 +36,14 @@ async def on_thread_join(thread):
     thnotice = bot.get_channel(733707711228674102)
     await thnotice.send('でーん')
 
+# evalもどき
 @bot.command()
 @commands.is_owner()
 async def test(ctx, im):
     ex = eval(im)
     await ctx.send(f'{ex}\nだよ')
     
-
+# 時間表示
 @bot.command
 async def time(ctx):
     time = datetime.datetime.now(datetime.timezone.jst)
