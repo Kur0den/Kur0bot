@@ -51,7 +51,7 @@ async def test(ctx, im):
 async def time(ctx):
     jst = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d %H:%M:%S")
     utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d %H:%M:%S")
-    await ctx.send(UTC '`{utc}`'JST '`{jst}`')
+    await ctx.send('UTC `{utc}`JST `{jst}`')
 
 
 bot.run(token)
