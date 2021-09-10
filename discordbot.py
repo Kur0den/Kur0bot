@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 import os
 import traceback
+import datatime
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
@@ -42,5 +43,8 @@ async def test(ctx, im):
     await ctx.send(f'{ex}\nだよ')
     
 
-
+@bot.command
+async def time(ctx):
+    time = datetime.datetime.now(datetime.timezone.jst)
+    await ctx.send(time)
 bot.run(token)
