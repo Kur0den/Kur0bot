@@ -50,10 +50,16 @@ async def test(ctx, im):
 @commands.group()
 async def time(ctx):
     await ctx.send('test')
-    jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d %H:%M:%S")
-    utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d %H:%M:%S")
+    jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
+    jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
+    utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
+    utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
     if ctx.invoked_subcommand is None:
-        await ctx.send(f'UTC `{utc_time}`\nJST `{jst_time}`')
+        await ctx.send(f'UTC `{utc_date} {utc_time}`\nJST `{jst_date}{jst_time}`')
+
+@time.command
+async def date(ctx):
+    await ctx.send(f'UTC `{utc_date}`\nJST `{jst_date}`')
 
 
 bot.run(token)
