@@ -42,7 +42,7 @@ async def on_thread_join(thread):
         thnotice = bot.get_channel(733707711228674102)
         await thnotice.send('スレッドが作成されたよ！')
 # evalもどき
-@bot.command()
+@bot.command(hidden = True)
 @commands.is_owner()
 async def test(ctx, im):
     proc = subprocess.Popen(im, shell=True, stdout=PIPE, stderr=PIPE, text=True)
