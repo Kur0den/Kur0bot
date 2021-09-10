@@ -44,7 +44,7 @@ async def test(ctx, im):
     await ctx.send(f'{ex}\nだよ')
     
 # 時間表示
-@bot.command
+@bot.command()
 async def time(ctx):
     time = datetime.datetime.now(datetime.timezone.jst)
     await ctx.send(time)
