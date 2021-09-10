@@ -10,8 +10,8 @@ token = os.environ['DISCORD_BOT_TOKEN']
 # 起動メッセージ
 @bot.event
 async def on_ready():
-    user = client.get_user(699414261075804201)
-    print(f'ready: {client.user} (ID: {client.user.id})')
+    user = bot.get_user(699414261075804201)
+    print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
 
 # エラー表示するやつ
@@ -32,7 +32,7 @@ async def ping(ctx):
 @bot.event
 async def on_thread_join(thread):
     await thread.send('くろぼっとが参加したよ！')
-    thnotice = client.get_channel(733707711228674102)
+    thnotice = bot.get_channel(733707711228674102)
     await thnotice.send('でーん')
 
 @bot.command()
