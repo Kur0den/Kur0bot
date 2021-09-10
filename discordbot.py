@@ -51,7 +51,7 @@ async def test(ctx, im):
 async def time(ctx, sub = None):
     jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
     jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
-    est_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-5))).strftime("%H:%M:%S")
+    est_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-5))).strftime("%Y/%m/%d")
     est_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-5))).strftime("%H:%M:%S")
     utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
     utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
