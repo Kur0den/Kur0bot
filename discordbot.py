@@ -35,18 +35,12 @@ async def ping(ctx):
     await ctx.send(embed=embed)
 
 # スレッド通知
-# @bot.event
-# async def on_thread_join(thread):
-#     if  thread.member_count <= 1:
-#         await thread.send('てすとだよ')
-#     await thread.send('くろぼっとが参加したよ！')
-#     thnotice = bot.get_channel(733707711228674102)
-#     await thnotice.send('でーん')
-
 @bot.event
-async def on_thread_update():
-    thnotice = bot.get_channel(733707711228674102)
-    await thnotice.send('でーん')
+async def on_thread_join(thread):
+    if not thread.members:
+        await thread.send('くろぼっとが参加したよ！')
+        thnotice = bot.get_channel(733707711228674102)
+        await thnotice.send('でーん')
 
 # evalもどき
 @bot.command()
