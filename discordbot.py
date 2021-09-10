@@ -7,7 +7,7 @@ import datetime
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 
-time_jst = datetime.timezone(datetime.timedelta(hours=9), name='JST')
+time_jst = datetime.timezone(datetime.timedelta(hours=9), name='jst')
 
 
 
