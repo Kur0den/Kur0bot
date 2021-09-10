@@ -40,7 +40,7 @@ async def on_thread_join(thread):
     if len(await thread.history(limit=2).flatten()) == 0:
         await thread.send(f'くろぼっとが参加したよ！')
         thnotice = bot.get_channel(733707711228674102)
-        await thnotice.send('でーん')
+        await thnotice.send('スレッドが作成されたよ！')
 # evalもどき
 @bot.command()
 @commands.is_owner()
