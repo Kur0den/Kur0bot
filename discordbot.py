@@ -47,19 +47,22 @@ async def test(ctx, im):
     await ctx.send(f'{ex}\nだよ')
     
 # 時間表示
-@commands.group()
-async def time(ctx):
+@bot.command()
+async def time(ctx, sub):
     await ctx.send('test')
     jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
     jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
     utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
     utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
-    if ctx.invoked_subcommand is None:
+    if sub is 'date':
+        await ctx.send(f'UTC `{utc_date}`\nJST `{jst_date}`')
+    elif sub is 'time':
+        await ctx.send(f'UTC `{utc_time}`\nJST `{jst_time}`')
+    else:
         await ctx.send(f'UTC `{utc_date} {utc_time}`\nJST `{jst_date}{jst_time}`')
+    
 
-@time.command
-async def date(ctx):
-    await ctx.send(f'UTC `{utc_date}`\nJST `{jst_date}`')
+
 
 
 bot.run(token)
