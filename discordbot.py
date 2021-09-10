@@ -7,6 +7,8 @@ import datetime
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 
+jst = datetime.timezone(datetime.timedelta(hours=9))
+
 
 # 起動メッセージ
 @bot.event
@@ -46,7 +48,7 @@ async def test(ctx, im):
 # 時間表示
 @bot.command()
 async def time(ctx):
-    time = datetime.datetime.now(datetime.timedelta(hours=9))
+    time = datetime.datetime.now(datetime.timezone.jst)
     await ctx.send(time)
 
 
