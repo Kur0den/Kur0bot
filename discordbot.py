@@ -38,7 +38,8 @@ async def ping(ctx):
 @bot.event
 async def on_thread_join(thread):
     if not thread.members:
-        await thread.send(f'くろぼっとが参加したよ！\n{thread.members}')
+        print(thread.members)
+        await thread.send(f'くろぼっとが参加したよ！')
         thnotice = bot.get_channel(733707711228674102)
         await thnotice.send('でーん')
 # evalもどき
@@ -64,7 +65,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
     elif sub == 'time':
         embed = discord.Embed(title='⏲Time', description=f'UTC `{utc_time}`\nJST `{jst_time}`\nEST `{est_time}`')
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed)== 
     else:
         embed = discord.Embed(title='📅Date&Time⏲', description=f'UTC `{utc_date} {utc_time}`\nJST `{jst_date} {jst_time}`\nEST `{est_date} {est_time}`')
         await ctx.send(embed=embed)
