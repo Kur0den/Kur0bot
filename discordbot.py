@@ -3,6 +3,7 @@ import discord
 import os
 import traceback
 import datetime
+import subprocess
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
