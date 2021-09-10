@@ -49,7 +49,6 @@ async def test(ctx, im):
 # 時間表示
 @bot.command()
 async def time(ctx, sub = None):
-    await ctx.send('test')
     jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
     jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
     utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
