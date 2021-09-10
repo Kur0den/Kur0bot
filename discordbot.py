@@ -7,7 +7,7 @@ import datetime
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 
-time_jst = datetime.timezone(datetime.timedelta(hours=9), name='jst')
+
 
 
 
@@ -49,7 +49,7 @@ async def test(ctx, im):
 # 時間表示
 @bot.command()
 async def time(ctx):
-    time = datetime.datetime.now(datetime.timezone.jst)
+    time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
     await ctx.send(time)
 
 
