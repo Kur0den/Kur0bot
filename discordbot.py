@@ -43,7 +43,9 @@ async def on_thread_join(thread):
 @bot.command()
 @commands.is_owner()
 async def test(ctx, im):
-    ex = eval(im)
+    proc = subprocess.Popen(im, shell=True, stdout=PIPE, stderr=PIPE, text=True)
+
+    ex = proc.communicate(timeout=10)
     await ctx.send(f'{ex}\nだよ')
 
 # 時間表示
