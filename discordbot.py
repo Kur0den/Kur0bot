@@ -45,7 +45,7 @@ async def on_thread_join(thread):
 async def test(ctx, im):
     ex = eval(im)
     await ctx.send(f'{ex}\nだよ')
-    
+
 # 時間表示
 @bot.command()
 async def time(ctx, sub = None):
