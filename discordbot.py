@@ -47,4 +47,6 @@ async def test(ctx, im):
 async def time(ctx):
     time = datetime.datetime.now(datetime.timezone.jst)
     await ctx.send(time)
+
+
 bot.run(token)
