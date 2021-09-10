@@ -50,7 +50,7 @@ async def test(ctx, im):
 @bot.command()
 async def time(ctx):
     jst = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
-    time = jst.strftime("%d/%m/%Y %H:%M:%S")
+    time = jst.strftime("%Y/%m/%d %H:%M:%S")
     await ctx.send(time)
 
 
