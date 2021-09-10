@@ -59,7 +59,7 @@ async def time(ctx, sub = None):
     elif sub == 'time':
         await ctx.send(f'UTC `{utc_time}`\nJST `{jst_time}`')
     else:
-        await ctx.send(f'UTC `{utc_date} {utc_time}`\nJST `{jst_date}{jst_time}`')
+        await ctx.send(f'UTC `{utc_date} {utc_time}`\nJST `{jst_date} {jst_time}`')
     
 
 
