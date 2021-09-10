@@ -44,8 +44,9 @@ async def ping(ctx):
 #     await thnotice.send('でーん')
 
 @bot.event
-async def on_thread_update(thread):
-    await thread.send('でーん')
+async def on_thread_update():
+    thnotice = bot.get_channel(733707711228674102)
+    await thnotice.send('でーん')
 
 # evalもどき
 @bot.command()
