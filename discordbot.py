@@ -60,16 +60,16 @@ async def time(ctx, sub = None):
     utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
     utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
     if sub == 'date':
-        embed = discord.Embed(title='📅Date', description=f'UTC `{utc_date}`\nJST `{jst_date}`\nEST `{est_date}`')
+        embed = discord.Embed(title='📅Date', description=f'UTC `{utc_date}`\n\nJST `{jst_date}`\n\nEST `{est_date}`')
         await ctx.send(embed=embed)
     elif sub == 'time':
-        embed = discord.Embed(title='⏲Time', description=f'UTC `{utc_time}`\nJST `{jst_time}`\nEST `{est_time}`')
+        embed = discord.Embed(title='⏲Time', description=f'UTC `{utc_time}`\n\nJST `{jst_time}`\n\nEST `{est_time}`')
         await ctx.send(embed=embed)
     else:
-        embed = discord.Embed(title='📅Date&Time⏲', description=f'UTC `{utc_date} {utc_time}`\nJST `{jst_date} {jst_time}`\nEST `{est_date} {est_time}`')
+        embed = discord.Embed(title='📅Date&Time⏲', description=f'UTC `{utc_date} {utc_time}`\n\nJST `{jst_date} {jst_time}`\n\nEST `{est_date} {est_time}`')
         await ctx.send(embed=embed
 
-@bot.comamd(aliases=['ii'])
+@bot.commamd(alias = 'ii')
 async def idinfo(ctx, imid):
     ex_name = tid.name
     ctx.send(ex_name)
