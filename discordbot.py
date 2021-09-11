@@ -72,8 +72,25 @@ async def time(ctx, sub = None):
 
 @bot.command()
 async def idinfo(ctx, imid):
-    ex_name = imid.name
-    ctx.send(ex_name)
+    try:
+        iid = bot.fetch_channel(imid)
+        ty = ('チャンネル又はスレッドID')
+    except:
+        iid = bot.fetch_sticker(imid)
+        ty = ('ステッカーID')
+    except:
+        iid = bot.fetch_user(imid)
+        ty = ('ユーザーID')
+    except:
+        iid == bot.fetch_guild(imid)
+        ty = ('サーバーID')
+    except:
+        ty = ('Not found')
+    try:
+        ex_name = iid.name
+    except:
+        ex_name = ('None')
+    await ctx.send(ex_name)
 
 
 
