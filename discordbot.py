@@ -69,7 +69,7 @@ async def time(ctx, sub = None):
         embed = discord.Embed(title='📅Date&Time⏲', description=f'UTC `{utc_date} {utc_time}`\n\nJST `{jst_date} {jst_time}`\n\nEST `{est_date} {est_time}`')
         await ctx.send(embed=embed
 
-@bot.commamd(alias = 'ii')
+@bot.commamd()
 async def idinfo(ctx, imid):
     ex_name = tid.name
     ctx.send(ex_name)
