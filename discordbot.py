@@ -70,7 +70,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
 
 
-@bot.commamd()
+@bot.command()
 async def idinfo(ctx, imid):
     ex_name = imid.name
     ctx.send(ex_name)
