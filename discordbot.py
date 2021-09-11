@@ -71,7 +71,7 @@ async def time(ctx, sub = None):
 
 @bot.commamd()
 async def idinfo(ctx, imid):
-    ex_name = tid.name
+    ex_name = imid.name
     ctx.send(ex_name)
 
 
