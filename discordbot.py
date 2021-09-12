@@ -70,27 +70,27 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
 
 
-@bot.command()
+@bot.command(alias =['ii'])
 async def idinfo(ctx, imid):
     try:
         iid = await bot.fetch_channel(imid)
         # ty = 'チャンネル又はスレッドID'
     except discord.NotFound:
         tid = 1
-    if tid = 1:
+    if tid == 1:
         try:
             iid = await bot.fetch_sticker(imid)
             # ty = 'ステッカーID'
         except discord.NotFound:
             tid = 2
             
-    if tid = 3:
+    if tid == 3:
         try:
             iid = await bot.fetch_user(imid)
             # ty = 'ユーザーID'
         except discord.NotFound:
             eid = 4
-    if tid = 4
+    if tid == 4
                 try:
                     iid = await tbot.fetch_guild(imid)
                     # ty = 'サーバーID'
@@ -104,6 +104,6 @@ async def idinfo(ctx, imid):
     await ctx.send(f'{ex_name}')
 
 
-q
+
 
 bot.run(token)
