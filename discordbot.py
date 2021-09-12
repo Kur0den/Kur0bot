@@ -70,7 +70,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
 
 
-@bot.command(alias =['ii'])
+@bot.command(aliases = 'ii')
 async def idinfo(ctx, imid):
     try:
         iid = await bot.fetch_channel(imid)
@@ -98,7 +98,7 @@ async def idinfo(ctx, imid):
                     tid = None
                     # ty = 'Not found'
     if tid is not None:
-        ex_name = iid.name
+        ex_name = tid.name
     else:
         ex_name = 'none'
     await ctx.send(f'{ex_name}')
