@@ -51,7 +51,7 @@ async def test(ctx, im):
     await ctx.send(f'{ex}\nだよ')
 
 # 時間表示
-@bot.command(alias = 't')
+@bot.command()
 async def time(ctx, sub = None):
     jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
     jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
@@ -70,7 +70,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
 
 
-@bot.command(alias = 'ii')
+@bot.command()
 async def idinfo(ctx, imid):
     try:
         iid = await bot.fetch_channel(imid)
