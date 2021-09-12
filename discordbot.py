@@ -84,13 +84,13 @@ async def idinfo(ctx, imid):
         except discord.NotFound:
             tid = 2
             
-    if tid == 3:
+    if tid == 2:
         try:
             iid = await bot.fetch_user(imid)
             # ty = 'ユーザーID'
         except discord.NotFound:
-            eid = 4
-    if tid == 4:
+            eid = 3
+    if tid == 3:
                 try:
                     iid = await tbot.fetch_guild(imid)
                     # ty = 'サーバーID'
