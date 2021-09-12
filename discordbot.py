@@ -75,13 +75,13 @@ async def idinfo(ctx, imid):
     try:
         iid = bot.fetch_channel(imid)
         # ty = ('チャンネル又はスレッドID')
-    except:
+    except NotFound:
         iid = bot.fetch_sticker(imid)
         # ty = ('ステッカーID')
-    except:
+    except NotFound:
         iid = bot.fetch_user(imid)
         # ty = ('ユーザーID')
-    except:
+    except NotFound:
         iid == bot.fetch_guild(imid)
         # ty = ('サーバーID')
     except:
