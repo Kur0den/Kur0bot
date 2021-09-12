@@ -76,16 +76,19 @@ async def idinfo(ctx, imid):
         iid = await bot.fetch_channel(imid)
         # ty = 'チャンネル又はスレッドID'
     except discord.NotFound:
-        iid = await bot.fetch_sticker(imid)
-        # ty = 'ステッカーID'
-    except discord.NotFound:
-        iid = await bot.fetch_user(imid)
-        # ty = 'ユーザーID'
-    except discord.NotFound:
-        iid = await bot.fetch_guild(imid)
-        # ty = 'サーバーID'
-    except:
-        ty = 'Not found'
+        try:
+            iid = await bot.fetch_sticker(imid)
+            # ty = 'ステッカーID'
+        except discord.NotFound:
+            try:
+                iid = await bot.fetch_user(imid)
+            # ty = 'ユーザーID'
+            except discord.NotFound:
+                try:
+                    iid = await bot.fetch_guild(imid)
+                    # ty = 'サーバーID'
+                except:
+                    ty = 'Not found'
     try:
         ex_name = iid.name
     except:
