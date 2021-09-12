@@ -74,26 +74,26 @@ async def time(ctx, sub = None):
 async def idinfo(ctx, imid):
     try:
         iid = await bot.fetch_channel(imid)
-        # ty = 'チャンネル又はスレッドID'
+        ty = 'チャンネル又はスレッドID'
     except discord.NotFound:
         try:
             iid = await bot.fetch_sticker(imid)
-            # ty = 'ステッカーID'
+            ty = 'ステッカーID'
         except discord.NotFound:
             try:
                 iid = await bot.fetch_user(imid)
-            # ty = 'ユーザーID'
+            ty = 'ユーザーID'
             except discord.NotFound:
                 try:
                     iid = await bot.fetch_guild(imid)
-                    # ty = 'サーバーID'
+                    ty = 'サーバーID'
                 except:
                     ty = 'Not found'
     try:
         ex_name = iid.name
     except:
         ex_name = 'none'
-    await ctx.send(ex_name)
+    await ctx.send(f'{ex_name}\n{ty})
 
 
 
