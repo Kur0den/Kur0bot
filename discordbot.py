@@ -88,6 +88,7 @@ async def idinfo(ctx, imid):
                     iid = await bot.fetch_guild(imid)
                     # ty = 'サーバーID'
                 except:
+                    pass
                     # ty = 'Not found'
     try:
         ex_name = iid.name
