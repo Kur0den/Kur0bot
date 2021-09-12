@@ -97,7 +97,7 @@ async def idinfo(ctx, imid):
                 except:
                     tid = None
                     # ty = 'Not found'
-    if tid is not None:
+    try:
         ex_name = iid.name
     else:
         ex_name = 'none'
