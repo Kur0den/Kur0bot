@@ -86,10 +86,7 @@ async def idinfo(ctx, imid):
         # ty = ('サーバーID')
     except:
         ty = ('Not found')
-    try:
-        ex_name = iid.name
-    except:
-        ex_name = ('None')
+    ex_name = iid.name
     await ctx.send(ex_name)
 
 
