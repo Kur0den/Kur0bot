@@ -82,7 +82,7 @@ async def idinfo(ctx, imid):
         iid = await bot.fetch_user(imid)
         # ty = 'ユーザーID'
     except NotFound:
-        iid == await bot.fetch_guild(imid)
+        iid = await bot.fetch_guild(imid)
         # ty = 'サーバーID'
     except:
         ty = 'Not found'
