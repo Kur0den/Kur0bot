@@ -73,7 +73,7 @@ async def time(ctx, sub = None):
 @bot.command(aliases = ['ui','ii','i'])
 async def idinfo(ctx, imid):
     try:
-        iid = await bot.fetch_channel(imid)
+        tid = await bot.fetch_channel(imid)
         # ty = 'チャンネル又はスレッドID'
     except discord.NotFound:
         tid = 1
