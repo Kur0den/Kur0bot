@@ -91,12 +91,17 @@ async def idinfo(ctx, imid):
         except discord.NotFound:
             eid = 3
     if tid == 3:
-                try:
-                    iid = await tbot.fetch_guild(imid)
-                    # ty = 'サーバーID'
-                except:
-                    tid = None
-                    # ty = 'Not found'
+        try:
+            iid = await bot.fetch_guild(imid)
+            # ty = 'サーバーID'
+        except:
+            tid = 4
+    if tid == 4:
+        try:
+            iid = await bot.get_role
+            # ty = 'Not found'
+        except:
+            iid = None
     try:
         ex_name = iid.name
     except:
