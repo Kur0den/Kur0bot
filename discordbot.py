@@ -70,7 +70,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
 
 
-@bot.command(aliases = ['idinfo','ii'])
+@bot.command(aliases = ['ui','ii','i'])
 async def idinfo(ctx, imid):
     try:
         iid = await bot.fetch_channel(imid)
