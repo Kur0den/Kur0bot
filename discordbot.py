@@ -90,7 +90,7 @@ async def idinfo(ctx, imid):
             # ty = 'ユーザーID'
         except discord.NotFound:
             eid = 4
-    if tid == 4
+    if tid == 4:
                 try:
                     iid = await tbot.fetch_guild(imid)
                     # ty = 'サーバーID'
