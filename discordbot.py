@@ -8,7 +8,7 @@ from subprocess import PIPE
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-
+guild = bot.get_guild('733707710784340100')
 
 
 
@@ -75,10 +75,13 @@ async def time(ctx, sub = None):
 async def idinfo(ctx, imid):
     tid = 0
     
-    iid = bot.get_channel(imid)
+    iid = await guild.get_channel(imid)
     # ty = 'チャンネル又はスレッドID'
     if iid == None:
-        iid = bot.get_role(imid)
+        iid = await guild.get_role(imid)
+    
+    if iid == None:
+        iid == await guild.get_emoji(imid)
     
     if iid == None:
         try:
