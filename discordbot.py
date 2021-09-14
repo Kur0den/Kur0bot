@@ -20,6 +20,7 @@ guild = None
 # 起動メッセージ
 @bot.event
 async def on_ready():
+    global guild
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
