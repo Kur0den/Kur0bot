@@ -6,7 +6,11 @@ import datetime
 import subprocess
 from subprocess import PIPE
 
-bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
+bot = commands.Bot(
+    commands.when_mentioned_or('k/'),
+    case_insensitive=True,
+    activity = discord.game('ぺぺぺぺぺ')
+    intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 guild = bot.get_guild(733707710784340100)
 
@@ -52,7 +56,7 @@ async def test(ctx, im):
     await ctx.send(f'{ex}\nだよ')
 
 # 時間表示
-@bot.command()
+@bot.command(aliases = ['t'])
 async def time(ctx, sub = None):
     jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
     jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
@@ -71,7 +75,7 @@ async def time(ctx, sub = None):
         await ctx.send(embed=embed)
 
 
-@bot.command(aliases = ['ui','ii','i'])
+@bot.command(aliases = ['ui','ii'])
 async def idinfo(ctx, imid):
     tid = 0
     
