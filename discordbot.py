@@ -9,7 +9,7 @@ from subprocess import PIPE
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
     case_insensitive=True,
-    activity = discord.Activity(name = 'ぺぺぺぺぺ', type = discord.ActivityType.watching),
+    activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 guild = bot.get_guild(733707710784340100)
