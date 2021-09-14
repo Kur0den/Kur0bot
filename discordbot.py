@@ -12,7 +12,7 @@ bot = commands.Bot(
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-guild = bot.get_guild(733707710784340100)
+guild = None
 
 
 
@@ -23,6 +23,8 @@ async def on_ready():
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
+    
+    guild = bot.get_guild(733707710784340100)
 
 # エラー表示するやつ
 @bot.event
