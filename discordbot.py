@@ -8,7 +8,7 @@ from subprocess import PIPE
 
 bot = commands.Bot(command_prefix='k/', intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-guild = bot.get_guild('733707710784340100')
+guild = bot.get_guild(733707710784340100)
 
 
 
