@@ -40,7 +40,8 @@ async def on_thread_join(thread):
     if len(await thread.history(limit=2).flatten()) == 0:
         await thread.send(f'くろぼっとが参加したよ！')
         thnotice = bot.get_channel(733707711228674102)
-        await thnotice.send('スレッドが作成されたよ！')
+        await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
+
 # evalもどき
 @bot.command(hidden = True)
 @commands.is_owner()
@@ -73,7 +74,7 @@ async def time(ctx, sub = None):
 @bot.command(aliases = ['ui','ii','i'])
 async def idinfo(ctx, imid):
     try:
-        iid = await bot.fetch_channel(imid)
+        iid = await bot.get_channel(imid)
         # ty = 'チャンネル又はスレッドID'
     except discord.NotFound:
         tid = 1
