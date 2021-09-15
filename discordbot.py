@@ -24,7 +24,6 @@ async def on_ready():
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
-    
     guild = bot.get_guild(733707710784340100)
 
 # エラー表示するやつ
@@ -82,13 +81,16 @@ async def time(ctx, sub = None):
 async def idinfo(ctx, imid):
     tid = 0
     
-    iid = await guild.get_channel(imid)
+    iid = guild.get_channel(imid)
     # ty = 'チャンネル又はスレッドID'
     if iid == None:
-        iid = await guild.get_role(imid)
+        iid = guild.get_role(imid)
     
     if iid == None:
-        iid == await guild.get_emoji(imid)
+        iid == guild.get_emoji(imid)
+    
+    if iid == Nome:
+        iid == guild.get_thread(imid)
     
     if iid == None:
         try:
