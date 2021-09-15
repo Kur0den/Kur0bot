@@ -94,24 +94,17 @@ async def idinfo(ctx, imid):
     
     if iid == None:
         try:
-            iid = await bot.fetch_sticker(imid)
-            # ty = 'ステッカーID'
-        except discord.NotFound:
-            tid = 1
-            
-    if tid == 1:
-        try:
             iid = await bot.fetch_user(imid)
             # ty = 'ユーザーID'
         except discord.NotFound:
-            eid = 2
-    if tid == 2:
+            eid = 1
+    if tid == 1:
         try:
             iid = await bot.fetch_guild(imid)
             # ty = 'サーバーID'
         except:
-            tid = 3
-    if tid == 3:
+            tid = 2
+    if tid == 2:
             iid = None
     try:
         ex_name = iid.name
