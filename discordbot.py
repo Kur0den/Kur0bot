@@ -84,10 +84,10 @@ async def idinfo(ctx, imid):
     iid = guild.get_channel(imid)
     # ty = 'チャンネル又はスレッドID'
     if iid == None:
-        iid = bot.get_role(imid)
+        iid = guild.get_role(imid)
     
     if iid == None:
-        iid == guild.get_emoji(imid)
+        iid == bot.get_emoji(imid)
     
     if iid == Nome:
         iid == guild.get_thread(imid)
