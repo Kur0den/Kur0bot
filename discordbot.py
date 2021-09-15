@@ -97,7 +97,7 @@ async def idinfo(ctx, imid):
             iid = await bot.fetch_user(imid)
             # ty = 'ユーザーID'
         except discord.NotFound:
-            eid = 1
+            tid = 1
     if tid == 1:
         try:
             iid = await bot.fetch_guild(imid)
