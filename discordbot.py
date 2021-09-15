@@ -107,7 +107,7 @@ async def idinfo(ctx, imid):
     if tid == 2:
             iid = None
     # try:
-        ex_name = iid.name
+    ex_name = iid.name
     # except:
         # ex_name = 'none'
         # pass
