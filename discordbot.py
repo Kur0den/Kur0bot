@@ -106,11 +106,11 @@ async def idinfo(ctx, imid):
             tid = 2
     if tid == 2:
             iid = None
-    try:
+    # try:
         ex_name = iid.name
-    except:
+    # except:
         # ex_name = 'none'
-        pass
+        # pass
     await ctx.send(f'{ex_name}\n{tid}')
 
 
