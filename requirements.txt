@@ -1,2 +1,2 @@
 git+https://github.com/Rapptz/discord.py
-git+git://github.com/goverfl0w/discord-interactions
+discord-interactions
