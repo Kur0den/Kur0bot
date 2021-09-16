@@ -67,7 +67,7 @@ async def time(ctx, sub = None):
     est_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-5))).strftime("%Y/%m/%d")
     est_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-5))).strftime("%H:%M:%S")
     tst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime("%Y/%m/%d")
-    tst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
+    tst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime("%H:%M:%S")
     utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
     utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
     if sub == 'date':
