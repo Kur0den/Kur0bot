@@ -5,6 +5,7 @@ import traceback
 import datetime
 import subprocess
 from subprocess import PIPE
+import interactions
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -12,6 +13,7 @@ bot = commands.Bot(
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
+slash_bot = interactions.Client(token = token)
 guild = None
 
 
@@ -116,6 +118,12 @@ async def idinfo(ctx, imid):
     await ctx.send(f'{ex_name}\n{tid}')
 
 
-
+@slash_bot.(
+    name="test",
+    description="てすとだよ",
+    guild_id=733707710784340100
+)
+async def test(ctx):
+    await ctx.send("Hello world!")
 
 bot.run(token)
