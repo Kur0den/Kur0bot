@@ -17,7 +17,7 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
-login_channel = None
+
 
 
 # 起動メッセージ
