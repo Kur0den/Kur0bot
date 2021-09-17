@@ -41,7 +41,7 @@ async def on_command_error(ctx, error):
 #ログインボード送信
 @bot.command(hidden =True)
 async def loginboard(ctx):
-    embed = (title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
+    embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
 
 
 # Pingコマンド
