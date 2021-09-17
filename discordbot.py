@@ -132,7 +132,7 @@ async def idinfo(ctx, imid):
         }
     ]
 )
-async def test(ctx, hidden):
+async def test(ctx, hidden = False):
     if hidden == True:
         await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
