@@ -13,7 +13,7 @@ bot = commands.Bot(
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-slash= SlashCommand(bot, sync_commands = True)
+slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
 
@@ -124,10 +124,10 @@ async def idinfo(ctx, imid):
     guild_ids = guild_id
 )
 async def test(ctx):
-    await ctx.send("Hello world!")
+    await ctx.send('Hello world!')
 
 @bot.command()
 async def debug(ctx):
-    await ctx.send(guild)
+    await ctx.send(f'{guild}\n{guild_id}')
 
 bot.run(token)
