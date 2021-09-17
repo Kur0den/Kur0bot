@@ -121,7 +121,7 @@ async def idinfo(ctx, imid):
 @slash.slash(
     name="test",
     description="てすとだよ",
-    guild_ids=733707710784340100
+    guild_ids=guild
 )
 async def test(ctx):
     await ctx.send("Hello world!")
