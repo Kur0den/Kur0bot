@@ -134,11 +134,11 @@ async def idinfo(ctx, imid):
 )
 async def test(ctx, hidden):
     if hidden == True:
-        await ctx.send(context = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
+        await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
-        await ctx.send(context = 'Hello world!')
-
-@bot.command()
+        await ctx.send(content = 'Hello world!')
+n
+@bot.command()n
 async def debug(ctx):
     await ctx.send(f'{guild}\n{guild_id}')
 
