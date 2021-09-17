@@ -29,7 +29,7 @@ async def on_ready():
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
     guild = bot.get_guild(733707710784340100)
-    
+    login_channel = bot.get_channel(888416525579612230)
 _
 # エラー表示するやつ
 @bot.event
