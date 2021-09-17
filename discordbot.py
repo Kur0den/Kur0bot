@@ -17,18 +17,19 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
-
+unei_members = None
 
 
 # 起動メッセージ
 @bot.event
 async def on_ready():
-    global guild
+    global guild,unei_members
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
     guild = bot.get_guild(733707710784340100)
-    
+    unei_role = bot.get_role(738956776258535575)
+    unei_members = unei_role.members
 
 # エラー表示するやつ
 @bot.event
@@ -121,8 +122,8 @@ async def idinfo(ctx, imid):
 
 
 @slash.slash(
-    name = "ktest",
-    description = "てすとだよ",
+    name = 'ktest',
+    description = 'てすとだよ',
     guild_ids = guild_id,
     options = [
         {
@@ -139,8 +140,28 @@ async def test(ctx, hidden = False):
     else:
         await ctx.send(content = 'Hello world!')
 
-@bot.command()
-async def debug(ctx):
-    await ctx.send(f'{guild}\n{guild_id}')
-
+@slash.slash(
+    name = 'announce',
+    description = 'アナウンスをお知らせに投稿します(運営専用)',
+    guild_ids = guild_id,
+    options = [
+        {
+            "name":"description",
+            "description":"アナウンスする内容を送信してください",
+            "type":3,
+            "required":True
+        }
+        {
+            "name":"mention",
+            "description":"一斉通知ロールに通知するかどうか",
+            "type":5,
+            "required":False
+        }
+    ]
+)
+async def announce(ctx, desc, mention = False):
+    if ctx.user not in unei_members:
+        await ctx.send(context = 'このコマンドは運営専用です。\n運営なのに使えない方はKur0denまでお知らせ下さい。', hidden = True)
+    else:
+        embed = discord.Embed(title='お知らせ', description = desc, )
 bot.run(token)
