@@ -5,7 +5,7 @@ import traceback
 import datetime
 import subprocess
 from subprocess import PIPE
-from discord_slash import SlashCommand
+from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
 
 bot = commands.Bot(
@@ -122,10 +122,21 @@ async def idinfo(ctx, imid):
 @slash.slash(
     name = "test",
     description = "てすとだよ",
-    guild_ids = guild_id
+    guild_ids = guild_id,
+    options = [
+        {
+            'name' = 'hidden',
+            'description' = '隠すかどうか(?)',
+            'type' = 5,
+            'required' = False
+        }
+    ]
 )
-async def test(ctx):
-    await ctx.send('Hello world!')
+async def test(ctx: SlashContext):
+    if hidden = True:
+        await ctx.send(context = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
+    else:
+        await ctx.send(context = 'Hello world!')
 
 @bot.command()
 async def debug(ctx):
