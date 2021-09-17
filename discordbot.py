@@ -132,7 +132,7 @@ async def idinfo(ctx, imid):
         }
     ]
 )
-async def test(ctx: SlashContext):
+async def test(ctx: SlashContext, hidden):
     if hidden == True:
         await ctx.send(context = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
