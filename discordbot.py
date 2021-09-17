@@ -125,10 +125,10 @@ async def idinfo(ctx, imid):
     guild_ids = guild_id,
     options = [
         {
-            'name' = 'hidden',
-            'description' = '隠すかどうか(?)',
-            'type' = 5,
-            'required' = False
+            'name':'hidden',
+            'description':'隠すかどうか(?)',
+            'type':5,
+            'required':False
         }
     ]
 )
