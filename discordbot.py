@@ -120,7 +120,7 @@ async def idinfo(ctx, imid):
 
 
 @slash.slash(
-    name = "test",
+    name = "ktest",
     description = "てすとだよ",
     guild_ids = guild_id,
     options = [
