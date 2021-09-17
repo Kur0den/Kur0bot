@@ -18,18 +18,19 @@ slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
 unei_members = None
-
+osirase_ch = None
 
 # 起動メッセージ
 @bot.event
 async def on_ready():
-    global guild,unei_members
+    global guild, unei_members, osirase_ch
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
     guild = bot.get_guild(733707710784340100)
     unei_role = bot.get_role(738956776258535575)
     unei_members = unei_role.members
+    osirase_ch = bot.get_channel(734605726491607091)
 
 # エラー表示するやつ
 @bot.event
@@ -146,6 +147,12 @@ async def test(ctx, hidden = False):
     guild_ids = guild_id,
     options = [
         {
+            "title":"title",
+            "description":"タイトル(なしでも一応可)",
+            "type":3,
+            "required":False
+        }
+        {
             "name":"description",
             "description":"アナウンスする内容を送信してください",
             "type":3,
@@ -159,9 +166,20 @@ async def test(ctx, hidden = False):
         }
     ]
 )
-async def announce(ctx, desc, mention = False):
+async def announce(ctx, title = None: , desc, mention = False):
     if ctx.user not in unei_members:
         await ctx.send(context = 'このコマンドは運営専用です。\n運営なのに使えない方はKur0denまでお知らせ下さい。', hidden = True)
     else:
-        embed = discord.Embed(title='お知らせ', description = desc, )
+        if title == None:
+            title = 'お知らせ'
+        embed = discord.Embed(title = title, description = desc)
+        embed.set_author(name = ctx.user)
+        if mention == True:
+            await osirase_ch.send(f'<@&73895458792223542>\n{embed = embed}')
+            await ctx.send(context = '多分正常に送信しました', hidden = True)
+        else:
+            await osirase_ch.send(embed = embed)
+            await ctx.send(context = '多分正常に送信しました', hidden = True)
+
+
 bot.run(token)
