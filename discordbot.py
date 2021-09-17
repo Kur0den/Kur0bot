@@ -6,7 +6,7 @@ import datetime
 import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand
-import add_socket_response_event.py
+import add_socket_response_event
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
