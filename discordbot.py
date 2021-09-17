@@ -15,7 +15,7 @@ bot = commands.Bot(
 token = os.environ['DISCORD_BOT_TOKEN']
 slash= SlashCommand(bot, sync_commands = True)
 guild = None
-
+guild_id = [733707710784340100]
 
 
 
@@ -119,9 +119,9 @@ async def idinfo(ctx, imid):
 
 
 @slash.slash(
-    name="test",
-    description="てすとだよ",
-    guild_ids=guild
+    name = "test",
+    description = "てすとだよ",
+    guild_ids = guild_id
 )
 async def test(ctx):
     await ctx.send("Hello world!")
