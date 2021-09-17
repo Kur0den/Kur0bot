@@ -13,7 +13,7 @@ bot = commands.Bot(
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
-slash_bot = interactions.Client(token = token)
+slash= SlashCommand(client, sync_commands = True)
 guild = None
 
 
