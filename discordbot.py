@@ -23,7 +23,7 @@ guild_id = [733707710784340100]
 # 起動メッセージ
 @bot.event
 async def on_ready():
-    global guild, login_channel
+    global guild
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
