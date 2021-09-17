@@ -126,4 +126,8 @@ async def idinfo(ctx, imid):
 async def test(ctx):
     await ctx.send("Hello world!")
 
+@bot.command()
+async def debug(ctx):
+    await ctx.send(guild)
+
 bot.run(token)
