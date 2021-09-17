@@ -7,6 +7,7 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
+from discord_buttons_plugin import  *
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -29,7 +30,7 @@ async def on_ready():
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
     guild = bot.get_guild(733707710784340100)
     
-
+_
 # エラー表示するやつ
 @bot.event
 async def on_command_error(ctx, error):
