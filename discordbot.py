@@ -137,7 +137,7 @@ async def test(ctx, hidden):
         await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
         await ctx.send(content = 'Hello world!')
-n
+
 @bot.command()
 async def debug(ctx):
     await ctx.send(f'{guild}\n{guild_id}')
