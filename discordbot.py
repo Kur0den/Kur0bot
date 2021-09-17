@@ -38,6 +38,12 @@ async def on_command_error(ctx, error):
     error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
     await ctx.send(error_msg)   
 
+#ログインボード送信
+@bot.command(hidden =True)
+async def loginboard(ctx):
+    embed = (title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
+
+
 # Pingコマンド
 @bot.command()
 async def ping(ctx):
