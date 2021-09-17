@@ -17,23 +17,24 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
-
+login_channel = None
 
 
 # 起動メッセージ
 @bot.event
 async def on_ready():
-    global guild
+    global guild, login_channel
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
     guild = bot.get_guild(733707710784340100)
+    
 
 # エラー表示するやつ
 @bot.event
 async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
-    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+    error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
     await ctx.send(error_msg)   
 
 # Pingコマンド
