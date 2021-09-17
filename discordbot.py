@@ -157,7 +157,7 @@ async def test(ctx, hidden = False):
             "description":"アナウンスする内容を送信してください",
             "type":3,
             "required":True
-        }
+        },
         {
             "name":"mention",
             "description":"一斉通知ロールに通知するかどうか",
