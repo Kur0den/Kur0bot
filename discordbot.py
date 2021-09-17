@@ -118,7 +118,7 @@ async def idinfo(ctx, imid):
     await ctx.send(f'{ex_name}\n{tid}')
 
 
-@slash_bot.slash(
+@slash.slash(
     name="test",
     description="てすとだよ",
     guild_id=733707710784340100
