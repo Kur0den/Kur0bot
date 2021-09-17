@@ -5,7 +5,7 @@ import traceback
 import datetime
 import subprocess
 from subprocess import PIPE
-import interactions
+from discord_slash import SlashCommand
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
