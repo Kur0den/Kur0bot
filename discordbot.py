@@ -7,7 +7,6 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
-from discord_buttons_plugin import  *
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -19,7 +18,6 @@ slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
 login_channel = None
-buttons = ButtonsClient(bot)
 
 
 # 起動メッセージ
@@ -42,9 +40,9 @@ async def on_command_error(ctx, error):
 #ログインボード送信
 @bot.command(hidden =True)
 async def loginboard(ctx):
-    # embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
+    embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
     await buttons.send(
-	content = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感'),
+    embed = embed,
 	channel = ctx.channel.id,
 	components = [
 		ActionRow([
@@ -56,9 +54,6 @@ async def loginboard(ctx):
         ]
 	)
 
-@buttons.click()
-async def button_login(ctx):
-	await ctx.reply("ぺいぺい")
 
 
 # Pingコマンド
