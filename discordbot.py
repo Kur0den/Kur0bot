@@ -7,7 +7,6 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
-from discord_buttons_plugin import  *
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -18,7 +17,6 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
-
 login_channel = None
 buttons = ButtonsClient(bot)
 unei_members = None
@@ -67,9 +65,7 @@ async def loginboard(ctx):
         ])
     ])
 
-@buttons.click()
-async def button_login(ctx):
-	await bot.get_channel(733707711228674102).send("ぺいぺい")
+
 
 
 
