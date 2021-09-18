@@ -181,7 +181,7 @@ async def announce(ctx, description, title = 'お知らせ', mention = False):
             await ctx.send(content = '多分正常に送信しました', hidden = True)
         else:
             await osirase_ch.send(embed = embed)
-            await ctx.send(contnt = '多分正常に送信しました', hidden = True)
+            await ctx.send(content = '多分正常に送信しました', hidden = True)
 
 
 bot.run(token)
