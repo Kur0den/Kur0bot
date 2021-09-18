@@ -169,11 +169,11 @@ async def test(ctx, hidden = False):
         }
     ]
 )
-async def announce(ctx, desc, title = 'お知らせ', mention = False):
+async def announce(ctx, description, title = 'お知らせ', mention = False):
     if ctx.user not in unei_members:
         await ctx.send(context = 'このコマンドは運営専用です。\n運営なのに使えない方はKur0denまでお知らせ下さい。', hidden = True)
     else:
-        embed = discord.Embed(title = title, description = desc)
+        embed = discord.Embed(title = title, description = description)
         embed.set_author(name = ctx.user)
         
         if mention == True:
