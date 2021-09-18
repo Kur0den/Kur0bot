@@ -19,6 +19,7 @@ slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
 login_channel = None
+buttons = ButtonsClient(bot)
 
 
 # 起動メッセージ
@@ -41,25 +42,24 @@ async def on_command_error(ctx, error):
 #ログインボード送信
 @bot.command(hidden =True)
 async def loginboard(ctx):
-    embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
+    # embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
     await buttons.send(
-	content = embed = embed,
+	content = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感'),
 	channel = ctx.channel.id,
 	components = [
 		ActionRow([
 			Button(
-				label="Hello", 
+				label="ログインボタン", 
 				style=ButtonType().Primary, 
-				custom_id="button_hello"
+				custom_id="button_login"
 			)
-			]),ActionRow([
-				Button(
-				label="Ephemeral",
-				style=ButtonType().Danger,
-				)
-			])
-		]
+        ]
 	)
+
+@buttons.click()
+async def button_login(ctx):
+	await ctx.reply("ぺいぺい")
+
 
 # Pingコマンド
 @bot.command()
