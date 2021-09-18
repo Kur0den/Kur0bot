@@ -179,7 +179,7 @@ async def announce(ctx, title, desc, mention = False):
         embed.set_author(name = ctx.user)
         
         if mention == True:
-            await osirase_ch.send(f'{osirase_role.mention}\n{embed = embed}')
+            await osirase_ch.send(context = osirase_role.mention, embed = embed)
             await ctx.send(context = '多分正常に送信しました', hidden = True)
         else:
             await osirase_ch.send(embed = embed)
