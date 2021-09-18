@@ -40,7 +40,25 @@ async def on_ready():
 async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
     error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    await ctx.send(error_msg)   
+    await ctx.send(error_msg)  
+ 
+#ログインボード送信
+@bot.command(hidden =True)
+async def loginboard(ctx):
+    embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
+    await buttons.send(
+    embed = embed,
+	channel = ctx.channel.id,
+	components = [
+		ActionRow([
+			Button(
+				label="ログインボタン", 
+				style=ButtonType().Primary, 
+				custom_id="button_login"
+			)
+        ])
+    ])
+
 
 # Pingコマンド
 @bot.command()
