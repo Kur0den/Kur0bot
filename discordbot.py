@@ -150,7 +150,7 @@ async def test(ctx, hidden = False):
     guild_ids = guild_id,
     options = [
         {
-            "title":"title",
+            "name":"title",
             "description":"タイトル(なしでも一応可)",
             "type":3,
             "required":False
