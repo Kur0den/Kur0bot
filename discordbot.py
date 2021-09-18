@@ -7,7 +7,6 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
-from discord_buttons_plugin import  *
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -18,7 +17,7 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
-login_channel = None
+login_channel = bot.get_channel(888416525579612230)
 
 
 # 起動メッセージ
