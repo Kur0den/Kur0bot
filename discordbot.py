@@ -33,7 +33,7 @@ async def on_ready():
     unei_role = guild.get_role(738956776258535575)
     unei_members = unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
-    osirase_role = guild.get_role(73895458792223542)
+    osirase_role = guild.get_role(738954587922235422)
 
 # エラー表示するやつ
 @bot.event
