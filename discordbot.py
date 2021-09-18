@@ -150,16 +150,16 @@ async def test(ctx, hidden = False):
     guild_ids = guild_id,
     options = [
         {
-            "name":"title",
-            "description":"タイトル(なしでも一応可)",
-            "type":3,
-            "required":False
-        },
-        {
             "name":"description",
             "description":"アナウンスする内容を送信してください",
             "type":3,
             "required":True
+        },
+        {
+            "name":"title",
+            "description":"タイトル(なしでも一応可)",
+            "type":3,
+            "required":False
         },
         {
             "name":"mention",
@@ -169,12 +169,10 @@ async def test(ctx, hidden = False):
         }
     ]
 )
-async def announce(ctx, title, desc, mention = False):
+async def announce(ctx, desc, title = 'お知らせ', mention = False):
     if ctx.user not in unei_members:
         await ctx.send(context = 'このコマンドは運営専用です。\n運営なのに使えない方はKur0denまでお知らせ下さい。', hidden = True)
     else:
-        if title == None:
-            title = 'お知らせ'
         embed = discord.Embed(title = title, description = desc)
         embed.set_author(name = ctx.user)
         
