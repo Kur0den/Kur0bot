@@ -30,7 +30,7 @@ async def on_ready():
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
     guild = bot.get_guild(733707710784340100)
-    unei_role = bot.get_role(738956776258535575)
+    unei_role = guild.get_role(738956776258535575)
     unei_members = unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = guild.get_role(73895458792223542)
