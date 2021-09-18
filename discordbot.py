@@ -7,6 +7,7 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
+from discord_buttons_plugin import  *
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -17,9 +18,13 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
+
+login_channel = None
+buttons = ButtonsClient(bot)
 unei_members = None
 osirase_ch = None
 osirase_role = None
+
 
 
 # 起動メッセージ
@@ -34,6 +39,8 @@ async def on_ready():
     unei_members = unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = guild.get_role(738954587922235422)
+    login_channel = bot.get_channel(888416525579612230)
+
 
 # エラー表示するやつ
 @bot.event
@@ -41,6 +48,28 @@ async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
     error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
     await ctx.send(error_msg)   
+
+#ログインボード送信
+@bot.command(hidden =True)
+async def loginboard(ctx):
+    # embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
+    await buttons.send(
+	content = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感'),
+	channel = ctx.channel.id,
+	components = [
+		ActionRow([
+			Button(
+				label="ログインボタン", 
+				style=ButtonType().Primary, 
+				custom_id="button_login"
+			)
+        ]
+	)
+
+@buttons.click()
+async def button_login(ctx):
+	await ctx.reply("ぺいぺい")
+
 
 # Pingコマンド
 @bot.command()
