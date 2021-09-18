@@ -7,7 +7,6 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
-from discord_buttons_plugin import  *
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -18,7 +17,6 @@ token = os.environ['DISCORD_BOT_TOKEN']
 slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
-
 login_channel = None
 buttons = ButtonsClient(bot)
 unei_members = None
@@ -47,14 +45,9 @@ async def on_ready():
 async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
     error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-<<<<<<< HEAD
-    await ctx.send(error_msg)  
- 
-=======
     await ctx.send(error_msg)
 
 
->>>>>>> 9e6b22c3418b15902db361b3a32ae77e2dcc3f25
 #ログインボード送信
 @bot.command(hidden =True)
 async def loginboard(ctx):
@@ -72,15 +65,9 @@ async def loginboard(ctx):
         ])
     ])
 
-<<<<<<< HEAD
-=======
-@buttons.click()
-async def button_login(ctx):
-	await bot.get_channel(733707711228674102).send("ぺいぺい")
 
 
 
->>>>>>> 9e6b22c3418b15902db361b3a32ae77e2dcc3f25
 
 # Pingコマンド
 @bot.command()
