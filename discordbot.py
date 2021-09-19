@@ -18,7 +18,6 @@ slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
 login_channel = None
-buttons = ButtonsClient(bot)
 unei_members = None
 osirase_ch = None
 osirase_role = None
