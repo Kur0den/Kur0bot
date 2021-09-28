@@ -7,6 +7,7 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
+from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -38,6 +39,7 @@ async def on_ready():
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = guild.get_role(738954587922235422)
     login_channel = bot.get_channel(888416525579612230)
+    DiscordComponents(bot)
 
 
 # エラー表示するやつ
@@ -55,16 +57,16 @@ async def loginboard(ctx):
     await buttons.send(
     embed = embed,
 	channel = ctx.channel.id,
-	components = [
-		ActionRow([
-			Button(
-				label="ログインボタン", 
-				style=ButtonType().Primary, 
-				custom_id="button_login"
-			)
-        ])
-    ])
-
+	components=[
+            Button(style=ButtonStyle.blue, label="ぼたん")
+        ],
+    )
+    res = await bot.wait_for("button_click")
+    if res.channel == ctx.channel:
+        await res.respond(
+            type=InteractionType.ChannelMessageWithSource,
+            content=f'{res.component.label} clicked'
+        )
 
 
 
