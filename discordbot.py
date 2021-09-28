@@ -7,7 +7,7 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
-from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
+from discord_components import DiscordComponents, ComponentsBot, Button
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
