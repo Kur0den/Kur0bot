@@ -1,4 +1,4 @@
-from discord.gateway import DiscordWebSocket, utils, _log, KeepAliveHandler
+from discord.gateway import DiscordWebSocket, utils, _log, KeepAliveHandler, ReconnectWebSocket
 
 async def received_message(self, msg, /):
     if type(msg) is bytes:
