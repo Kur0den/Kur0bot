@@ -57,7 +57,7 @@ async def loginboard(ctx):
     await ctx.send(
     embed = embed,
 	components=[
-            Button(style=ButtonStyle.blue, label="ぼたん", custom_id = "login")
+            Button(style=1, label="ぼたん", custom_id = "login")
         ],
     )
     interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "login")
