@@ -7,6 +7,8 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
+from discord_components import DiscordComponents, ComponentsBot, Button
+
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -37,6 +39,7 @@ async def on_ready():
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = guild.get_role(738954587922235422)
     login_channel = bot.get_channel(888416525579612230)
+    DiscordComponents(bot)
 
 
 # エラー表示するやつ
@@ -51,18 +54,14 @@ async def on_command_error(ctx, error):
 @bot.command(hidden =True)
 async def loginboard(ctx):
     embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
-    await buttons.send(
+    await ctx.send(
     embed = embed,
-	channel = ctx.channel.id,
-	components = [
-		ActionRow([
-			Button(
-				label="ログインボタン", 
-				style=ButtonType().Primary, 
-				custom_id="button_login"
-			)
-        ])
-    ])
+	components=[
+            Button(style=1, label="ぼたん", custom_id = "login")
+        ],
+    )
+    interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "login")
+    await interaction.send(content = "Button clicked!")
 
 
 
