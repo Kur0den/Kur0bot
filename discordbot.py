@@ -54,9 +54,8 @@ async def on_command_error(ctx, error):
 @bot.command(hidden =True)
 async def loginboard(ctx):
     embed = discord.Embed(title='📆ログインボード',description='毎日ログインしてログインボーナスをゲット！(小並感')
-    await buttons.send(
+    await ctx.send(
     embed = embed,
-	channel = ctx.channel.id,
 	components=[
             Button(style=ButtonStyle.blue, label="ぼたん", custom_id = "login")
         ],
