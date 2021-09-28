@@ -9,6 +9,7 @@ from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
+
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
     case_insensitive=True,
@@ -19,7 +20,6 @@ slash = SlashCommand(bot, sync_commands = True)
 guild = None
 guild_id = [733707710784340100]
 login_channel = None
-buttons = ButtonsClient(bot)
 unei_members = None
 osirase_ch = None
 osirase_role = None
@@ -67,6 +67,7 @@ async def loginboard(ctx):
             type=InteractionType.ChannelMessageWithSource,
             content=f'{res.component.label} clicked'
         )
+
 
 
 
