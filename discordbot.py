@@ -7,7 +7,7 @@ import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
 import add_socket_response_event
-from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
+from discord_components import DiscordComponents, ComponentsBot, Button
 
 
 bot = commands.Bot(
@@ -58,16 +58,11 @@ async def loginboard(ctx):
     embed = embed,
 	channel = ctx.channel.id,
 	components=[
-            Button(style=ButtonStyle.blue, label="ぼたん")
+            Button(style=ButtonStyle.blue, label="ぼたん", custom_id = "login")
         ],
     )
-    res = await bot.wait_for("button_click")
-    if res.channel == ctx.channel:
-        await res.respond(
-            type=InteractionType.ChannelMessageWithSource,
-            content=f'{res.component.label} clicked'
-        )
-
+    interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "login")
+    await interaction.send(content = "Button clicked!")
 
 
 
