@@ -167,7 +167,14 @@ async def test(ctx, hidden = False):
     if hidden == True:
         await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
-        await ctx.send(content = 'Hello world!')
+        sent = await ctx.send(content = 'ぺぺぺぺぺっっぺえぺぺぺぺpえ！！！！！',
+            components=[Button(style=1,
+                label="さくじょぼたん",
+                custom_id = "delete")
+            ],
+        )
+        interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "delete")
+        await sent.delete
 
 @slash.slash(
     name = 'announce',
