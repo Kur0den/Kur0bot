@@ -162,7 +162,7 @@ async def deletetest(ctx):
 @slash.slash(
     name = 'ktest',
     description = 'てすとだよ',
-    guild_ids = guild_id,:
+    guild_ids = guild_id,
     options = [
         {
             "name":"hidden",
