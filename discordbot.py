@@ -150,7 +150,7 @@ async def idinfo(ctx, imid):
     await ctx.send(f'{ex_name}\n{tid}')
 
 @bot.command(hidden=True)
-async def deletetest(ctx, sent = none):
+async def deletetest(ctx, sent = None):
     sent = await ctx.send(content = 'ぺぺぺぺぺっっぺえぺぺぺぺpえ！！！！！',
         components=[
             Button(style=1,label="さくじょぼたん",custom_id = "delete")
