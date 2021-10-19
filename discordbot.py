@@ -149,6 +149,15 @@ async def idinfo(ctx, imid):
         # pass
     await ctx.send(f'{ex_name}\n{tid}')
 
+@bot.command(hidden=true)
+async def test(ctx):
+    sent = await ctx.send(content = 'ぺぺぺぺぺっっぺえぺぺぺぺpえ！！！！！',
+        components=[
+            Button(style=1,label="さくじょぼたん",custom_id = "delete")
+            ],
+        )
+    interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "delete")
+    await sent.delete
 
 @slash.slash(
     name = 'ktest',
@@ -167,14 +176,7 @@ async def test(ctx, hidden = False):
     if hidden == True:
         await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
-        sent = await ctx.send(content = 'ぺぺぺぺぺっっぺえぺぺぺぺpえ！！！！！',
-        components=[
-            Button(style=1,label="さくじょぼたん",custom_id = "delete")
-            ],
-        )
-        interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "delete")
-        await sent.delete
-
+    await ctx.send(content = 'あばば')
 @slash.slash(
     name = 'announce',
     description = 'アナウンスをお知らせに投稿します(運営専用)',
