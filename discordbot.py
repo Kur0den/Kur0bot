@@ -149,7 +149,7 @@ async def idinfo(ctx, imid):
         # pass
     await ctx.send(f'{ex_name}\n{tid}')
 
-@bot.command(hidden=true)
+@bot.command(hidden=True)
 async def test(ctx):
     sent = await ctx.send(content = 'ぺぺぺぺぺっっぺえぺぺぺぺpえ！！！！！',
         components=[
