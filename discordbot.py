@@ -168,9 +168,8 @@ async def test(ctx, hidden = False):
         await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
         sent = await ctx.send(content = 'ぺぺぺぺぺっっぺえぺぺぺぺpえ！！！！！',
-            components=[Button(style=1,
-                label="さくじょぼたん",
-                custom_id = "delete")
+        components=[
+            Button(style=1,label="さくじょぼたん",custom_id = "delete")
             ],
         )
         interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "delete")
