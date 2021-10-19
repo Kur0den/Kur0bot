@@ -176,7 +176,7 @@ async def test(ctx, hidden = False):
     if hidden == True:
         await ctx.send(content = 'ぺぺぺぺぺぺぺぺ！！！', hidden = True)
     else:
-    await ctx.send(content = 'あばば')
+        await ctx.send(content = 'あばば')
 @slash.slash(
     name = 'announce',
     description = 'アナウンスをお知らせに投稿します(運営専用)',
