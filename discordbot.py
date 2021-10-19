@@ -157,7 +157,7 @@ async def deletetest(ctx):
             ],
         )
     interaction = await bot.wait_for("button_click", check = lambda i: i.custom_id == "delete")
-    await sent.delete(sent)
+    await sent.delete()
 
 @slash.slash(
     name = 'ktest',
