@@ -85,7 +85,7 @@ async def on_thread_join(thread):
                 ],
             )
         interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'o' or 'x')
-        await sent.delete())
+        await sent.delete()
         await thread.send(custom_id)
         thnotice = bot.get_channel(733707711228674102)
         
