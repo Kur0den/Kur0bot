@@ -88,7 +88,7 @@ async def on_thread_join(thread):
             # await sent.delete())
             # thnotice = bot.get_channel(733707711228674102)
         
-            await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
+        await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
 
 # evalもどき
 @bot.command(hidden = True)
