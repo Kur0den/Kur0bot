@@ -80,12 +80,12 @@ async def on_thread_join(thread):
     if len(await thread.history(limit=2).flatten()) == 0:
         sent = await thread.send(content = f'くろぼっとが参加したよ！',
             components=[
-                Button(style=3,label='通知する',custom_id = 'o',emoji = '🔔'),
-                Button(style=4,label='通知しない', custom_id ='x',emoji = '🔕')
+                Button(style=3,label='通知する',custom_id = 'tuution',emoji = '🔔'),
+                Button(style=4,label='通知しない', custom_id ='tuutioff',emoji = '🔕')
                 ],
             )
         interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'o' or 'x')
-        if interaction == 'button_click', check = lambda i: i.custom_id = 'o':
+        if interacion.custom_id = 'o':
             thnotice = bot.get_channel(733707711228674102)
             await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
         await sent.delete()
