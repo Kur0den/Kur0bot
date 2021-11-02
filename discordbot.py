@@ -86,7 +86,7 @@ async def on_thread_join(thread):
                 Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
                 ],
             )
-        if if len(await thread.history(limit=2).flatten()) == 2:
+        if len(await thread.history(limit=2).flatten()) == 2:
             await sent.delete()
         try:
             interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'tuuti',timeout = 60)
