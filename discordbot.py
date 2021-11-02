@@ -83,6 +83,7 @@ async def on_thread_join(thread):
                 Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
                 ],
             )
+        time.sleep(1)
         if thread.last_message =='くろぼっとが参加したよ！\nこのスレッド作成されたことを通知するには1分以内に下のボタンを押してね！':
             await sent.delete()
         try:
