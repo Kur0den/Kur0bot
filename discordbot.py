@@ -77,7 +77,7 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
-    if len(await thread.history(limit=2).flatten()) == 0:
+    if len(await thread.history(limit=2).flatten()) == 0 or 1:
         sent = await thread.send(content = f'くろぼっとが参加したよ！\nこのスレッド作成されたことを通知するには1分以内に下のボタンを押してね！',
             components=[
                 Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
