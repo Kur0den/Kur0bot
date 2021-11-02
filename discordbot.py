@@ -86,7 +86,7 @@ async def on_thread_join(thread):
                 Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
                 ],
             )
-        if bot.get_message(thread.last_message_id).author.id == 875961973597171722 or thread.owner_id:
+        if thread.fetch_message(thread.last_message_id).author.id == 875961973597171722 or thread.owner_id:
             await sent.delete()
         try:
             interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'tuuti',timeout = 60)
