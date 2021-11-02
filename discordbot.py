@@ -93,6 +93,8 @@ async def on_thread_join(thread):
         except asyncio.TimeoutError:
             try:
                 await sent.edit(content = 'タイムアウトしたよ！', components = [])
+            except:
+                pass
 
 # evalもどき
 @bot.command(hidden = True)
