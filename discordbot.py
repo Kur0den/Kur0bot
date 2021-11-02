@@ -86,7 +86,7 @@ async def on_thread_join(thread):
                 Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
                 ],
             )
-        if len(await thread.history(limit=2).flatten()) == 2:
+        if thread.last_ssage_id.author.id == 875961973597171722:
             await sent.delete()
         try:
             interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'tuuti',timeout = 60)
