@@ -79,14 +79,14 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
+    
     if len(await thread.history(limit=2).flatten()) == 0 or 1:
         sent = await thread.send(content = f'くろぼっとが参加したよ！\nこのスレッド作成されたことを通知するには1分以内に下のボタンを押してね！',
             components=[
                 Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
                 ],
             )
-        time.sleep(1)
-        if thread.last_message =='くろぼっとが参加したよ！\nこのスレッド作成されたことを通知するには1分以内に下のボタンを押してね！':
+        if if len(await thread.history(limit=2).flatten()) == 2:
             await sent.delete()
         try:
             interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'tuuti',timeout = 60)
