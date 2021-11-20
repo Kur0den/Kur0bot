@@ -79,29 +79,8 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
-    time.sleep(1)
-    last_message = await thread.fetch_message(thread.last_message_id)
-    if last_message.author.id == 875961973597171722 :
-        d = 1
-    if len(await thread.history(limit=2).flatten()) == 0 or 1:
-        sent = await thread.send(content = f'くろぼっとが参加したよ！\nこのスレッド作成されたことを通知するには1分以内に下のボタンを押してね！',
-            components=[
-                Button(style=3,label='通知する',custom_id = 'tuuti',emoji = '🔔')
-                ],
-            )
-        
-        if d == 1:
-            await sent.delete()
-        try:
-            interaction = await bot.wait_for('button_click', check = lambda i: i.custom_id == 'tuuti',timeout = 60)
-            thnotice = bot.get_channel(733707711228674102)
-            await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
-            await sent.edit(content = 'スレッドが作成されたことを通知したよ！', components = [])
-        except asyncio.TimeoutError:
-            try:
-                await sent.edit(content = 'タイムアウトしたよ！', components = [])
-            except:
-                pass
+    thnotice = bot.get_channel(733707711228674102)
+        await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
 
 # evalもどき
 @bot.command(hidden = True)
