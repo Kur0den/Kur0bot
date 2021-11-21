@@ -79,7 +79,7 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
-    await thread.send(thread.fetch_members.id)
+    await thread.send(thread.fetch_members)
     try:
         if await bot.user.id not in thread.fetch_members.id == True:
             thnotice = bot.get_channel(733707711228674102)
