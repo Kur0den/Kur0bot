@@ -79,8 +79,12 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
-    thnotice = bot.get_channel(733707711228674102)
-    await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
+    try:
+        if await bot.user.id not in thread.fetch_member.id
+            thnotice = bot.get_channel(733707711228674102)
+            await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
+    except:
+        pass
 
 # evalもどき
 @bot.command(hidden = True)
@@ -89,7 +93,7 @@ async def test(ctx, im):
     proc = subprocess.Popen(im, shell=True, stdout=PIPE, stderr=PIPE, text=True)
 
     ex = proc.communicate(timeout=10)
-    await ctx.send(f'{ex}\nだよ')
+    await ctx.send(f'{ex}\nだよ') 
 
 # 時間表示
 @bot.command(aliases = ['t'])
