@@ -79,8 +79,9 @@ async def ping(ctx):
 # スレッド通知
 @bot.event
 async def on_thread_join(thread):
+    memberlist = thread.fetch_member
     try:
-        if await bot.user.id not in thread.fetch_member.id == True
+        if await bot.user.id not in memberlist.id == True
             thnotice = bot.get_channel(733707711228674102)
             await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
     except:
