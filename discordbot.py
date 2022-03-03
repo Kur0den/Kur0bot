@@ -4,6 +4,8 @@ import add_socket_response_event
 
 bot = commands.Bot(command_prefix="c/")
 
+bot.load_extension("cog.test")
+
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
     case_insensitive=True,
