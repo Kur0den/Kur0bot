@@ -5,8 +5,8 @@ import os
 
 bot = commands.Bot(command_prefix="c/")
 
-bot.load_extension("cog.test")
-bot.add_cog(sub.test(bot))
+bot.load_extension("cog.Test")
+bot.add_cog(sub.Test(bot))
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
