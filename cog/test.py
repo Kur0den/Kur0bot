@@ -1,5 +1,5 @@
-import nextcode
-from nextcode.ext import commands
+import nextcord
+from nextcord.ext import commands
 
 class Test(commands.Cog):
     def __init__(self, bot):

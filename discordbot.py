@@ -1,5 +1,5 @@
-import nextcode
-from nextcode.ext import commands
+import nextcord
+from nextcord.ext import commands
 import os
 # import add_socket_response_event
 
@@ -11,8 +11,8 @@ bot.add_cog(sub.Test(bot))
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
     case_insensitive=True,
-    activity = nextcode.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = nextcode.ActivityType.playing),
-    intents=nextcode.Intents.all())
+    activity = nextcord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = nextcord.ActivityType.playing),
+    intents=nextcord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 guild = None
 guild_id = [733707710784340100]
