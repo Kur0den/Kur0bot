@@ -1,5 +1,5 @@
 import nextcode
-from dnextcode.ext import commands
+from nextcode.ext import commands
 import os
 # import add_socket_response_event
 
