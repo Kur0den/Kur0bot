@@ -1,12 +1,12 @@
-from discord.ext import commands
-import discord
+# from discord.ext import commands
+# import discord
 import os
 import traceback
 import datetime
 import subprocess
 from subprocess import PIPE
 from discord_slash import SlashCommand, SlashContext
-import add_socket_response_event
+#import add_socket_response_event
 from discord_components import DiscordComponents, ComponentsBot, Button
 import asyncio
 import time
