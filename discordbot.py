@@ -1,6 +1,7 @@
 import nextcord
 from nextcord.ext import commands
 import os
+import cog
 # import add_socket_response_event
 
 bot = commands.Bot(command_prefix="c/")
