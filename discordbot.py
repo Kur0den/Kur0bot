@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import add_socket_response_event
+# import add_socket_response_event
 
 bot = commands.Bot(command_prefix="c/")
 
