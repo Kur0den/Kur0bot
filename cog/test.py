@@ -8,7 +8,7 @@ class Greetings(commands.Cog):
 
     @commands.command()
     async def test(self,ctx):
-        awat ctx.send("ぱあ")
+        await ctx.send("ぱあ")
 
 def setup(bot):
     return bot.add_cog(Greetings(bot))
