@@ -3,7 +3,8 @@ from discord.ext import commands
 import os
 import cog
 # import add_socket_response_event
-
+from glob import glob
+files = glob('./cogs/*')
 
 
 bot = commands.Bot(
