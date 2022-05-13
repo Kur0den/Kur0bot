@@ -11,7 +11,7 @@ bot = commands.Bot(
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
-token = os.environ['DISCORD_BOT_TOKEN']
+token = ODc1OTYxOTczNTk3MTcxNzIy.GLMD1j.Zz19BlU2Il-ocu7ir-QM71feSNDgglWHTCtCrE
 guild = None
 guild_id = [733707710784340100]
 
@@ -35,4 +35,4 @@ async def on_ready():
     DiscordComponents(bot)
 
 
-bot.run(token)
+bot.run(ODc1OTYxOTczNTk3MTcxNzIy.GLMD1j.Zz19BlU2Il-ocu7ir-QM71feSNDgglWHTCtCrE)
