@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-class test(commands.Cog):
+class ping(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
@@ -13,4 +13,4 @@ class test(commands.Cog):
         await ctx.send(embed=embed)
 
 async def setup(bot):
-    await bot.add_cog(test(bot))
+    await bot.add_cog(ping(bot))
