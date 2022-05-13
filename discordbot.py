@@ -25,12 +25,12 @@ async def on_ready():
     count = 0
     for f in files:
         if f.endswith('.py'):
-         f = f[len('./cog/'):-(len('.py'))]
-        if f == 'test':
+            f = f[len('./cog/'):-(len('.py'))]
+            if f == 'test':
                 continue
-        bot.load_extension(f'cogs.{f}')
-        print(f'cogs.{f} was loaded!')
-        count += 1
+            bot.load_extension(f'cogs.{f}')
+            print(f'cogs.{f} was loaded!')
+            count += 1
     print('cog loaded')
     global guild, unei_members, osirase_ch, osirase_role
     user = bot.get_user(699414261075804201)
