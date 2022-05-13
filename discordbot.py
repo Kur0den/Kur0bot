@@ -3,8 +3,7 @@ from discord.ext import commands
 import os
 import cog
 # import add_socket_response_event
-from glob import glob
-files = glob('./cogs/*')
+
 
 
 bot = commands.Bot(
@@ -18,7 +17,8 @@ guild_id = [733707710784340100]
 
 
 
-
+from glob import glob
+files = glob('./cog/*')
 
 @bot.event
 async def on_ready():
@@ -28,8 +28,8 @@ async def on_ready():
             f = f[len('./cog/'):-(len('.py'))]
             if f == 'test':
                 continue
-            bot.load_extension(f'cogs.{f}')
-            print(f'cogs.{f} was loaded!')
+            bot.load_extension(f'cog.{f}')
+            print(f'cog.{f} was loaded!')
             count += 1
     print('cog loaded')
     global guild, unei_members, osirase_ch, osirase_role
