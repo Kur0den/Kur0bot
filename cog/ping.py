@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from glob import glob
-files = glob('./cogs/*')
+
 
 class ping(commands.Cog):
     def __init__(self, bot):
