@@ -5,10 +5,6 @@ import cog
 # import add_socket_response_event
 
 
-bot = commands.Bot(command_prefix="c/")
-
-bot.load_extension("cog.Test")
-bot.add_cog(sub.Test(bot))
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -18,6 +14,11 @@ bot = commands.Bot(
 token = os.environ['DISCORD_BOT_TOKEN']
 guild = None
 guild_id = [733707710784340100]
+
+bot = commands.Bot(command_prefix="c/")
+
+bot.load_extension("cog.Test")
+bot.add_cog(sub.Test(bot))
 
 @bot.event
 async def on_ready():
