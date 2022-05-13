@@ -1,5 +1,5 @@
-import dicord
-from dicord.ext import commands
+import discord
+from discord.ext import commands
 
 class Test(commands.Cog):
     def __init__(self, bot):
