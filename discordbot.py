@@ -11,7 +11,7 @@ bot = commands.Bot(
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
-token = ODc1OTYxOTczNTk3MTcxNzIy.GLMD1j.Zz19BlU2Il-ocu7ir-QM71feSNDgglWHTCtCrE
+token = 'ODc1OTYxOTczNTk3MTcxNzIy.GLMD1j.Zz19BlU2Il-ocu7ir-QM71feSNDgglWHTCtCrE'
 guild = None
 guild_id = [733707710784340100]
 
