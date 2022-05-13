@@ -32,7 +32,7 @@ async def on_ready():
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = guild.get_role(738954587922235422)
     login_channel = bot.get_channel(888416525579612230)
-    DiscordComponents(bot)
+#    DiscordComponents(bot)
 
 
 bot.run(token)
