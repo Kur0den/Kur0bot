@@ -25,7 +25,7 @@ async def on_ready():
     count = 0
     for f in files:
         if f.endswith('.py'):
-         f = f[len('./cogs/'):-(len('.py'))]
+         f = f[len('./cog/'):-(len('.py'))]
         if f == 'template':
                 continue
         bot.load_extension(f'cogs.{f}')
