@@ -16,11 +16,12 @@ guild = None
 guild_id = [733707710784340100]
 
 
-bot.load_extension("cog.Test")
-bot.add_cog(sub.Test(bot))
+
+
 
 @bot.event
 async def on_ready():
+    await bot.load_extension("cog.test")
     global guild, unei_members, osirase_ch, osirase_role
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')

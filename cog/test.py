@@ -10,5 +10,5 @@ class Test(commands.Cog):
     async def test(self,ctx):
         await ctx.send("ぱあ")
 
-def setup(bot):
-    return bot.add_cog(Test(bot))
+async def setup(bot):
+    await bot.add_cog(test(bot))
