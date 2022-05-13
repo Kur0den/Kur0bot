@@ -4,6 +4,7 @@ import os
 import cog
 # import add_socket_response_event
 
+
 bot = commands.Bot(command_prefix="c/")
 
 bot.load_extension("cog.Test")
@@ -12,8 +13,8 @@ bot.add_cog(sub.Test(bot))
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
     case_insensitive=True,
-    activity = nextcord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = nextcord.ActivityType.playing),
-    intents=nextcord.Intents.all())
+    activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
+    intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 guild = None
 guild_id = [733707710784340100]

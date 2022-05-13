@@ -1,5 +1,5 @@
-import nextcord
-from nextcord.ext import commands
+import dicord
+from dicord.ext import commands
 
 class Test(commands.Cog):
     def __init__(self, bot):
