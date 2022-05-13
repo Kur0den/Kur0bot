@@ -26,7 +26,7 @@ async def on_ready():
     for f in files:
         if f.endswith('.py'):
          f = f[len('./cog/'):-(len('.py'))]
-        if f == 'ping':
+        if f == 'test':
                 continue
         bot.load_extension(f'cogs.{f}')
         print(f'cogs.{f} was loaded!')
