@@ -35,4 +35,4 @@ async def on_ready():
     DiscordComponents(bot)
 
 
-bot.run(ODc1OTYxOTczNTk3MTcxNzIy.GLMD1j.Zz19BlU2Il-ocu7ir-QM71feSNDgglWHTCtCrE)
+bot.run(token)
