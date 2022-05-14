@@ -2,6 +2,9 @@ import discord
 from discord.ext import commands
 import os
 import cog
+import asyncio
+from pathlib import Path
+from os import sep as ossep
 # import add_socket_response_event
 
 
@@ -16,21 +19,18 @@ guild = None
 guild_id = [733707710784340100]
 
 
-
-from glob import glob
-files = glob('./cog/*')
-
 @bot.event
 async def on_ready():
+    ext_files = tuple(Path('cog/.').glob('*.py'))
     count = 0
-    for f in files:
-        if f.endswith('.py'):
-            f = f[len('./cog/'):-(len('.py'))]
-            if f == 'test':
-                continue
-            bot.load_extension(f'cog.{f}')
-            print(f'cog.{f} was loaded!')
-            count += 1
+    for ext in ext_files:
+        f = str(ext).replace(ossep, '.')[:-3]
+#        try:
+        await bot.load_extension(f)
+        print(f'{f} was loaded!')
+#        except:
+#            print(f'{f} couldn\'t load...')
+        count += 1
     print('cog loaded')
     global guild, unei_members, osirase_ch, osirase_role
     user = bot.get_user(699414261075804201)
