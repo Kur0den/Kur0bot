@@ -5,6 +5,7 @@ import cog
 import asyncio
 from pathlib import Path
 from os import sep as ossep
+import traceback
 # import add_socket_response_event
 
 
@@ -21,16 +22,13 @@ guild_id = [733707710784340100]
 
 @bot.event
 async def on_ready():
-    ext_files = tuple(Path('cog/.').glob('*.py'))
-    count = 0
-    for ext in ext_files:
-        f = str(ext).replace(ossep, '.')[:-3]
-#        try:
-        await bot.load_extension(f)
-        print(f'{f} was loaded!')
-#        except:
-#            print(f'{f} couldn\'t load...')
-        count += 1
+    for file in os.listdir('./cog'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.{file[:-3]}')
+                print(f'Loaded cog: {file[:-3]}')
+            except:
+                traceback.print_exc()
     print('cog loaded')
     global guild, unei_members, osirase_ch, osirase_role
     user = bot.get_user(699414261075804201)
@@ -41,7 +39,7 @@ async def on_ready():
     unei_members = unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = guild.get_role(738954587922235422)
-    login_channel = bot.get_channel(888416525579612230)
+    login_ch = bot.get_channel(888416525579612230)
 #    DiscordComponents(bot)
 
 
