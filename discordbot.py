@@ -24,7 +24,7 @@ guild_id = [733707710784340100]
 @bot.event
 async def on_ready():
     global guild, unei_members, osirase_ch, osirase_role
-    guild = bot.get_guild(733707710784340100)
+    bot.guild = bot.get_guild(733707710784340100)
     botowner = bot.get_user(699414261075804201)
     unei_role = guild.get_role(738956776258535575)
     unei_members = unei_role.members
