@@ -17,7 +17,7 @@ class Time(commands.Cog):
         utc_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
         utc_time = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
         if sub == 'date':
-            embed = discord.Embed(title='📅Date', description=f'UTC `{utc_date}`\n\nTST `{tst_date}`JST `{jst_date}`\n\nEST `{est_date}`')
+            embed = discord.Embed(title='📅Date', description=f'UTC `{utc_date}`\n\nTST `{tst_date}`\n\nJST `{jst_date}`\n\nEST `{est_date}`')
             await ctx.send(embed=embed)
         elif sub == 'time':
             embed = discord.Embed(title='⏲Time', description=f'UTC `{utc_time}`\n\nTST: `{tst_time}`\n\nJST `{jst_time}`\n\nEST `{est_time}`')
