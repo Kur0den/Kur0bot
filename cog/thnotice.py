@@ -3,11 +3,15 @@ from discord.ext import commands
 from datetime import datetime
 
 class thnotice(commands.Cog):
-    def __init__(self, bot, guild):
+    def __init__(self, bot,guild):
         self.bot = bot
         self.guild = guild
+    
+    
+    
+    
     @commands.Cog.listener()
-    async def on_thread_create(self,thread,guild):
+    async def on_thread_create(self,thread):
         noticech = self.bot.get_channel(975618002953318420)
         noticerole = self.guild.get_role(956128433660899358)
 #        await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')

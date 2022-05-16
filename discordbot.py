@@ -45,6 +45,8 @@ async def on_ready():
 
 #    DiscordComponents(bot)
 
+
+
 # エラー表示
 @bot.event
 async def on_command_error(ctx, error):
