@@ -3,11 +3,11 @@ from discord.ext import commands
 from datetime import datetime
 
 class thnotice(commands.Cog):
-    def __init__(self, bot,guild):
+    def __init__(self, bot):
         self.bot = bot
-        self.guild = guild
+        self.guild = None
     
-    
+    self.guild = guild
     
     
     @commands.Cog.listener()
