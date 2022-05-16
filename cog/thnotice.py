@@ -5,10 +5,8 @@ from datetime import datetime
 class thnotice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.guild = None
     
-    self.guild = guild
-    
+    guild = self.bot.get_guild(733707710784340100)
     
     @commands.Cog.listener()
     async def on_thread_create(self,thread):
