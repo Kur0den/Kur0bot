@@ -7,7 +7,7 @@ class Time(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def time(self,ctx):
+    async def time(self,ctx,sub = None):
         jst_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y/%m/%d")
         jst_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%H:%M:%S")
         est_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-5))).strftime("%Y/%m/%d")
