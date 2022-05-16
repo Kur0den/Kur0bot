@@ -22,6 +22,14 @@ guild_id = [733707710784340100]
 
 @bot.event
 async def on_ready():
+    global guild, unei_members, osirase_ch, osirase_role
+    guild = bot.get_guild(733707710784340100)
+#    user = bot.get_user(699414261075804201)
+    unei_role = guild.get_role(738956776258535575)
+    unei_members = unei_role.members
+    osirase_ch = bot.get_channel(734605726491607091)
+    osirase_role = guild.get_role(738954587922235422)
+    login_ch = bot.get_channel(888416525579612230)
     for file in os.listdir('./cog'):
         if file.endswith('.py'):
             try:
@@ -30,16 +38,10 @@ async def on_ready():
             except:
                 traceback.print_exc()
     print('cog loaded')
-    global guild, unei_members, osirase_ch, osirase_role
-    user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
-    guild = bot.get_guild(733707710784340100)
-    unei_role = guild.get_role(738956776258535575)
-    unei_members = unei_role.members
-    osirase_ch = bot.get_channel(734605726491607091)
-    osirase_role = guild.get_role(738954587922235422)
-    login_ch = bot.get_channel(888416525579612230)
+
+
 #    DiscordComponents(bot)
 
 # エラー表示

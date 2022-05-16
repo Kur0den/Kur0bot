@@ -3,7 +3,7 @@ from discord.ext import commands
 
 
 class thnotice(commands.Cog):
-    def __init__(self, bot,guild):
+    def __init__(self, bot, guild):
         self.bot = bot
         self.guild = guild
     @commands.Cog.listener()
