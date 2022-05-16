@@ -21,7 +21,7 @@ class thnotice(commands.Cog):
         embed.add_field(name="スレッドが作成されたチャンネル", value=thread.parent, inline=True)
         embed.add_field(name="スレッド作成者", value=thread.owner.mention, inline=True)
 
-        await noticesh.send(content=noticerole.mention, embed=embed)
+        await noticech.send(content=noticerole.mention, embed=embed)
 
 async def setup(bot):
     await bot.add_cog(thnotice(bot))
