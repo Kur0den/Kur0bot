@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class ThreadNotice(commands.Cog):
+class threadNotice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -13,4 +13,4 @@ class ThreadNotice(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(ThreadNotice(bot))
+    bot.add_cog(threadNotice(bot))
