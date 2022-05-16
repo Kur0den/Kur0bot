@@ -42,5 +42,12 @@ async def on_ready():
     login_ch = bot.get_channel(888416525579612230)
 #    DiscordComponents(bot)
 
+# エラー表示
+@bot.event
+async def on_command_error(ctx, error):
+    orig_error = getattr(error, "original", error)
+    error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+    embed = discord.Embed(title = 'Error', description = error_msg)
+    await ctx.send(error_msg)
 
 bot.run(token)
