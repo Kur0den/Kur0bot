@@ -31,7 +31,7 @@ class thnotice(commands.Cog):
     
     @commands.Cog.listener()
     async def on_thread_remove():
-        await self.bot.owner.send(thread)
+        await self.bot.owner.send(f'remove:{thread}')
 
 async def setup(bot):
     await bot.add_cog(thnotice(bot))
