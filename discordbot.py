@@ -6,16 +6,17 @@ import asyncio
 from pathlib import Path
 from os import sep as ossep
 import traceback
+from dotenv import load_dotenv
 # import add_socket_response_event
 
-
+load_dotenv()
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
-token = 'ODc1OTYxOTczNTk3MTcxNzIy.GLMD1j.Zz19BlU2Il-ocu7ir-QM71feSNDgglWHTCtCrE'
+token = os.environ['DISCORD_BOT_TOKEN']
 guild = None
 guild_id = [733707710784340100]
 
