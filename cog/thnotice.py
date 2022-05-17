@@ -29,7 +29,7 @@ class thnotice(commands.Cog):
         await self.bot.owner.send(before)
         await self.bot.owner.send(after)
     
-    @commands.Ocg.listener()
+    @commands.Cog.listener()
     async def on_thread_remove():
         await self.bot.owner.send(thread)
 
