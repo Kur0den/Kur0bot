@@ -23,5 +23,15 @@ class thnotice(commands.Cog):
 
         await noticech.send(content=noticerole.mention, embed=embed)
 
+    @commands.Cog.listener()
+    async def on_thread_update(self, before, after):
+        
+        await self.bot.owner.send(before)
+        await self.bot.owner.send(after)
+    
+    @commands.Ocg.listener()
+    async def on_thread_remove():
+        await self.bot.owner.send(thread)
+
 async def setup(bot):
     await bot.add_cog(thnotice(bot))

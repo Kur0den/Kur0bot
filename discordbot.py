@@ -24,7 +24,7 @@ guild_id = [733707710784340100]
 async def on_ready():
     global guild, unei_members, osirase_ch, osirase_role
     bot.guild = bot.get_guild(733707710784340100)
-    botowner = bot.get_user(699414261075804201)
+    bot.owner = bot.get_user(699414261075804201)
     unei_role = bot.guild.get_role(738956776258535575)
     unei_members = unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
@@ -39,7 +39,7 @@ async def on_ready():
                 traceback.print_exc()
     print('cog loaded')
     print(f'ready: {bot.user} (ID: {bot.user.id})')
-    await botowner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
+    await bot.owner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
 
 
 #    DiscordComponents(bot)
