@@ -10,7 +10,7 @@ class thnotice(commands.Cog):
     
     @commands.Cog.listener()
     async def on_thread_create(self,thread):
-        embed = discord.Embed(title="スレッド通知", colour=discord.Colour(0xff00), description="新しいスレッドが作成されました", timestamp=datetime.now())
+        embed = discord.Embed(title="スレッド通知", colour=0xff00, description="新しいスレッドが作成されました", timestamp=datetime.now())
 
         embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
 
@@ -25,7 +25,7 @@ class thnotice(commands.Cog):
     @commands.Cog.listener()
     async def on_thread_update(self, before, after):
         if before.archived is False and after.archived is True:
-            embed = discord.Embed(title="スレッド通知", colour=0x00ff00, description="スレッドがアーカイブされました", timestamp=datetime.now())
+            embed = discord.Embed(title="スレッド通知", colour=0xFFFF, description="スレッドがアーカイブされました", timestamp=datetime.now())
 
             embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
 
