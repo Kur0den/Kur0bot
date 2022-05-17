@@ -1,4 +1,4 @@
-    っpfrom discord.gateway import DiscordWebSocket, utils, _log, KeepAliveHandler, ReconnectWebSocket
+from discord.gateway import DiscordWebSocket, utils, _log, KeepAliveHandler, ReconnectWebSocket
 
 async def received_message(self, msg, /):
     if type(msg) is bytes:
@@ -34,7 +34,7 @@ async def received_message(self, msg, /):
         self._keep_alive.tick()
 
     if op != self.DISPATCH:
-        if op == self.RECONNECT:p
+        if op == self.RECONNECT:
             # "reconnect" can only be handled by the Client
             # so we terminate our connection and raise an
             # internal exception signalling to reconnect.
