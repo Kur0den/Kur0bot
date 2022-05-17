@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
+import interactions
+
 
 class thnotice(commands.Cog):
     def __init__(self, bot):
@@ -10,6 +12,29 @@ class thnotice(commands.Cog):
     
     @commands.Cog.listener()
     async def on_thread_create(self,thread):
+        notice_y = interactions.Button(
+            style=interactions.ButtonStyle.PRIMARY,
+            label="通知する",
+            custom_id="notice_y"
+        )
+        notice_n = interactions.Button(
+            style=interactions.ButtonStyle.SECONDARY,
+            label="通知しない",
+            custom_id="notice_n"
+        )
+        row = interactions.ActionRow(
+                components=[notice_y, notice_n]
+        )
+        
+        embed = discord.Embed(title="スレッド通知", colour=discord.Colour(0x47ddcc), description="このスレッドを通知しますか?")
+
+        await thread.send(embed=embed, components=row)
+        
+        @bot.component("hello")
+        async def button_response(ctx):
+            await ctx.send("You clicked the Button :O", ephemeral=True)
+
+        
         embed = discord.Embed(title="スレッド通知", colour=0xff00, description="新しいスレッドが作成されました", timestamp=datetime.now())
 
         embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")

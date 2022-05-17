@@ -7,9 +7,11 @@ from pathlib import Path
 from os import sep as ossep
 import traceback
 from datetime import datetime
+from dotenv import load_dotenv 
+import interactions
 # import add_socket_response_event
 
-
+load_dotenv()
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -19,6 +21,7 @@ bot = commands.Bot(
 token = os.environ['DISCORD_BOT_TOKEN']
 guild_id = [733707710784340100]
 
+bot.slash = interactions.Client(token=token)
 
 @bot.event
 async def on_ready():
