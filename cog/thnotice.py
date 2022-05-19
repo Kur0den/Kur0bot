@@ -86,7 +86,7 @@ class thnotice(commands.Cog):
             return 
         
         elif before.archived is True and after.archived is False:
-            await bot.owner.send('アーカイブ解除されたよ！')
+            await self.bot.owner.send('アーカイブ解除されたよ！')
             print(f'アーカイブ解除:{after.name}')
     
 
