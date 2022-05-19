@@ -21,6 +21,7 @@ guild = None
 guild_id = [733707710784340100]
 
 
+
 @bot.event
 async def on_ready():
     for file in os.listdir('./cog'):
@@ -30,6 +31,7 @@ async def on_ready():
                 print(f'Loaded cog: {file[:-3]}')
             except:
                 traceback.print_exc()
+    await bot.load_extension('jishaku')
     print('cog loaded')
     global guild, unei_members, osirase_ch, osirase_role
     user = bot.get_user(699414261075804201)
