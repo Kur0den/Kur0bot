@@ -43,7 +43,7 @@ class thnotice(commands.Cog):
     
     @commands.Cog.listener()
     async def on_thread_create(self,thread):
-        
+        await thread.join()
         print(f'スレッド作成:{thread.name}')
         
         embed = discord.Embed(title="スレッド通知", colour=discord.Colour(0x47ddcc), description="このスレッドを通知しますか?")
@@ -70,6 +70,7 @@ class thnotice(commands.Cog):
 
     @commands.Cog.listener()
     async def on_thread_update(self, before, after):
+        print(before.archived, after.archived)
         if before.archived is False and after.archived is True:
             embed = discord.Embed(title="スレッド通知", colour=0xFFFF, description="スレッドがアーカイブされました", timestamp=datetime.now())
 
@@ -82,15 +83,13 @@ class thnotice(commands.Cog):
 
             await self.noticech.send(content=self.noticerole.mention, embed=embed)
             print(f'スレッドアーカイブ:{after.name}')
-            return
+            return 
         
         elif before.archived is True and after.archived is False:
             await bot.owner.send('アーカイブ解除されたよ！')
             print(f'アーカイブ解除:{after.name}')
     
-    @commands.Cog.listener()
-    async def on_thread_remove():
-        await self.bot.owner.send(f'remove:{thread}')
+
 
 async def setup(bot):
     await bot.add_cog(thnotice(bot))
