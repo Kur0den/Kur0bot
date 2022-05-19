@@ -18,7 +18,6 @@ bot = commands.Bot(
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all(),
-    slash = interactions.Client(token=token)
     )
 
 guild_id = [733707710784340100]
