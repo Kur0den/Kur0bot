@@ -8,7 +8,6 @@ from os import sep as ossep
 import traceback
 from datetime import datetime
 from dotenv import load_dotenv 
-import interactions
 # import add_socket_response_event
 
 load_dotenv()
