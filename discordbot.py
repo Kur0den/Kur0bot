@@ -37,11 +37,12 @@ async def on_ready():
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
-    guild = bot.get_guild(733707710784340100)
-    unei_role = guild.get_role(738956776258535575)
-    unei_members = unei_role.members
+    bot.guild = bot.get_guild(733707710784340100)
+    bot.owner = bot.get_user(699414261075804201)
+    bot.unei_role = bot.guild.get_role(738956776258535575)
+    bot.unei_members = bot.unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
-    osirase_role = guild.get_role(738954587922235422)
+    osirase_role = bot.guild.get_role(738954587922235422)
     login_ch = bot.get_channel(888416525579612230)
 #    DiscordComponents(bot)
 
