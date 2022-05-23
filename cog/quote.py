@@ -10,7 +10,10 @@ class quote(commands.Cog):
     async def on_message(self, message):
         QuoteBot = self.bot.guild.get_member(949479338275913799)
         if message.author == QuoteBot:
-            await message.channel.send('おでん')
+            Call_Channel = message.channel
+            Call_Message = await Call_Channel.fetch_message(message.reference.message_id)
+            if Call_Message.reference is not None:
+                await message.channel.send('おでん')
 
 async def setup(bot):
     await bot.add_cog(quote(bot))
