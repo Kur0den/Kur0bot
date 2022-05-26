@@ -3,4 +3,4 @@ aiohttp
 pytz
 python-dotenv
 jishaku
-
+python-dateutil
