@@ -6,9 +6,10 @@ import asyncio
 from pathlib import Path
 from os import sep as ossep
 import traceback
+from dotenv import load_dotenv
 # import add_socket_response_event
 
-
+load_dotenv()
 
 bot = commands.Bot(
     commands.when_mentioned_or('k/'),
@@ -20,8 +21,17 @@ guild = None
 guild_id = [733707710784340100]
 
 
+
 @bot.event
 async def on_ready():
+    global guild, unei_members, osirase_ch, osirase_role
+    bot.guild = bot.get_guild(733707710784340100)
+    bot.owner = bot.get_user(699414261075804201)
+    bot.unei_role = bot.guild.get_role(738956776258535575)
+    bot.unei_members = bot.unei_role.members
+    osirase_ch = bot.get_channel(734605726491607091)
+    osirase_role = bot.guild.get_role(738954587922235422)
+    login_ch = bot.get_channel(888416525579612230)
     for file in os.listdir('./cog'):
         if file.endswith('.py'):
             try:
@@ -29,17 +39,12 @@ async def on_ready():
                 print(f'Loaded cog: {file[:-3]}')
             except:
                 traceback.print_exc()
+    await bot.load_extension('jishaku')
     print('cog loaded')
-    global guild, unei_members, osirase_ch, osirase_role
+
     user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
-    guild = bot.get_guild(733707710784340100)
-    unei_role = guild.get_role(738956776258535575)
-    unei_members = unei_role.members
-    osirase_ch = bot.get_channel(734605726491607091)
-    osirase_role = guild.get_role(738954587922235422)
-    login_ch = bot.get_channel(888416525579612230)
 #    DiscordComponents(bot)
 
 # エラー表示
