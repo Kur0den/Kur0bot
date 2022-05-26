@@ -8,7 +8,7 @@ import random
 
 timezone = pytz.timezone('UTC')
 
-UB_API_TOKEN = os.environ.get('CHOZATU_UB_API_TOKEN')
+UB_API_TOKEN = os.environ.get('UNB_TOKEN')
 ub_api_url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
 header = {'Authorization': UB_API_TOKEN, 'Accept': 'application/json'}
 
@@ -22,15 +22,23 @@ class Voice_money(commands.Cog):
         self.bot = bot
         self._last_member = None
 
+
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        
+        voice_time_ch = self.bot.get_channel(979338555757297684)
+        voice_money_min = 50
+        voice_money_max = 100
+        voice_give_per = 20
+        
         if member.bot:
             return
             
         # join
         # 新規で入る、入ったチャンネルがafkチャンネルではない
         if before.channel == None and not after.afk:
-            await self.bot.voice_time_ch.send(f'{member.id} {datetime.datetime.now(tz=timezone)}')
+            await voice_time_ch.send(f'{member.id} {datetime.datetime.now(tz=timezone)}')
             print('新規参加')
             return
 
@@ -39,7 +47,7 @@ class Voice_money(commands.Cog):
         if not before.channel == None:
             # 元のチャンネルがafkではない、afterがNone
             if not before.afk and after.channel == None:
-                async for msg in self.bot.voice_time_ch.history():
+                async for msg in voice_time_ch.history():
                     if msg.content.startswith(str(member.id)):
                         await msg.delete()
 
@@ -51,18 +59,20 @@ class Voice_money(commands.Cog):
                         min = to_min(delta)
                         print(min)
 
-                        money = random.randint(self.bot.voice_money_min, self.bot.voice_money_max)
+                        money = random.randint(voice_money_min, voice_money_max)
 
                         async with aiohttp.ClientSession(headers=header) as session:
-                            await session.patch(url=f'{ub_api_url}{member.id}', json={'cash': (min // self.bot.voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
-
+                            await session.patch(url=f'{ub_api_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
+                            async with session.get(f'{ub_api_url}{member.id}') as resp:
+                                assert resp.status == 200
+                        print(f'{resp.status}\n{resp.reason}')
                         print('終了')
                         return
 
         # afkへ移動
         # 入ったチャンネルがafkチャンネル、joinではない
         if after.afk and not before.channel == None:
-            async for msg in self.bot.voice_time_ch.history():
+            async for msg in voice_time_ch.history():
                 if msg.content.startswith(str(member.id)):
                     await msg.delete()
                     splited = msg.content.split(' ', 1)
@@ -73,10 +83,10 @@ class Voice_money(commands.Cog):
                     min = to_min(delta)
                     print(min)
 
-                    money = random.randint(self.bot.voice_money_min, self.bot.voice_money_max)
+                    money = random.randint(voice_money_min, voice_money_max)
 
                     async with aiohttp.ClientSession(headers=header) as session:
-                        await session.patch(url=f'{ub_api_url}{member.id}', json={'cash': (min // self.bot.voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
+                        await session.patch(url=f'{ub_api_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
 
                     print('afkへ移動')
                     return
@@ -86,7 +96,7 @@ class Voice_money(commands.Cog):
         if not before.channel == None and not after.channel == None:
             # 元のチャンネルがafk、afterがafkではない
             if before.afk and not after.afk:
-                await self.bot.voice_time_ch.send(f'{member.id} {datetime.datetime.now(tz=timezone)}')
+                await voice_time_ch.send(f'{member.id} {datetime.datetime.now(tz=timezone)}')
                 print('通常へ移動')
                 return
 
@@ -97,5 +107,5 @@ class Voice_money(commands.Cog):
                 return
 
 
-def setup(bot):
-    return bot.add_cog(Voice_money(bot))
+async def setup(bot):
+    await bot.add_cog(Voice_money(bot))
