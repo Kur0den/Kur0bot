@@ -4,7 +4,7 @@ from datetime import datetime
 from datetime import timedelta
 from dateutil import tz
 
-JST = tz.gettz('Asia/Tokyo')
+
 
 class Welcome(commands.Cog):
     def __init__(self, bot):
