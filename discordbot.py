@@ -32,14 +32,35 @@ async def on_ready():
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = bot.guild.get_role(738954587922235422)
     login_ch = bot.get_channel(888416525579612230)
-    for file in os.listdir('./cog'):
+    #welcomeフォルダ内のcogをロード
+    for file in os.listdir('./cog/welcome'):
         if file.endswith('.py'):
             try:
-                await bot.load_extension(f'cog.{file[:-3]}')
-                print(f'Loaded cog: {file[:-3]}')
+                await bot.load_extension(f'cog.welcome.{file[:-3]}')
+                print(f'Loaded cog: welcome.{file[:-3]}')
             except:
                 traceback.print_exc()
-    await bot.load_extension('jishaku')
+    # moneyフォルダ内のcogをロード
+    for file in os.listdir('./cog/money'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.money.{file[:-3]}')
+                print(f'Loaded cog: money.{file[:-3]}')
+            except:
+                traceback.print_exc()
+    # manageフォルダ内のcogをロード
+    for file in os.listdir('./cog/manage'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.manage.{file[:-3]}')
+                print(f'Loaded cog: manage.{file[:-3]}')
+            except:
+                traceback.print_exc()
+    try:
+        await bot.load_extension('jishaku')
+        print('Loaded cog: jishaku')
+    except:
+        traceback.print_exc()
     print('cog loaded')
 
     user = bot.get_user(699414261075804201)
