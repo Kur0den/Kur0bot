@@ -7,6 +7,7 @@ class config(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.is_owner()
     async def config(self, ctx, mode = None, configname = None, argument = None):
         if mode == 'list':
             config = json.dumps(self.bot.config)
