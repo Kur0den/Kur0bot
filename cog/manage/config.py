@@ -12,6 +12,7 @@ class config(commands.Cog):
     async def config(self, ctx, mode = None, configname = None, argument = None):
         if mode == 'list':
             config = json.dumps(self.bot.config)
+            #ここの表示もう少しきれいにしたい
             await ctx.send(config)
         elif mode == 'set':
             if configname  is not None and argument is not None:
