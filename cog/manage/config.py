@@ -9,7 +9,7 @@ class config(commands.Cog):
     @commands.command()
     async def config(self, ctx, mode = None, configname = None, argument = None):
         if mode == 'read':
-            config = json.dumps('config.json')
+            config = json.dumps(self.bot.config)
             await ctx.send(config)
         elif mode == 'write':
             if configname  is not None and argument is not None:
