@@ -22,7 +22,7 @@ class config(commands.Cog):
             print('Config loaded')
             await ctx.send('configを再読み込みしたよ')
         else:
-            await ctx.send('モードがおかしいよ\n`read`か`write`で指定してね')
+            await ctx.send('モードがおかしいよ\n`list`か`read`、それか`reload`で指定してね')
         
 
 async def setup(bot):
