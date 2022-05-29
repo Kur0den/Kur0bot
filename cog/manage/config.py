@@ -18,7 +18,7 @@ class config(commands.Cog):
                 await ctx.send('引数がおかしいよ\n設定を変更するconfigの名前と数値をいれてね')
         elif mode == 'reload':
             with open('config.json', 'r+', encoding='utf-8') as file:
-                bot.config = load(file)
+                bot.config = json.load(file)
             print('Config loaded')
             await ctx.send('configを再読み込みしたよ')
         else:
