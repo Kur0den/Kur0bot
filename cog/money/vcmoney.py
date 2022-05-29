@@ -28,9 +28,9 @@ class Voice_money(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         
         voice_time_ch = self.bot.get_channel(979338555757297684)
-        voice_money_min = 50
-        voice_money_max = 100
-        voice_give_per = 20
+        voice_money_min = self.bot.config['voice_money_min']
+        voice_money_max = self.bot.config['voice_money_max']
+        voice_give_per = self.bot.config['voice_give_per']
         
         if member.bot:
             return

@@ -7,7 +7,8 @@ class test(commands.Cog):
 
     @commands.command()
     async def test(self,ctx):
-        await ctx.send("ぱあ")
+        testconfig = self.bot.config['test']
+        await ctx.send(f"ぱあ\nTestConfig: {testconfig}")
 
 async def setup(bot):
     await bot.add_cog(test(bot))

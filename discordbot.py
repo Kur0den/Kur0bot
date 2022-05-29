@@ -7,18 +7,24 @@ from pathlib import Path
 from os import sep as ossep
 import traceback
 from dotenv import load_dotenv
+from json import load
+from discord.ext.tasks import loop
 # import add_socket_response_event
 
 load_dotenv()
 
 bot = commands.Bot(
-    commands.when_mentioned_or('k/'),
+    commands.when_mentioned_or('k!'),
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
 token = os.environ['DISCORD_BOT_TOKEN']
 guild = None
 guild_id = [733707710784340100]
+
+
+
+
 
 
 
@@ -32,6 +38,14 @@ async def on_ready():
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = bot.guild.get_role(738954587922235422)
     login_ch = bot.get_channel(888416525579612230)
+    #config.jsonをロード
+    try:
+        with open('config.json', 'r+', encoding='utf-8') as file:
+            bot.config = load(file)
+        print('Config loaded')
+    except:
+        traceback.print_exc()
+        print('Config not loaded')
     #welcomeフォルダ内のcogをロード
     for file in os.listdir('./cog/welcome'):
         if file.endswith('.py'):
