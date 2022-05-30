@@ -2,5 +2,6 @@
     "test": "5",
     "voice_money_min": "50",
     "voice_money_max": "100",
-    "voice_give_per": "20"
+    "voice_give_per": "20",
+    "stage_money":"80"
 }
