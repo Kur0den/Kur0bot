@@ -61,9 +61,9 @@ class Voice_money(commands.Cog):
 
                         money = random.randint(voice_money_min, voice_money_max)
 
-                        async with aiohttp.ClientSession(headers=self.bot.ub.header) as session:
-                            await session.patch(url=f'{self.bot.ub.url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
-                            async with session.get(f'{self.bot.ub.url}{member.id}') as resp:
+                        async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
+                            await session.patch(url=f'{self.bot.ub_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
+                            async with session.get(f'{self.bot.ub_url}{member.id}') as resp:
                                 assert resp.status == 200
                         print(f'{resp.status}\n{resp.reason}')
                         print('終了')
@@ -85,8 +85,8 @@ class Voice_money(commands.Cog):
 
                     money = random.randint(voice_money_min, voice_money_max)
 
-                    async with aiohttp.ClientSession(headers=self.bot.ub.header) as session:
-                        await session.patch(url=f'{self.bot.ub.url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
+                    async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
+                        await session.patch(url=f'{self.bot.ub_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
 
                     print('afkへ移動')
                     return

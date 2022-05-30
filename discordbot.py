@@ -47,8 +47,8 @@ async def on_ready():
     
     #UnbelievaBoatのAPI系のやつを定義
     UB_API_TOKEN = os.environ.get('UNB_TOKEN')
-    bot.ub.url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
-    bot.ub.header = {'Authorization': UB_API_TOKEN, 'Accept': 'application/json'}
+    bot.ub_url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
+    bot.ub_header = {'Authorization': UB_API_TOKEN, 'Accept': 'application/json'}
     
     #config.jsonをロード
     try:
