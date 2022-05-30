@@ -12,6 +12,7 @@ class stagemoney(commands.Cog):
         #configロード
         stage_money_min = self.bot.config['stage_money_min']
         stage_money_max = self.bot.config['stage_money_max']
+        print('講堂チェック')
         #ステージやってるか判定(放置対策)
         if self.bot.stage.topic is not None:
             for member in self.bot.stage.members:

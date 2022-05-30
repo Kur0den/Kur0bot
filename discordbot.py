@@ -17,7 +17,7 @@ load_dotenv()
 
 
 bot = commands.Bot(
-    commands.when_mentioned_or('k/'),
+    commands.when_mentioned_or('k!'),
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all())
