@@ -35,6 +35,7 @@ async def on_ready():
     bot.owner = bot.get_user(699414261075804201)
     bot.unei_role = bot.guild.get_role(738956776258535575)
     bot.unei_members = bot.unei_role.members
+    bot.stage =bot.get_channel(884734698759266324)
     osirase_ch = bot.get_channel(734605726491607091)
     osirase_role = bot.guild.get_role(738954587922235422)
     login_ch = bot.get_channel(888416525579612230)
