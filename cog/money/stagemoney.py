@@ -1,7 +1,8 @@
+import aiohttp
 import discord
 from discord.ext import commands
 from discord.ext.tasks import loop
-import aiohttp
+
 
 class stagemoney(commands.Cog):
     def __init__(self, bot):

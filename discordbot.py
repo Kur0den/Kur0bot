@@ -1,14 +1,17 @@
+import asyncio
+import os
+import traceback
+from json import load
+from os import sep as ossep
+from pathlib import Path
+
 import discord
 from discord.ext import commands
-import os
-import cog
-import asyncio
-from pathlib import Path
-from os import sep as ossep
-import traceback
-from dotenv import load_dotenv
-from json import load
 from discord.ext.tasks import loop
+from dotenv import load_dotenv
+
+import cog
+
 # import add_socket_response_event
 
 
