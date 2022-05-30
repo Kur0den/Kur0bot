@@ -63,9 +63,6 @@ class Voice_money(commands.Cog):
 
                         async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
                             await session.patch(url=f'{self.bot.ub_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
-                            async with session.get(f'{self.bot.ub_url}{member.id}') as resp:
-                                assert resp.status == 200
-                        print(f'{resp.status}\n{resp.reason}')
                         print('終了')
                         return
 
