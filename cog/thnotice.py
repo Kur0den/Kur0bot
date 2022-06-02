@@ -71,7 +71,22 @@ class thnotice(commands.Cog):
     @commands.Cog.listener()
     async def on_thread_update(self, before, after):
         print(before.archived, after.archived)
-        if before.archived is False and after.archived is True:
+        
+        if before.locked is False and after.locked is True:
+            embed = discord.Embed(title="スレッド通知", colour=0xF11F, description="スレッドがロックされました", timestamp=datetime.now())
+
+            embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
+
+            embed.add_field(name="スレッド名", value=f'[{after.name}](https://discord.com/channels/733707710784340100733707710784340100/{after.id})')
+            embed.add_field(name="スレッドID", value=after.id, inline=True)
+            embed.add_field(name="スレッドがロックされたチャンネル", value=after.parent)
+            embed.add_field(name="スレッド作成者", value=after.owner.mention, inline=True)
+
+            await self.noticech.send(embed=embed)
+            print(f'スレッドロック:{after.name}')
+            return 
+        
+        elif before.archived is False and after.archived is True or before.locked is False and after.locked is True:
             embed = discord.Embed(title="スレッド通知", colour=0xFFFF, description="スレッドがアーカイブされました", timestamp=datetime.now())
 
             embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
@@ -81,10 +96,17 @@ class thnotice(commands.Cog):
             embed.add_field(name="スレッドがアーカイブされたチャンネル", value=after.parent)
             embed.add_field(name="スレッド作成者", value=after.owner.mention, inline=True)
 
-            await self.noticech.send(content=self.noticerole.mention, embed=embed)
+            await self.noticech.send(embed=embed)
             print(f'スレッドアーカイブ:{after.name}')
             return 
         
+
+        
+        elif before.locked is True and after.locked is False:
+            await self.bot.owner.send('ロック解除されたよ！')
+            print(f'ロック解除:{after.name}')
+            return
+    
         elif before.archived is True and after.archived is False:
             await self.bot.owner.send('アーカイブ解除されたよ！')
             print(f'アーカイブ解除:{after.name}')
