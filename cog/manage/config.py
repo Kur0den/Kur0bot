@@ -1,6 +1,8 @@
+import json
+
 import discord
 from discord.ext import commands
-import json
+
 
 class config(commands.Cog):
     def __init__(self, bot):

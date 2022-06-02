@@ -1,16 +1,17 @@
-import discord
-from discord.ext import commands
-import os
 import datetime
-import pytz
-import aiohttp
+import os
 import random
+
+import aiohttp
+import discord
+import pytz
+from discord.ext import commands
 
 timezone = pytz.timezone('UTC')
 
-UB_API_TOKEN = os.environ.get('UNB_TOKEN')
-ub_api_url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
-header = {'Authorization': UB_API_TOKEN, 'Accept': 'application/json'}
+
+
+
 
 
 def to_min(time_delta):
@@ -61,11 +62,8 @@ class Voice_money(commands.Cog):
 
                         money = random.randint(voice_money_min, voice_money_max)
 
-                        async with aiohttp.ClientSession(headers=header) as session:
-                            await session.patch(url=f'{ub_api_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
-                            async with session.get(f'{ub_api_url}{member.id}') as resp:
-                                assert resp.status == 200
-                        print(f'{resp.status}\n{resp.reason}')
+                        async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
+                            await session.patch(url=f'{self.bot.ub_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
                         print('終了')
                         return
 
@@ -85,8 +83,8 @@ class Voice_money(commands.Cog):
 
                     money = random.randint(voice_money_min, voice_money_max)
 
-                    async with aiohttp.ClientSession(headers=header) as session:
-                        await session.patch(url=f'{ub_api_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
+                    async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
+                        await session.patch(url=f'{self.bot.ub_url}{member.id}', json={'cash': (min // voice_give_per) * money, 'reason': f'ボイスチャット報酬({min}分)'})
 
                     print('afkへ移動')
                     return
