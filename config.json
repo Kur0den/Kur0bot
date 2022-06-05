@@ -1,0 +1,8 @@
+{
+    "test":             "5",
+    "voice_money_min":  "100",
+    "voice_money_max":  "200",
+    "voice_give_per":   "10",
+    "stage_money_min":  "80",
+    "stage_money_max":  "130"
+}

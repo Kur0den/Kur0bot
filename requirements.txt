@@ -1,2 +1,6 @@
 git+https://github.com/Rapptz/discord.py
-
+aiohttp
+pytz
+python-dotenv
+jishaku
+python-dateutil
