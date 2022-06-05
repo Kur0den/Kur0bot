@@ -1,15 +1,138 @@
 import discord
 from discord.ext import commands
+from datetime import datetime
+
+
+
+class NoticeButton(discord.ui.View):
+    def __init__(self, owner):
+        super().__init__()
+        self.value = None
+        self.owner = owner
+
+
+    # When the confirm button is pressed, set the inner value to `True` and
+    # stop the View from listening to more input.
+    # We also send the user an ephemeral message that we're confirming their choice.
+    @discord.ui.button(label='通知する', style=discord.ButtonStyle.green, emoji='🔔')
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.owner.id:
+            await interaction.response.send_message('通知しました', ephemeral=True)
+            self.value = True
+            self.stop()
+        else:
+            await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
+
+    # This one is similar to the confirmation button except sets the inner value to `False`
+    @discord.ui.button(label='通知しない', style=discord.ButtonStyle.grey, emoji='🔕')
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.owner.id:
+            await interaction.response.send_message('キャンセルしました', ephemeral=True)
+            self.value = False
+            self.stop()
+        else:
+            await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
+
+
 
 
 class thnotice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        self.noticech = bot.get_channel(975618002953318420)
+        self.noticerole = bot.guild.get_role(956128433660899358)
+    
     @commands.Cog.listener()
     async def on_thread_create(self,thread):
-        thnotice = self.bot.get_channel(975618002953318420)
-        await thnotice.send(f'スレッドが作成されたよ！\nスレッド名: {thread.name}\nスレッドID: {thread.id}\nスレッドが作成されたチャンネル: {thread.parent}')
+        await thread.join()
+        print(f'スレッド作成: {thread.name}')
+        
+        embed = discord.Embed(title="スレッド通知", colour=discord.Colour(0x47ddcc), description="このスレッドを通知しますか?")
+        view =  NoticeButton(thread.owner)
+        message = await thread.send(embed = embed, view = view, delete_after = 60)
+
+        await view.wait()
+        if view.value == True:
+            
+            await message.delete()
+            
+            embed = discord.Embed(title="スレッド通知", colour=0xff00, description="新しいスレッドが作成されました", timestamp=datetime.now())
+            embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
+            embed.add_field(name="スレッド名", value=f'[{thread.name}](https://discord.com/channels/733707710784340100733707710784340100/{thread.id})', inline=False)
+            embed.add_field(name="スレッドID", value=thread.id, inline=False)
+            embed.add_field(name="スレッドが作成されたチャンネル", value=thread.parent, inline=True)
+            embed.add_field(name="スレッド作成者", value=thread.owner.mention, inline=True)
+
+            await self.noticech.send(content=self.noticerole.mention, embed=embed)
+        
+        elif view.value == False:
+            await message.delete()
+        
+
+    @commands.Cog.listener()
+    async def on_thread_update(self, before, after):
+        print(before.archived, after.archived)
+        
+        if before.locked is False and after.locked is True:
+            embed = discord.Embed(title="スレッド通知", colour=0xd2691e, description="スレッドがロックされました", timestamp=datetime.now())
+
+            embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
+
+            embed.add_field(name="スレッド名", value=f'[{after.name}](https://discord.com/channels/733707710784340100733707710784340100/{after.id})')
+            embed.add_field(name="スレッドID", value=after.id, inline=True)
+            embed.add_field(name="スレッドがロックされたチャンネル", value=after.parent)
+            embed.add_field(name="スレッド作成者", value=after.owner.mention, inline=True)
+
+            await self.noticech.send(embed=embed)
+            print(f'スレッドロック: {after.name}')
+            return 
+        
+        elif before.archived is False and after.archived is True or before.locked is False and after.locked is True:
+            embed = discord.Embed(title="スレッド通知", colour=0xFFFF, description="スレッドがアーカイブされました", timestamp=datetime.now())
+
+            embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
+
+            embed.add_field(name="スレッド名", value=f'[{after.name}](https://discord.com/channels/733707710784340100733707710784340100/{after.id})')
+            embed.add_field(name="スレッドID", value=after.id, inline=True)
+            embed.add_field(name="スレッドがアーカイブされたチャンネル", value=after.parent)
+            embed.add_field(name="スレッド作成者", value=after.owner.mention, inline=True)
+
+            await self.noticech.send(embed=embed)
+            print(f'スレッドアーカイブ: {after.name}')
+            return 
+        
+
+        
+        elif before.locked is True and after.locked is False:
+            await self.bot.owner.send('ロック解除されたよ！')
+            print(f'ロック解除: {after.name}')
+            return
+    
+        elif before.archived is True and after.archived is False:
+            await self.bot.owner.send('アーカイブ解除されたよ！')
+            print(f'アーカイブ解除: {after.name}')
+        
+
+    @commands.Cog.listener()
+    async def on_raw_thread_delete(self, payload):
+        thread = payload.thread
+        if thread is not None:
+            embed = discord.Embed(title="スレッド通知", colour=0xff4500, description="スレッドが削除されました", timestamp=datetime.now())
+            embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
+            embed.add_field(name="スレッド名", value=f'[{thread.name}](https://discord.com/channels/733707710784340100733707710784340100/{thread.id})', inline=False)
+            embed.add_field(name="スレッドID", value=thread.id, inline=False)
+            embed.add_field(name="スレッドが削除されたチャンネル", value=thread.parent, inline=True)
+            embed.add_field(name="スレッド作成者", value=thread.owner.mention, inline=True)
+            print(f'スレッド削除: {thread.name}')
+        else:
+            embed = discord.Embed(title="スレッド通知", colour=0xff4500, description="アーカイブ/ロック済のスレッドが削除されました", timestamp=datetime.now())
+            embed.set_footer(text="くろぼっと", icon_url="https://cdn.discordapp.com/attachments/733707711228674102/975786870309007471/Discord-Logo-Color.png")
+            embed.add_field(name="スレッドID", value=payload.thread_id, inline=False)
+            embed.add_field(name="スレッドが削除されたチャンネル", value=self.bot.get_channel(payload.parent_id).name, inline=True)
+            print('スレッド削除(キャッシュ無)')
+        await self.noticech.send(embed=embed)
+
+
 
 
 async def setup(bot):

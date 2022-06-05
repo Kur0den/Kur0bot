@@ -4,30 +4,25 @@ import traceback
 from json import load
 from os import sep as ossep
 from pathlib import Path
+from datetime import datetime
 
 import discord
 from discord.ext import commands
 from discord.ext.tasks import loop
 from dotenv import load_dotenv
 
-import cog
-
 # import add_socket_response_event
 
-
-#環境変数をロード
 load_dotenv()
 
-
+token = os.environ['DISCORD_BOT_TOKEN']
 bot = commands.Bot(
-    commands.when_mentioned_or('k/'),
+    commands.when_mentioned_or('k!'),
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
-    intents=discord.Intents.all())
+    intents=discord.Intents.all(),
+    )
 
-#トークン定義
-token = os.environ['DISCORD_BOT_TOKEN']
-guild = None
 guild_id = [733707710784340100]
 
 
@@ -38,7 +33,8 @@ guild_id = [733707710784340100]
 
 @bot.event
 async def on_ready():
-    global guild, unei_members, osirase_ch, osirase_role
+    global osirase_ch, osirase_role
+    bot.manageguild = bot.get_guild(981923517736046592)
     bot.guild = bot.get_guild(733707710784340100)
     bot.owner = bot.get_user(699414261075804201)
     bot.unei_role = bot.guild.get_role(738956776258535575)
@@ -91,11 +87,13 @@ async def on_ready():
     except:
         traceback.print_exc()
     print('cog loaded')
-
-    user = bot.get_user(699414261075804201)
     print(f'ready: {bot.user} (ID: {bot.user.id})')
-    await user.send('きどうしたよ！！！！！！！ほめて！！！！！！！！')
+    await bot.owner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
+
+
 #    DiscordComponents(bot)
+
+
 
 # エラー表示
 @bot.event
