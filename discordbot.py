@@ -28,6 +28,7 @@ async def on_ready():
     global guild, unei_members, osirase_ch, osirase_role
     bot.guild = bot.get_guild(733707710784340100)
     bot.owner = bot.get_user(699414261075804201)
+    bot.manageguild = bot.get_guild(981923517736046592)
     unei_role = bot.guild.get_role(738956776258535575)
     unei_members = unei_role.members
     osirase_ch = bot.get_channel(734605726491607091)
