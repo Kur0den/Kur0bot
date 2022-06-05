@@ -1,6 +1,0 @@
-note
-スレッド通知
-    thread.owner
-    thread.id
-    datetime.now()
-    discord-py-interactions-4.2.1
