@@ -73,6 +73,14 @@ async def on_ready():
                 print(f'Loaded cog: money.{file[:-3]}')
             except:
                 traceback.print_exc()
+    # utilフォルダ内のcogをロード
+    for file in os.listdir('./cog/util'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.util.{file[:-3]}')
+                print(f'Loaded cog: util.{file[:-3]}')
+            except:
+                traceback.print_exc()
     # manageフォルダ内のcogをロード
     for file in os.listdir('./cog/manage'):
         if file.endswith('.py'):
