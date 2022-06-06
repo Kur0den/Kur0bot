@@ -11,5 +11,6 @@
     "reply_money_cooldown": "15",
     "reply_money_random":   "False",
     "reply_money_min":      "10",
-    "reply_money_max":      "30"
+    "reply_money_max":      "30",
+    "reply_origin_bonus":   "10"
 }
