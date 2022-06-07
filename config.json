@@ -4,5 +4,6 @@
     "voice_money_max":  "200",
     "voice_give_per":   "10",
     "stage_money_min":  "80",
-    "stage_money_max":  "130"
+    "stage_money_max":  "130",
+    "siritori_fine":    "100"
 }

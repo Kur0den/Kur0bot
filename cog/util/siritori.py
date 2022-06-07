@@ -1,6 +1,9 @@
+import datetime
+
+import aiohttp
 import discord
 from discord.ext import commands
-import datetime
+
 
 def purge_check(m):
     return not m.embeds[0].title in ['しりとりHelp', 'チャンネルリセット中...'] if bool(m.embeds) else True
@@ -13,15 +16,21 @@ async def siritori_reset(self):
     n_member = 'None'
     async for msg in self.bot.siritori_ch.history(limit=None):
         if msg.content.endswith('ん'):
-            n_member = msg.author.mention
+            n_member = msg.author
             break
-            
+    
+    if n_member != None:
+        siritori_fine = -int(self.bot.config['siritori_fine'])
+        # siritori_fine = -siritori_fine
+        async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
+            await session.patch(url=f'{self.bot.ub_url}{n_member.id}', json={'cash': siritori_fine, 'reason': f'しりとり罰金'}) 
+    
     msg = await self.bot.siritori_ch.send(embed=discord.Embed(title='チャンネルリセット中...', description='しりとりが終了しました', color=0x00ffff))
     await self.bot.siritori_ch.purge(limit=None, check=purge_check)
     await msg.edit(
         embed=discord.Embed(
             title='しりとりが終了しました', 
-            description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member}',
+            description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member.mention}',
             color=0x00ffff
         )
     )
