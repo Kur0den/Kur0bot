@@ -7,7 +7,30 @@ def purge_check(m):
 
 def is_siritori_ch(ctx):
     return ctx.channel.id == 982967189109878804
-    
+
+async def siritori_reset(self):
+    self.bot.siritori = False
+    n_member = 'None'
+    async for msg in self.bot.siritori_ch.history(limit=None):
+        if msg.content.endswith('ん'):
+            n_member = msg.author.mention
+            break
+            
+    msg = await self.bot.siritori_ch.send(embed=discord.Embed(title='チャンネルリセット中...', description='しりとりが終了しました', color=0x00ffff))
+    await self.bot.siritori_ch.purge(limit=None, check=purge_check)
+    await msg.edit(
+        embed=discord.Embed(
+            title='しりとりが終了しました', 
+            description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member}',
+            color=0x00ffff
+        )
+    )
+    self.bot.siritori_list = []
+    self.bot.siritori = True
+    return()
+
+
+
 class Siritori(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -18,24 +41,7 @@ class Siritori(commands.Cog):
     async def reset(self, ctx):
         if not self.bot.siritori:
             return
-        self.bot.siritori = False
-        n_member = 'None'
-        async for msg in ctx.channel.history(limit=None):
-            if msg.content.endswith('ん'):
-                n_member = msg.author.mention
-                break
-                
-        msg = await ctx.send(embed=discord.Embed(title='チャンネルリセット中...', description='しりとりが終了しました', color=0x00ffff))
-        await ctx.channel.purge(limit=None, check=purge_check)
-        await msg.edit(
-            embed=discord.Embed(
-                title='しりとりが終了しました', 
-                description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member}',
-                color=0x00ffff
-            )
-        )
-        self.bot.siritori_list = []
-        self.bot.siritori = True
+        await siritori_reset(self)
     
     @commands.command()
     @commands.check(is_siritori_ch) # しりとりチャンネル
@@ -96,7 +102,7 @@ class Siritori(commands.Cog):
     async def on_message(self, message):
         if not self.bot.siritori:
             return
-        if not message.channel.id == 827104884246708254:
+        if not message.channel.id == 982967189109878804:
             return
         
         if message.author.bot or message.content.startswith(self.bot.command_prefix) or message.content.startswith('!'):
@@ -104,8 +110,12 @@ class Siritori(commands.Cog):
         
         if message.content in self.bot.siritori_list:
             await message.delete()
-            await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.avatar_url))
+            await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url))
             return
+
+        if message.content.endswith('ん'):
+            print('ん！！！！！')
+            await siritori_reset(self)
         
         self.bot.siritori_list.append(message.content)
         
