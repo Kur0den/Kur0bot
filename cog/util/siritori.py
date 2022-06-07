@@ -54,7 +54,7 @@ class Siritori(commands.Cog):
     
     @commands.command()
     @commands.check(is_siritori_ch) # しりとりチャンネル
-    async def inv(self, ctx, moji):
+    async def rem(self, ctx, moji):
         if not self.bot.siritori:
             return
         if not moji in self.bot.siritori_list:
