@@ -26,11 +26,6 @@ bot = commands.Bot(
 guild_id = [733707710784340100]
 
 
-
-
-
-
-
 @bot.event
 async def on_ready():
     global osirase_ch, osirase_role
