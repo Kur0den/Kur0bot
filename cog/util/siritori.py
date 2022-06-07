@@ -19,7 +19,7 @@ async def siritori_reset(self):
             n_member = msg.author
             break
     
-    if n_member != None:
+    if n_member is not  None:
         siritori_fine = -int(self.bot.config['siritori_fine'])
         # siritori_fine = -siritori_fine
         async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
