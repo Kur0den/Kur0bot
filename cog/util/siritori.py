@@ -6,7 +6,7 @@ from discord.ext import commands
 
 
 def purge_check(m):
-    return not m.embeds[0].title in ['しりとりHelp', 'チャンネルリセット中...'] if bool(m.embeds) else True
+    return not m.embeds[0].title in ['しりとりヘルプ', 'チャンネルリセット中...'] if bool(m.embeds) else True
 
 def is_siritori_ch(ctx):
     return ctx.channel.id == 982967189109878804
@@ -27,13 +27,23 @@ async def siritori_reset(self):
     
     msg = await self.bot.siritori_ch.send(embed=discord.Embed(title='チャンネルリセット中...', description='しりとりが終了しました', color=0x00ffff))
     await self.bot.siritori_ch.purge(limit=None, check=purge_check)
-    await msg.edit(
-        embed=discord.Embed(
-            title='しりとりが終了しました', 
-            description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member.mention}',
-            color=0x00ffff
+    if n_member == 'None':
+        await msg.edit(
+            embed=discord.Embed(
+                title='しりとりが終了しました', 
+                description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member}',
+                color=0x00ffff
+            )
         )
-    )
+    else:
+        await msg.edit(
+            embed=discord.Embed(
+                title='しりとりが終了しました', 
+                description=f'連結回数: {len(self.bot.siritori_list)}\n”ん”をつけた人: {n_member.mention}',
+                color=0x00ffff
+            )
+        )
+
     self.bot.siritori_list = []
     self.bot.siritori = True
     return()
