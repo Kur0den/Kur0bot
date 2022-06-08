@@ -21,40 +21,41 @@ class vctool(commands.Cog):
         
         #入退出ログ(処理用のものも)
         if member.bot is False:
-            if before.channel is not None and before.channel != stage:
-                if before.channel == vc1:
-                    async for msg in log1.history():
-                        if msg.content.startswith(str(member.id)):
-                            await msg.delete()
-                elif before.channel == log2:
-                    async for msg in vc2.history():
-                        if msg.content.startswith(str(member.id)):
-                            await msg.delete()
-                elif before.channel == log3:
-                    async for msg in vc3.history():
-                        if msg.content.startswith(str(member.id)):
-                            await msg.delete()
+            if before.channel != after.channel:
+                if before.channel is not None and before.channel != stage:
+                    if before.channel == vc1:
+                        async for msg in log1.history():
+                            if msg.content.startswith(str(member.id)):
+                                await msg.delete()
+                    elif before.channel == log2:
+                        async for msg in vc2.history():
+                            if msg.content.startswith(str(member.id)):
+                                await msg.delete()
+                    elif before.channel == log3:
+                        async for msg in vc3.history():
+                            if msg.content.startswith(str(member.id)):
+                                await msg.delete()
 
-                embed = discord.Embed(title="VC退出", colour=discord.Colour(0xd0021b), description="ユーザーが退出しました", timestamp=datetime.now())
+                    embed = discord.Embed(title="VC退出", colour=discord.Colour(0xd0021b), description="ユーザーが退出しました", timestamp=datetime.now())
 
-                embed.set_author(name=member.name, icon_url=member.display_avatar.url)
-                embed.set_footer(text="VC入退出通知")
+                    embed.set_author(name=member.name, icon_url=member.display_avatar.url)
+                    embed.set_footer(text="VC入退出通知")
 
-                await before.channel.send(embed=embed)
-            if after.channel is not None and after.channel != stage:
-                if after.channel == vc1:
-                    await log1.send(member.id)
-                elif after.channel == vc2:
-                    await log2.send(member.id)
-                elif after.channel == vc3:
-                    await log3.send(member.id)
-                
-                embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
+                    await before.channel.send(embed=embed)
+                if after.channel is not None and after.channel != stage:
+                    if after.channel == vc1:
+                        await log1.send(member.id)
+                    elif after.channel == vc2:
+                        await log2.send(member.id)
+                    elif after.channel == vc3:
+                        await log3.send(member.id)
+                    
+                    embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
 
-                embed.set_author(name=member.name, icon_url=member.display_avatar.url)
-                embed.set_footer(text="VC入退出通知")
+                    embed.set_author(name=member.name, icon_url=member.display_avatar.url)
+                    embed.set_footer(text="VC入退出通知")
 
-                await after.channel.send(embed=embed)
+                    await after.channel.send(embed=embed)
 
             
 
