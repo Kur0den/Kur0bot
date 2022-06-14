@@ -38,7 +38,7 @@ class timesignal(commands.Cog):
         
         if embed is not None:
             await self.bot.guild.system_channel.send(embed=embed)
-            
+            embed = None
 
 async def setup(bot):
     await bot.add_cog(timesignal(bot))
