@@ -9,7 +9,7 @@ class timesignal(commands.Cog):
         self.bot = bot
         self.timesignal.start()
 
-    @tasks.loop(seconds=30)
+    @tasks.loop(minutes=1)
     async def timesignal(self):
         embed = None
         now = datetime.now().strftime('%H')
