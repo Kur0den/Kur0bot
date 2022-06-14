@@ -55,7 +55,7 @@ async def on_ready():
     bot.siritori = True
     
     
-    #config.jsonをロード
+    # config.jsonをロード
     try:
         with open('config.json', 'r+', encoding='utf-8') as file:
             bot.config = load(file)
@@ -63,12 +63,20 @@ async def on_ready():
     except:
         traceback.print_exc()
         print('Config not loaded')
-    #welcomeフォルダ内のcogをロード
+    # welcomeフォルダ内のcogをロード
     for file in os.listdir('./cog/welcome'):
         if file.endswith('.py'):
             try:
                 await bot.load_extension(f'cog.welcome.{file[:-3]}')
                 print(f'Loaded cog: welcome.{file[:-3]}')
+            except:
+                traceback.print_exc()
+    # funフォルダ内のcogをロード
+    for file in os.listdir('./cog/fun'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.fun.{file[:-3]}')
+                print(f'Loaded cog: fun.{file[:-3]}')
             except:
                 traceback.print_exc()
     # moneyフォルダ内のcogをロード
@@ -77,6 +85,14 @@ async def on_ready():
             try:
                 await bot.load_extension(f'cog.money.{file[:-3]}')
                 print(f'Loaded cog: money.{file[:-3]}')
+            except:
+                traceback.print_exc()
+    # serverフォルダ内のcogをロード
+    for file in os.listdir('./cog/server'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.server.{file[:-3]}')
+                print(f'Loaded cog: server.{file[:-3]}')
             except:
                 traceback.print_exc()
     # utilフォルダ内のcogをロード
