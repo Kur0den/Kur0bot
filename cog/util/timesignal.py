@@ -8,6 +8,9 @@ class timesignal(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.timesignal.start()
+        self.send = None
+    
+    
 
     @tasks.loop(minutes=1)
     async def timesignal(self):
@@ -36,9 +39,15 @@ class timesignal(commands.Cog):
                 
                 print(f'時報({now}時半)')
         
-        if embed is not None:
+        if self.send == False and embed != None:
             await self.bot.guild.system_channel.send(embed=embed)
             embed = None
+            self.send = True
+            print('送信')
+        else:
+            self.send = False
+            embed = None
+            print('リセット')
 
 async def setup(bot):
     await bot.add_cog(timesignal(bot))
