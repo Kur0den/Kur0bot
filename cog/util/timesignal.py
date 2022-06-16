@@ -43,11 +43,9 @@ class timesignal(commands.Cog):
             await self.bot.guild.system_channel.send(embed=embed)
             embed = None
             self.send = True
-            print('送信')
         else:
             self.send = False
             embed = None
-            print('リセット')
 
 async def setup(bot):
     await bot.add_cog(timesignal(bot))
