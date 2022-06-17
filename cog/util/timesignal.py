@@ -22,7 +22,7 @@ class timesignal(commands.Cog):
 
             embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/733707711228674102/986178408696393768/spin.gif')
             
-            if now ='00':
+            if now =='00':
                 embed.add_field(name = 'あけおめ！！！！！！！',value=f'今日は{datetime.now().strftime("%m月%d日")}だよ！！！！！！')
             elif now == '12':
                 embed.add_field(name = 'おひるだ！！！！！！！',value=f'ご飯を食べよう！！！！！！！！！')
