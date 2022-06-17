@@ -40,9 +40,13 @@ class timesignal(commands.Cog):
                 
                 print(f'時報({now}時半)')
         
-        if self.message != None:
-            await self.message.delete()
-            self.message = await self.bot.guild.system_channel.send(embed=embed)
+        if self.send ==  True:
+            if self.message != None:
+                await self.message.delete()
+                self.message = await self.bot.guild.system_channel.send(embed=embed)
+
+        
+        
 
 async def setup(bot):
     await bot.add_cog(timesignal(bot))
