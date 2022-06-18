@@ -2,10 +2,17 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 
+
+
+def purge_check(m):    return not m.embeds[0].title in ['VCダッシュボード', 'チャンネルリセット中...'] if bool(m.embeds) else True
+
+
 class vctool(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+
+    
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -19,9 +26,11 @@ class vctool(commands.Cog):
         vc2 = self.bot.get_channel(981800262165495828)
         vc3 = self.bot.get_channel(981800316116803636)
         
-        #入退出ログ(処理用のものも)
+        # 入退出ログ(処理用のものも)
         if member.bot is False:
+            # 入退出以外は弾く
             if before.channel != after.channel:
+                # 退出
                 if before.channel is not None and before.channel != stage:
                     if before.channel == vc1:
                         async for msg in log1.history():
@@ -42,6 +51,13 @@ class vctool(commands.Cog):
                     embed.set_footer(text="VC入退出通知")
 
                     await before.channel.send(embed=embed)
+                    
+                    if len(before.channel.members) == 0:
+                        msg = await before.channel.send(embed=discord.Embed(title='チャンネルリセット中...', description='VCに誰もいなくなったためチャンネルをリセットしています', color=0x00ffff))
+                        await before.channel.purge(limit=None, check=purge_check)
+                        await msg.delete()
+                    
+                # 入室
                 if after.channel is not None and after.channel != stage:
                     if after.channel == vc1:
                         await log1.send(member.id)
