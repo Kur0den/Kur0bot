@@ -54,6 +54,14 @@ async def on_ready():
         bot.siritori_list.insert(0, msg.content)
     bot.siritori = True
     
+    # VC機能系定義
+    
+    bot.vc1 = bot.get_channel(981800095760670730)
+    bot.vc2 = bot.get_channel(981800262165495828)
+    bot.vc3 = bot.get_channel(981800316116803636)
+    bot.vc1_owner = None
+    bot.vc2_owner = None
+    bot.vc3_owner = None
     
     # config.jsonをロード
     try:

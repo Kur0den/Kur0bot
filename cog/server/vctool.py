@@ -7,26 +7,62 @@ from datetime import datetime
 def purge_check(m):    return not m.embeds[0].title in ['VCダッシュボード', 'チャンネルリセット中...'] if bool(m.embeds) else True
 
 
-class dashboard(discord.ui.View):
-    def __init__(self, owner,):
+class owner():
+    def __init__(self, bot):
         super().__init__()
-        self.value = None
-        self.owner = owner
-
-
-    # When the confirm button is pressed, set the inner value to `True` and
-    # stop the View from listening to more input.
-    # We also send the user an ephemeral message that we're confirming their choice.
-    @discord.ui.button(label='ロック', style=discord.ButtonStyle.green, emoji='🔒️')
-    async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if interaction.user.id == self.owner.id:
-            await interaction.response.send_message('', ephemeral=True)
-            
+        self.vcowner = None
+        self.bot = bot
+    
+    async def setup(self, member, after, vcowner):
+        if len(after.channel.members) == 1:
+            if after.channel == self.bot.vc1:
+                self.bot.vc1_owner = member
+                vcowner = True
+                return vcowner
+            elif after.channel == self.bot.vc2:
+                self.bot.vc2_owner = member
+                vcowner = True
+                return vcowner
+            elif after.channel == self.bot.vc3:
+                self.bot.vc3_owner = member
+                vcowner = True
+                return vcowner
+    
+    async def check(self, interaction, result):
+        if interaction.channel == self.bot.bot.vc1 and interaction.user == self.bot.bot.vc1_owner:
+            result = 'vc1'
+            return result
+        elif interaction.channel == self.bot.bot.vc2 and interaction.user == self.bot.bot.vc2_owner:
+            result = 'vc2'
+            return result
+        elif interaction.channel == self.bot.bot.vc3 and interaction.user == self.bot.bot.vc3_owner:
+            result = 'vc3'
+            return result
         else:
-            await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
+            result = None
+            return result
 
-    # This one is similar to the confirmation button except sets the inner value to `False`
-    @discord.ui.button(label='許可モード', style=discord.ButtonStyle.grey, emoji='🔕')
+
+class dashboard(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__()
+        self.bot = bot
+    
+    @discord.ui.button(label='ロック', style=discord.ButtonStyle.green, emoji='🔒')
+    async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = None
+        await owner.check(self, interaction, result)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+    @discord.ui.button(label='許可モード', style=discord.ButtonStyle.grey, emoji='📩')
     async def mode(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user.id == self.owner.id:
             await interaction.response.send_message('キャンセルしました', ephemeral=True)
@@ -40,14 +76,16 @@ class dashboard(discord.ui.View):
 class vctool(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.vc1_owner = None
-        self.vc2_owner = None
-        self.vc3_owner = None
         
 
     @commands.command()
     async def senddash(self, ctx):
-        await ctx.send('test')
+        if (ctx.channel is self.bot.vc1 or
+            ctx.channel is self.bot.vc2 or
+            ctx.channel is self.bot.vc3):
+            await ctx.send('test', view=dashboard(self))
+        else:
+            await ctx.send('チャンネルが違うで')
     
 
     @commands.Cog.listener()
@@ -58,9 +96,6 @@ class vctool(commands.Cog):
         log2 = self.bot.get_channel(983753718094766152)
         log3 = self.bot.get_channel(983753740093911090)
         
-        vc1 = self.bot.get_channel(981800095760670730)
-        vc2 = self.bot.get_channel(981800262165495828)
-        vc3 = self.bot.get_channel(981800316116803636)
         
         # 入退出ログ(処理用のものも)
         if member.bot is False:
@@ -96,13 +131,7 @@ class vctool(commands.Cog):
                 # 入室
                 if after.channel is not None and after.channel != stage:
                     # オーナー指定
-                    if len(after.chanel.members) == 0:
-                        if after.channel == vc1:
-                            self.vc1_owner = member
-                        elif after.channel == vc2:
-                            self.vc2_owner = member
-                        elif after.channel == vc3:
-                            self.vc3_owner = member
+                    await owner.setup(self, member, after)
                     
                     embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
 
@@ -110,6 +139,9 @@ class vctool(commands.Cog):
                     embed.set_footer(text="VC入退出通知")
 
                     await after.channel.send(embed=embed)
+                    
+                    if owner.vcowner == True:
+                        await ctx.send(f'{member.mention}は{after.channel}の所有権を持っています')
 
             
 
