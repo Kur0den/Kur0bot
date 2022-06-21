@@ -5,7 +5,7 @@ import random
 
 
 
-def purge_check(m):    return not m.embeds[0].title in ['VCダッシュボード', 'チャンネルリセット中...'] if bool(m.embeds) else True
+def purge_check(m):    return not m.embeds[0].title in ['チャンネルリセット中...'] if bool(m.embeds) else True
 
 
 class owner():
@@ -86,17 +86,17 @@ class owner():
             await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
 
 
-
+# ダッシュボード用のやつ
 class dashboard(discord.ui.View):
     def __init__(self, bot):
         super().__init__()
         self.bot = bot
-        discord.ui.view.timeout = None
+        discord.ui.view.timeout = None # タイムアウトをなしに
     
-    @discord.ui.button(label='ロック', style=discord.ButtonStyle.green, emoji='🔒', row=1)
-    async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = None
-        result = await owner.buttoncheck(self, interaction, result)
+    # 部屋関係
+    @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
+    async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.buttoncheck(self, interaction, None)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -107,14 +107,87 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='許可モード', style=discord.ButtonStyle.grey, emoji='📩')
+    @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
     async def mode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if interaction.user.id == self.owner.id:
-            await interaction.response.send_message('キャンセルしました', ephemeral=True)
-            self.value = False
-            self.stop()
+        result = await owner.buttoncheck(self, interaction, None)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
         else:
-            await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+    @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
+    async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.buttoncheck(self, interaction, None)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+    @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=2)
+    async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.buttoncheck(self, interaction, None)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+    @discord.ui.button(label='名前変更', style=discord.ButtonStyle.secondary, emoji='📝', row=2)
+    async def rename(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.buttoncheck(self, interaction, None)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+    @discord.ui.button(label='発言禁止', style=discord.ButtonStyle.secondary, emoji='🔇', row=2)
+    async def mute(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.buttoncheck(self, interaction, None)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+
+    # ユーザー関係
+    @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=2)
+    async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.buttoncheck(self, interaction, None)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+
 
 
 
