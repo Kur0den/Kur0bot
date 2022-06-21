@@ -62,6 +62,9 @@ async def on_ready():
     bot.vc1_owner = None
     bot.vc2_owner = None
     bot.vc3_owner = None
+    bot.vc1_dash = None
+    bot.vc2_dash = None
+    bot.vc3_dash = None
     
     # config.jsonをロード
     try:

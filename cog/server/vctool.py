@@ -19,16 +19,16 @@ class owner():
         if len(after.channel.members) == 1:
             if after.channel == self.bot.vc1:
                 self.bot.vc1_owner = member
-                vcowner = True
-                return vcowner
+                self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
+                await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc2:
                 self.bot.vc2_owner = member
-                vcowner = True
-                return vcowner
+                self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
+                await self.bot.vc2.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc3:
                 self.bot.vc3_owner = member
-                vcowner = True
-                return vcowner
+                self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
+                await self.bot.vc3.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
     
     # ボタン用オーナーチェック
     async def buttoncheck(self, interaction, result):
@@ -70,12 +70,18 @@ class owner():
             count + 1
         
         if channel == self.bot.vc1:
+            await self.bot.vc1_dash.delete()
+            self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
             self.bot.vc1_owner = random.choice(member)
             await channel.send(f'{self.bot.vc1_owner.mention}は{channel}の所有権を持っています', delete_after=60)
         elif channel == self.bot.vc2:
+            await self.bot.vc2_dash.delete()
+            self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
             self.bot.vc2_owner = random.choice(member)
             await channel.send(f'{self.bot.vc2_owner.mention}は{channel}の所有権を持っています', delete_after=60)
         elif channel == self.bot.vc3:
+            await self.bot.vc3_dash.delete()
+            self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
             self.bot.vc3_owner = random.choice(member)
             await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
 
@@ -168,9 +174,7 @@ class vctool(commands.Cog):
 
                     await after.channel.send(embed=embed)
                     
-                    if  result == True:
-                        await after.channel.send('test', view=dashboard(self))
-                        await after.channel.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
+
 
             
 
