@@ -23,7 +23,7 @@ bot = commands.Bot(
     intents=discord.Intents.all(),
     )
 
-guild_id = [733707710784340100]
+guild_id = 733707710784340100
 
 
 @bot.event
@@ -65,6 +65,11 @@ async def on_ready():
     bot.vc1_dash = None
     bot.vc2_dash = None
     bot.vc3_dash = None
+    bot.vc1_status = 'Nomal'
+    bot.vc2_status = 'Nomal'
+    bot.vc3_status = 'Nomal'
+    #bot.vc_defaltparm = discord.permissions()
+    #bot.vc_defaltparm.
     
     # config.jsonをロード
     try:

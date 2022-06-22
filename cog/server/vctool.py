@@ -15,7 +15,7 @@ class owner():
         self.bot = bot
     
     # オーナー設定
-    async def setup(self, member, after, result):
+    async def setup(self, member, after):
         if len(after.channel.members) == 1:
             if after.channel == self.bot.vc1:
                 self.bot.vc1_owner = member
@@ -30,38 +30,24 @@ class owner():
                 self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
                 await self.bot.vc3.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
     
-    # ボタン用オーナーチェック
-    async def buttoncheck(self, interaction, result):
-        if interaction.channel == self.bot.bot.vc1 and interaction.user == self.bot.bot.vc1_owner:
+    # オーナーチェック
+    async def check(self, member, channel):
+        if channel == self.bot.vc1 and member == self.bot.vc1_owner:
             result = 'vc1'
             return result
-        elif interaction.channel == self.bot.bot.vc2 and interaction.user == self.bot.bot.vc2_owner:
+        elif channel == self.bot.vc2 and member == self.bot.vc2_owner:
             result = 'vc2'
             return result
-        elif interaction.channel == self.bot.bot.vc3 and interaction.user == self.bot.bot.vc3_owner:
+        elif channel == self.bot.vc3 and member == self.bot.vc3_owner:
             result = 'vc3'
             return result
         else:
             result = None
             return result
     
-    # それ以外用オーナーチェック
-    async def usercheck(self, member, before, result):
-        if before.channel == self.bot.vc1 and member == self.bot.vc1_owner:
-            result = 'vc1'
-            return result
-        elif before.channel == self.bot.vc2 and member == self.bot.vc2_owner:
-            result = 'vc2'
-            return result
-        elif before.channel == self.bot.vc3 and member == self.bot.vc3_owner:
-            result = 'vc3'
-            return result
-        else:
-            result = None
-            return result
     
     # オーナー変更
-    async def change(self, channel, result):
+    async def change(self, channel):
         member = channel.members
         count = 0
         for user in member:
@@ -85,31 +71,71 @@ class owner():
             self.bot.vc3_owner = random.choice(member)
             await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
 
+class perm():
+    def __init__(self, bot):
+        super().__init__()
+
+    async def checkperm(self, channel):
+        if channel == self.bot.vc1:
+            if self.bot.vc1_status == 'Nomal':
+                print(aaa)
+        elif channel == self.bot.vc2:
+            if self.bot.vc1_status == 'Nomal':
+                print(aaa)
+        elif channel == self.bot.vc3:
+            if self.bot.vc1_status == 'Nomal':
+                print(aaa)
+    
+    async def setstatus(self, chanel, status):
+        if chanel == self.bot.vc1:
+            self.bot.vc1_status = status
+        elif chanel == self.bot.vc2:
+            self.bot.vc2_status = status
+        elif chanel == self.bot.vc3:
+            self.bot.vc3_status = status
+    
+    async def checkstatus(self, channel):
+        if chanel == self.bot.vc1:
+            result = self.bot.vc1_status
+        elif chanel == self.bot.vc2:
+            result  = self.bot.vc2_status
+        elif chanel == self.bot.vc3:
+            result = self.bot.vc3_status
+
+
+
 
 # ダッシュボード用のやつ
 class dashboard(discord.ui.View):
     def __init__(self, bot):
         super().__init__()
-        self.bot = bot
         discord.ui.view.timeout = None # タイムアウトをなしに
     
     # 部屋関係
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
-        if result == 'vc1':
+        result = await owner.check(self, interaction.user, interaction.channel)
+        if result != None:
+            status = await perm.checkperm(self, interaction.channel)
+            if status != 'Nomal':
+                await interaction.channel.edit(sync_permissions=True)
+                perm.setstatus(self, before.chanel, 'Nomal')
+            else:
+                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+
+        '''if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
             await interaction.response.send_message('vc2', ephemeral=True)
         elif result == 'vc3':
             await interaction.response.send_message('vc3', ephemeral=True)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)'''
 
 
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
     async def mode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
+        result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -122,7 +148,7 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
     async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
+        result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -133,9 +159,9 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=2)
+    @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=1)
     async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
+        result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -148,7 +174,7 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='名前変更', style=discord.ButtonStyle.secondary, emoji='📝', row=2)
     async def rename(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
+        result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -161,7 +187,7 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='発言禁止', style=discord.ButtonStyle.secondary, emoji='🔇', row=2)
     async def mute(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
+        result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -176,7 +202,20 @@ class dashboard(discord.ui.View):
     # ユーザー関係
     @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=2)
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.buttoncheck(self, interaction, None)
+        result = await owner.check(self, interaction.user, interaction.channel)
+        if result == 'vc1':
+            await interaction.response.send_message('vc1', ephemeral=True)
+        elif result == 'vc2':
+            await interaction.response.send_message('vc2', ephemeral=True)
+        elif result == 'vc3':
+            await interaction.response.send_message('vc3', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+
+
+    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=2)
+    async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
         elif result == 'vc2':
@@ -197,7 +236,19 @@ class vctool(commands.Cog):
         
 
 
-    
+    @commands.command()
+    async def vctool(self, ctx):
+        if ctx.channel is self.bot.vc1:
+            await self.bot.vc1_dash.delete()
+            self.bot.vc1_dash = await ctx.send('test', view=dashboard(self))
+        elif ctx.channel is self.bot.vc2:
+            await self.bot.vc2_dash.delete()
+            self.bot.vc2_dash = await ctx.send('test', view=dashboard(self))
+        elif ctx.channel is self.bot.vc3:
+            await self.bot.vc3_dash.delete()
+            self.bot.vc3_dash = await ctx.send('test', view=dashboard(self))
+        else:
+            await ctx.send('チャンネルが違うで')
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -228,17 +279,22 @@ class vctool(commands.Cog):
                         msg = await before.channel.send(embed=discord.Embed(title='チャンネルリセット中...', description='VCに誰もいなくなったためチャンネルをリセットしています', color=0x00ffff))
                         await before.channel.purge(limit=None, check=purge_check)
                         await msg.delete()
+                        
+                        await before.channel.edit(sync_permissions=True)
+                        perm.setstatus(self, before.channel, 'Nomal')
+
+                    
                     else:
-                        result = await owner.usercheck(self, member, before, None)
+                        result = await owner.check(self, member, before.channel)
                     
                         if result != None:
-                            await owner.change(self, before.channel, None)
+                            await owner.change(self, before.channel)
                     
                 # 入室
                 if after.channel is not None and after.channel != stage:
                     # オーナー指定
                     
-                    result = await owner.setup(self, member, after, None)
+                    result = await owner.setup(self, member, after)
                     
                     embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
 
