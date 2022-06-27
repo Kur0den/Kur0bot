@@ -4,7 +4,6 @@ from datetime import datetime
 import random
 
 
-
 def purge_check(m):    return not m.embeds[0].title in ['チャンネルリセット中...'] if bool(m.embeds) else True
 
 
@@ -88,6 +87,32 @@ class status():
             result = self.bot.vc3_status
         return result
 
+
+#名前変更用のやつ
+class rename(discord.ui.Modal):
+    def __init__(self):
+        super().__init__(
+            title="チャンネル名変更",
+            timeout=60,
+        )
+        self.value = None
+
+        self.name = discord.ui.TextInput(
+            label="新しいチャンネル名(空白でリセット)",
+            style=discord.TextStyle.short,
+            placeholder="VC-xx",
+            required=False,
+        )
+        self.add_item(self.name)
+
+    async def on_submit(self, interaction) -> None:
+        self.value = self.name.value
+        self.stop()
+        if self.value != '':
+            await interaction.response.send_message(f'チャンネル名を`{self.value}`に設定しました', ephemeral=True)
+        else:
+            await interaction.response.send_message('チャンネル名をリセットしました', ephemeral=True)
+        
 
 
 
@@ -208,7 +233,7 @@ class dashboard(discord.ui.View):
                 await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
         # VC3
         elif result == 'vc3':
-            if await status.check(self, self.bot.vc3) != 'lock':
+            if await status.check(self, self.bot.vc3) != 'Lock':
                 await self.bot.vc3.edit(sync_permissions=True)
                 member = self.bot.vc3.members
                 for user in member:
@@ -255,11 +280,31 @@ class dashboard(discord.ui.View):
     async def rename(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
+            modal = rename()
+            await interaction.response.send_modal(modal)
+            await modal.wait()
+            if modal.value == '':
+                await self.bot.vc1.edit(name='VC-1(128Kbps)')
+            else:
+                await self.bot.vc1.edit(name=modal.value)
+        
         elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
+            modal = rename()
+            await interaction.response.send_modal(modal)
+            await modal.wait()
+            if modal.value == '':
+                await self.bot.vc2.edit(name='VC-2(128Kbps)')
+            else:
+                await self.bot.vc2.edit(name=modal.value)
+        
         elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
+            modal = rename()
+            await interaction.response.send_modal(modal)
+            await modal.wait()
+            if modal.value == '':
+                await self.bot.vc3.edit(name='VC-3(64Kbps)')
+            else:
+                await self.bot.vc3.edit(name=modal.value)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
@@ -357,12 +402,15 @@ class vctool(commands.Cog):
                     
                     # ロック時等の処理
                     if before.channel == self.bot.vc1:
+                        await self.bot.vc1.edit(name='VC-1(128Kbps)')
                         if self.bot.vc1_status == 'Lock' or self.bot.vc1_status == 'Permit':
                             await self.bot.vc1.set_permissions(member, connect=None)
                     elif before.channel == self.bot.vc2:
+                        await self.bot.vc2.edit(name='VC-2(128Kbps)')
                         if self.bot.vc2_status == 'Lock' or self.bot.vc2_status == 'Permit':
                             await self.bot.vc2.set_permissions(member, connect=None)
                     elif before.channel == self.bot.vc3:
+                        await self.bot.vc3.edit(name='VC-3(64Kbps)')
                         if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Permit':
                             await self.bot.vc3.set_permissions(member, connect=None)
                     
