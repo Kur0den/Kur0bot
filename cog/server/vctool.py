@@ -127,10 +127,8 @@ class dashboard(discord.ui.View):
     # 部屋関係
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result != None:
-            status = await perm.checkstatus(self, interaction.channel)
-            if status != 'Nomal':
+        if await owner.check(self, interaction.user, interaction.channel) != None:
+            if await perm.checkstatus(self, interaction.channel) != 'Nomal':
                 await interaction.channel.edit(sync_permissions=True)
                 await perm.setstatus(self, interaction.channel, 'Nomal')
             else:
@@ -172,7 +170,7 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=1)
+    @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=2)
     async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
@@ -213,7 +211,7 @@ class dashboard(discord.ui.View):
 
 
     # ユーザー関係
-    @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=2)
+    @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=3)
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
@@ -226,7 +224,7 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=2)
+    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
