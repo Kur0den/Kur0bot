@@ -12,7 +12,6 @@ class owner():
     def __init__(self, bot):
         super().__init__()
         self.vcowner = None
-        self.bot = bot
     
     # オーナー設定
     async def setup(self, member, after):
@@ -32,18 +31,25 @@ class owner():
     
     # オーナーチェック
     async def check(self, member, channel):
-        if channel == self.bot.vc1 and member == self.bot.vc1_owner:
-            result = 'vc1'
-            return result
-        elif channel == self.bot.vc2 and member == self.bot.vc2_owner:
-            result = 'vc2'
-            return result
-        elif channel == self.bot.vc3 and member == self.bot.vc3_owner:
-            result = 'vc3'
-            return result
-        else:
-            result = None
-            return result
+        try:
+            if channel == self.bot.vc1 and member == self.bot.vc1_owner:
+                result = 'vc1'
+            elif channel == self.bot.vc2 and member == self.bot.vc2_owner:
+                result = 'vc2'
+            elif channel == self.bot.vc3 and member == self.bot.vc3_owner:
+                result = 'vc3'
+            else:
+                result = None
+        except(AttributeError):
+            if channel == self.bot.bot.vc1 and member == self.bot.bot.vc1_owner:
+                result = 'vc1'
+            elif channel == self.bot.bot.vc2 and member == self.bot.bot.vc2_owner:
+                result = 'vc2'
+            elif channel == self.bot.bot.vc3 and member == self.bot.bot.vc3_owner:
+                result = 'vc3'
+            else:
+                result = None
+        return result
     
     
     # オーナー変更
@@ -76,31 +82,59 @@ class perm():
         super().__init__()
 
     async def checkperm(self, channel):
-        if channel == self.bot.vc1:
-            if self.bot.vc1_status == 'Nomal':
-                print(aaa)
-        elif channel == self.bot.vc2:
-            if self.bot.vc1_status == 'Nomal':
-                print(aaa)
-        elif channel == self.bot.vc3:
-            if self.bot.vc1_status == 'Nomal':
-                print(aaa)
+        try:
+            if channel == self.bot.bot.vc1:
+                if self.bot.vc1_status == 'Nomal':
+                    print(aaa)
+            elif channel == self.bot.bot.vc2:
+                if self.bot.vc2_status == 'Nomal':
+                    print(aaa)
+            elif channel == self.bot.bot.vc3:
+                if self.bot.vc3_status == 'Nomal':
+                    print(aaa)
+        except(AttributeError):
+            if channel == self.bot.bot.vc1:
+                if self.bot.bot.vc1_status == 'Nomal':
+                    print(aaa)
+            elif channel == self.bot.bot.vc2:
+                if self.bot.bot.vc2_status == 'Nomal':
+                    print(aaa)
+            elif channel == self.bot.bot.vc3:
+                if self.bot.bot.vc3_status == 'Nomal':
+                    print(aaa)
     
     async def setstatus(self, chanel, status):
-        if chanel == self.bot.vc1:
-            self.bot.vc1_status = status
-        elif chanel == self.bot.vc2:
-            self.bot.vc2_status = status
-        elif chanel == self.bot.vc3:
-            self.bot.vc3_status = status
+        try:
+            if chanel == self.bot.vc1:
+                self.bot.vc1_status = status
+            elif chanel == self.bot.vc2:
+                self.bot.vc2_status = status
+            elif chanel == self.bot.vc3:
+                self.bot.vc3_status = status
+        except(AttributeError):
+            if chanel == self.bot.bot.vc1:
+                self.bot.bot.vc1_status = status
+            elif chanel == self.bot.bot.vc2:
+                self.bot.bot.vc2_status = status
+            elif chanel == self.bot.bot.vc3:
+                self.bot.bot.vc3_status = status
     
     async def checkstatus(self, channel):
-        if chanel == self.bot.vc1:
-            result = self.bot.vc1_status
-        elif chanel == self.bot.vc2:
-            result  = self.bot.vc2_status
-        elif chanel == self.bot.vc3:
-            result = self.bot.vc3_status
+        try:
+            if channel == self.bot.vc1:
+                result = self.bot.vc1_status
+            elif channel == self.bot.vc2:
+                result  = self.bot.vc2_status
+            elif channel == self.bot.vc3:
+                result = self.bot.vc3_status
+        except(AttributeError):
+            if channel == self.bot.bot.vc1:
+                result = self.bot.bot.vc1_status
+            elif channel == self.bot.bot.vc2:
+                result  = self.bot.bot.vc2_status
+            elif channel == self.bot.bot.vc3:
+                result = self.bot.bot.vc3_status
+        return result
 
 
 
@@ -110,16 +144,17 @@ class dashboard(discord.ui.View):
     def __init__(self, bot):
         super().__init__()
         discord.ui.view.timeout = None # タイムアウトをなしに
+        self.bot = bot
     
     # 部屋関係
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result != None:
-            status = await perm.checkperm(self, interaction.channel)
+            status = await perm.checkstatus(self, interaction.channel)
             if status != 'Nomal':
                 await interaction.channel.edit(sync_permissions=True)
-                perm.setstatus(self, before.chanel, 'Nomal')
+                await perm.setstatus(self, interaction.channel, 'Nomal')
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
 
@@ -281,7 +316,7 @@ class vctool(commands.Cog):
                         await msg.delete()
                         
                         await before.channel.edit(sync_permissions=True)
-                        perm.setstatus(self, before.channel, 'Nomal')
+                        await perm.setstatus(self, before.channel, 'Nomal')
 
                     
                     else:
