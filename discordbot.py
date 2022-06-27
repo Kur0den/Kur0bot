@@ -34,6 +34,7 @@ async def on_ready():
     bot.owner = bot.get_user(699414261075804201)
     bot.unei_role = bot.guild.get_role(738956776258535575)
     bot.unei_members = bot.unei_role.members
+    bot.everyone = bot.guild.get_role(733707710784340100)
     
     bot.stage = bot.get_channel(884734698759266324)
     osirase_ch = bot.get_channel(734605726491607091)
@@ -68,8 +69,8 @@ async def on_ready():
     bot.vc1_status = 'Nomal'
     bot.vc2_status = 'Nomal'
     bot.vc3_status = 'Nomal'
-    #bot.vc_defaltparm = discord.permissions()
-    #bot.vc_defaltparm.
+    
+    bot.botrole = bot.guild.get_role(734059242977230969)
     
     # config.jsonをロード
     try:

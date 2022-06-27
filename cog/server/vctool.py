@@ -67,11 +67,11 @@ class owner():
             self.bot.vc3_owner = random.choice(member)
             await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
 
-class perm():
+class status():
     def __init__(self, bot):
         super().__init__()
     
-    async def setstatus(self, chanel, status):
+    async def set(self, chanel, status):
         if chanel == self.bot.vc1:
             self.bot.vc1_status = status
         elif chanel == self.bot.vc2:
@@ -79,7 +79,7 @@ class perm():
         elif chanel == self.bot.vc3:
             self.bot.vc3_status = status
     
-    async def checkstatus(self, channel):
+    async def check(self, channel):
         if channel == self.bot.vc1:
             result = self.bot.vc1_status
         elif channel == self.bot.vc2:
@@ -103,57 +103,122 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
+        # VC1
         if result == 'vc1':
-            if await perm.checkstatus(self, self.bot.vc1) != 'Nomal':
+            if await status.check(self, self.bot.vc1) != 'Nomal':
                 await self.bot.vc1.edit(sync_permissions=True)
-                await perm.setstatus(self, self.bot.vc1, 'Nomal')
+                await status.set(self, self.bot.vc1, 'Nomal')
+                await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+        # VC2
         elif result == 'vc2':
-            if await perm.checkstatus(self, self.bot.vc2) != 'Nomal':
+            if await status.check(self, self.bot.vc2) != 'Nomal':
                 await self.bot.vc2.edit(sync_permissions=True)
-                await perm.setstatus(self, self.bot.vc2, 'Nomal')
+                await status.set(self, self.bot.vc2, 'Nomal')
+                await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+        # VC3
         elif result == 'vc3':
-            if await perm.checkstatus(self, self.bot.vc3) != 'Nomal':
+            if await status.check(self, self.bot.vc3) != 'Nomal':
                 await self.bot.vc3.edit(sync_permissions=True)
-                await perm.setstatus(self, self.bot.vc3, 'Nomal')
+                await status.set(self, self.bot.vc3, 'Nomal')
+                await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
-        '''if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
-        elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
-        elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
-        else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)'''
-
 
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
-    async def mode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if await owner.check(self, interaction.user, interaction.channel) != None:
-            if await perm.checkstatus(self, interaction.channel) != 'Nomal':
-                await interaction.channel.edit(sync_permissions=True)
-                await perm.setstatus(self, interaction.channel, 'Nomal')
+    async def permit(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.check(self, interaction.user, interaction.channel)
+        # VC1
+        if result == 'vc1':
+            if await status.check(self, self.bot.vc1) != 'Permit':
+                await self.bot.vc1.edit(sync_permissions=True)
+                member = self.bot.vc1.members
+                for user in member:
+                    await self.bot.vc1.set_permissions(user, connect=True)
+                await self.bot.vc1.set_permissions(self.bot.everyone, connect=False)
+                await self.bot.vc1.set_permissions(self.bot.botrole, connect=False)
+                await status.set(self, self.bot.vc1, 'Permit')
+                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
-                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
-        await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
+        # VC2
+        elif result == 'vc2':
+            if await status.check(self, self.bot.vc2) != 'Permit':
+                await self.bot.vc2.edit(sync_permissions=True)
+                member = self.bot.vc2.members
+                for user in member:
+                    await self.bot.vc2.set_permissions(user, connect=True)
+                await self.bot.vc2.set_permissions(self.bot.everyone, connect=False)
+                await self.bot.vc2.set_permissions(self.bot.botrole, connect=False)
+                await status.set(self, self.bot.vc2, 'Permit')
+                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
+        # VC3
+        elif result == 'vc3':
+            if await status.check(self, self.bot.vc3) != 'Permit':
+                await self.bot.vc3.edit(sync_permissions=True)
+                member = self.bot.vc3.members
+                for user in member:
+                    await self.bot.vc3.set_permissions(user, connect=True)
+                await self.bot.vc3.set_permissions(self.bot.everyone, connect=False)
+                await self.bot.vc3.set_permissions(self.bot.botrole, connect=False)
+                await status.set(self, self.bot.vc3, 'Permit')
+                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
     @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
     async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
-        if await owner.check(self, interaction.user, interaction.channel) != None:
-            if await perm.checkstatus(self, interaction.channel) != 'Nomal':
-                await interaction.channel.edit(sync_permissions=True)
-                await perm.setstatus(self, interaction.channel, 'Nomal')
+        # VC1
+        if result == 'vc1':
+            if await status.check(self, self.bot.vc1) != 'Lock':
+                await self.bot.vc1.edit(sync_permissions=True)
+                member = self.bot.vc1.members
+                for user in member:
+                    await self.bot.vc1.set_permissions(user, connect=True)
+                await self.bot.vc1.set_permissions(self.bot.everyone, connect=False)
+                await self.bot.vc1.set_permissions(self.bot.botrole, connect=False)
+                await status.set(self, self.bot.vc1, 'lock')
+                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
-                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
+        # VC2
+        elif result == 'vc2':
+            if await status.check(self, self.bot.vc2) != 'Lock':
+                await self.bot.vc2.edit(sync_permissions=True)
+                member = self.bot.vc2.members
+                for user in member:
+                    await self.bot.vc2.set_permissions(user, connect=True)
+                await self.bot.vc2.set_permissions(self.bot.everyone, connect=False)
+                await self.bot.vc2.set_permissions(self.bot.botrole, connect=False)
+                await status.set(self, self.bot.vc2, 'Lock')
+                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
+        # VC3
+        elif result == 'vc3':
+            if await status.check(self, self.bot.vc3) != 'lock':
+                await self.bot.vc3.edit(sync_permissions=True)
+                member = self.bot.vc3.members
+                for user in member:
+                    await self.bot.vc3.set_permissions(user, connect=True)
+                await self.bot.vc3.set_permissions(self.bot.everyone, connect=False)
+                await self.bot.vc3.set_permissions(self.bot.botrole, connect=False)
+                await status.set(self, self.bot.vc3, 'Lock')
+                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
@@ -162,11 +227,26 @@ class dashboard(discord.ui.View):
     async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
+            if self.bot.vc1.nsfw == True:
+                await self.bot.vc1.edit(nsfw=False)
+                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
+            else:
+                await self.bot.vc1.edit(nsfw=True)
+                await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
         elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
+            if self.bot.vc2.nsfw == True:
+                await self.bot.vc2.edit(nsfw=False)
+                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
+            else:
+                await self.bot.vc2.edit(nsfw=True)
+                await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
         elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
+            if self.bot.vc3.nsfw == True:
+                await self.bot.vc3.edit(nsfw=False)
+                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
+            else:
+                await self.bot.vc3.edit(nsfw=True)
+                await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
@@ -249,6 +329,7 @@ class vctool(commands.Cog):
         else:
             await ctx.send('チャンネルが違うで')
 
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         
@@ -258,7 +339,7 @@ class vctool(commands.Cog):
         log3 = self.bot.get_channel(983753740093911090)
         
         
-        # 入退出ログ(処理用のものも)
+        # 入退出処理
         if member.bot is False:
             # 入退出以外は弾く
             if before.channel != after.channel:
@@ -266,7 +347,7 @@ class vctool(commands.Cog):
                 if before.channel is not None and before.channel != stage:
 
 
-
+                    # 通知
                     embed = discord.Embed(title="VC退出", colour=discord.Colour(0xd0021b), description="ユーザーが退出しました", timestamp=datetime.now())
 
                     embed.set_author(name=member.name, icon_url=member.display_avatar.url)
@@ -274,15 +355,30 @@ class vctool(commands.Cog):
 
                     await before.channel.send(embed=embed)
                     
+                    # ロック時等の処理
+                    if before.channel == self.bot.vc1:
+                        if self.bot.vc1_status == 'Lock' or self.bot.vc1_status == 'Permit':
+                            await self.bot.vc1.set_permissions(member, connect=None)
+                    elif before.channel == self.bot.vc2:
+                        if self.bot.vc2_status == 'Lock' or self.bot.vc2_status == 'Permit':
+                            await self.bot.vc2.set_permissions(member, connect=None)
+                    elif before.channel == self.bot.vc3:
+                        if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Permit':
+                            await self.bot.vc3.set_permissions(member, connect=None)
+                    
+                    # チャンネル初期化
                     if len(before.channel.members) == 0:
                         msg = await before.channel.send(embed=discord.Embed(title='チャンネルリセット中...', description='VCに誰もいなくなったためチャンネルをリセットしています', color=0x00ffff))
                         await before.channel.purge(limit=None, check=purge_check)
                         await msg.delete()
                         
                         await before.channel.edit(sync_permissions=True)
-                        await perm.setstatus(self, before.channel, 'Nomal')
+                        await status.set(self, before.channel, 'Nomal')
+                        
+                        if before.channel.nsfw == True:
+                            await before.channel.edit(nsfw=False)
 
-                    
+                    # オーナー変更
                     else:
                         if await owner.check(self, member, before.channel) != None:
                             await owner.change(self, before.channel)
@@ -291,7 +387,7 @@ class vctool(commands.Cog):
                 if after.channel is not None and after.channel != stage:
                     # オーナー指定
                     
-                    result = await owner.setup(self, member, after)
+                    await owner.setup(self, member, after)
                     
                     embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
 
