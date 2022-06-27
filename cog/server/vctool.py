@@ -80,28 +80,6 @@ class owner():
 class perm():
     def __init__(self, bot):
         super().__init__()
-
-    async def checkperm(self, channel):
-        try:
-            if channel == self.bot.bot.vc1:
-                if self.bot.vc1_status == 'Nomal':
-                    print(aaa)
-            elif channel == self.bot.bot.vc2:
-                if self.bot.vc2_status == 'Nomal':
-                    print(aaa)
-            elif channel == self.bot.bot.vc3:
-                if self.bot.vc3_status == 'Nomal':
-                    print(aaa)
-        except(AttributeError):
-            if channel == self.bot.bot.vc1:
-                if self.bot.bot.vc1_status == 'Nomal':
-                    print(aaa)
-            elif channel == self.bot.bot.vc2:
-                if self.bot.bot.vc2_status == 'Nomal':
-                    print(aaa)
-            elif channel == self.bot.bot.vc3:
-                if self.bot.bot.vc3_status == 'Nomal':
-                    print(aaa)
     
     async def setstatus(self, chanel, status):
         try:
