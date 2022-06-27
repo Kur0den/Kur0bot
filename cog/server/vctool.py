@@ -298,9 +298,7 @@ class vctool(commands.Cog):
 
                     
                     else:
-                        result = await owner.check(self, member, before.channel)
-                    
-                        if result != None:
+                        if await owner.check(self, member, before.channel) != None:
                             await owner.change(self, before.channel)
                     
                 # 入室
