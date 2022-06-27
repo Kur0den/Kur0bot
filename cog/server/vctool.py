@@ -31,24 +31,14 @@ class owner():
     
     # オーナーチェック
     async def check(self, member, channel):
-        try:
-            if channel == self.bot.vc1 and member == self.bot.vc1_owner:
-                result = 'vc1'
-            elif channel == self.bot.vc2 and member == self.bot.vc2_owner:
-                result = 'vc2'
-            elif channel == self.bot.vc3 and member == self.bot.vc3_owner:
-                result = 'vc3'
-            else:
-                result = None
-        except(AttributeError):
-            if channel == self.bot.bot.vc1 and member == self.bot.bot.vc1_owner:
-                result = 'vc1'
-            elif channel == self.bot.bot.vc2 and member == self.bot.bot.vc2_owner:
-                result = 'vc2'
-            elif channel == self.bot.bot.vc3 and member == self.bot.bot.vc3_owner:
-                result = 'vc3'
-            else:
-                result = None
+        if channel == self.bot.vc1 and member == self.bot.vc1_owner:
+            result = 'vc1'
+        elif channel == self.bot.vc2 and member == self.bot.vc2_owner:
+            result = 'vc2'
+        elif channel == self.bot.vc3 and member == self.bot.vc3_owner:
+            result = 'vc3'
+        else:
+            result = None
         return result
     
     
@@ -82,36 +72,20 @@ class perm():
         super().__init__()
     
     async def setstatus(self, chanel, status):
-        try:
-            if chanel == self.bot.vc1:
-                self.bot.vc1_status = status
-            elif chanel == self.bot.vc2:
-                self.bot.vc2_status = status
-            elif chanel == self.bot.vc3:
-                self.bot.vc3_status = status
-        except(AttributeError):
-            if chanel == self.bot.bot.vc1:
-                self.bot.bot.vc1_status = status
-            elif chanel == self.bot.bot.vc2:
-                self.bot.bot.vc2_status = status
-            elif chanel == self.bot.bot.vc3:
-                self.bot.bot.vc3_status = status
+        if chanel == self.bot.vc1:
+            self.bot.vc1_status = status
+        elif chanel == self.bot.vc2:
+            self.bot.vc2_status = status
+        elif chanel == self.bot.vc3:
+            self.bot.vc3_status = status
     
     async def checkstatus(self, channel):
-        try:
-            if channel == self.bot.vc1:
-                result = self.bot.vc1_status
-            elif channel == self.bot.vc2:
-                result  = self.bot.vc2_status
-            elif channel == self.bot.vc3:
-                result = self.bot.vc3_status
-        except(AttributeError):
-            if channel == self.bot.bot.vc1:
-                result = self.bot.bot.vc1_status
-            elif channel == self.bot.bot.vc2:
-                result  = self.bot.bot.vc2_status
-            elif channel == self.bot.bot.vc3:
-                result = self.bot.bot.vc3_status
+        if channel == self.bot.vc1:
+            result = self.bot.vc1_status
+        elif channel == self.bot.vc2:
+            result  = self.bot.vc2_status
+        elif channel == self.bot.vc3:
+            result = self.bot.vc3_status
         return result
 
 
@@ -122,17 +96,33 @@ class dashboard(discord.ui.View):
     def __init__(self, bot):
         super().__init__()
         discord.ui.view.timeout = None # タイムアウトをなしに
-        self.bot = bot
+        self.bot = bot.bot
+
     
     # 部屋関係
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if await owner.check(self, interaction.user, interaction.channel) != None:
-            if await perm.checkstatus(self, interaction.channel) != 'Nomal':
-                await interaction.channel.edit(sync_permissions=True)
-                await perm.setstatus(self, interaction.channel, 'Nomal')
+        result = await owner.check(self, interaction.user, interaction.channel)
+        if result == 'vc1':
+            if await perm.checkstatus(self, self.bot.vc1) != 'Nomal':
+                await self.bot.vc1.edit(sync_permissions=True)
+                await perm.setstatus(self, self.bot.vc1, 'Nomal')
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+        elif result == 'vc2':
+            if await perm.checkstatus(self, self.bot.vc2) != 'Nomal':
+                await self.bot.vc2.edit(sync_permissions=True)
+                await perm.setstatus(self, self.bot.vc2, 'Nomal')
+            else:
+                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+        elif result == 'vc3':
+            if await perm.checkstatus(self, self.bot.vc3) != 'Nomal':
+                await self.bot.vc3.edit(sync_permissions=True)
+                await perm.setstatus(self, self.bot.vc3, 'Nomal')
+            else:
+                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+        else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
         '''if result == 'vc1':
             await interaction.response.send_message('vc1', ephemeral=True)
@@ -146,26 +136,24 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
     async def mode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
-        elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
-        elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
-        else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+        if await owner.check(self, interaction.user, interaction.channel) != None:
+            if await perm.checkstatus(self, interaction.channel) != 'Nomal':
+                await interaction.channel.edit(sync_permissions=True)
+                await perm.setstatus(self, interaction.channel, 'Nomal')
+            else:
+                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
+        await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
     @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
     async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
-        elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
-        elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
+        if await owner.check(self, interaction.user, interaction.channel) != None:
+            if await perm.checkstatus(self, interaction.channel) != 'Nomal':
+                await interaction.channel.edit(sync_permissions=True)
+                await perm.setstatus(self, interaction.channel, 'Nomal')
+            else:
+                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
