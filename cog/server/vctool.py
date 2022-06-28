@@ -114,6 +114,23 @@ class rename(discord.ui.Modal):
             await interaction.response.send_message('チャンネル名をリセットしました', ephemeral=True)
         
 
+class select(discord.ui.Select):
+    def __init__(self, members):
+        self.option = []
+        for user in members:
+            self.option.append(discord.SelectOption(label=user.name, value=user.id))
+        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=self.option)
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.send_message(content=f"Your choice is {self.values[0]}!",ephemeral=True)
+
+class SelectView(discord.ui.View):
+    def __init__(self, *, timeout = 180):
+        super().__init__(timeout=timeout)
+        self.add_item(select())
+
+
+
+
 
 
 # ダッシュボード用のやつ
@@ -248,6 +265,7 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
+    # NSFW
     @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=2)
     async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
@@ -276,9 +294,11 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
+    # 名前変更
     @discord.ui.button(label='名前変更', style=discord.ButtonStyle.secondary, emoji='📝', row=2)
     async def rename(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
+        # VC1
         if result == 'vc1':
             modal = rename()
             await interaction.response.send_modal(modal)
@@ -288,6 +308,7 @@ class dashboard(discord.ui.View):
             else:
                 await self.bot.vc1.edit(name=modal.value)
         
+        # VC2
         elif result == 'vc2':
             modal = rename()
             await interaction.response.send_modal(modal)
@@ -297,6 +318,7 @@ class dashboard(discord.ui.View):
             else:
                 await self.bot.vc2.edit(name=modal.value)
         
+        # VC3
         elif result == 'vc3':
             modal = rename()
             await interaction.response.send_modal(modal)
@@ -309,26 +331,13 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='発言禁止', style=discord.ButtonStyle.secondary, emoji='🔇', row=2)
-    async def mute(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
-        elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
-        elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
-        else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
-
-
-
     # ユーザー関係
     @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=3)
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
+            view = SelectView()
+            await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         elif result == 'vc2':
             await interaction.response.send_message('vc2', ephemeral=True)
         elif result == 'vc3':
