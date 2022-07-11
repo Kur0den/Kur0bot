@@ -11,7 +11,6 @@ from discord.ext import commands
 from discord.ext.tasks import loop
 from dotenv import load_dotenv
 
-# import add_socket_response_event
 
 load_dotenv()
 

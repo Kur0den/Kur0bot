@@ -115,18 +115,27 @@ class rename(discord.ui.Modal):
         
 
 class select(discord.ui.Select):
-    def __init__(self, members):
+    def __init__(self, channel):
         self.option = []
-        for user in members:
+        self.channel = channel
+        for user in channel.members:
             self.option.append(discord.SelectOption(label=user.name, value=user.id))
         super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=self.option)
     async def callback(self, interaction: discord.Interaction):
-        await interaction.response.send_message(content=f"Your choice is {self.values[0]}!",ephemeral=True)
+            for member in self.channel.members:
+                if str(member.id) == str(self.values[0]):
+                    try:
+                        await member.move_to(None)
+                        await interaction.response.send_message(content=f"{member.name}をVCからキックしました",ephemeral=True)
+                    except:
+                        await interaction.response.send_message(content=f"{member.name}をVCからキックできませんでした",ephemeral=True)
+                    break
+            
 
 class SelectView(discord.ui.View):
-    def __init__(self, *, timeout = 180):
+    def __init__(self, channel, *, timeout = 180):
         super().__init__(timeout=timeout)
-        self.add_item(select())
+        self.add_item(select(channel))
 
 
 
@@ -336,12 +345,14 @@ class dashboard(discord.ui.View):
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            view = SelectView()
+            view = SelectView(self.bot.vc1)
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
+            view = SelectView(self.bot.vc2)
+            await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
+            view = SelectView(self.bot.vc3)
+            await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
