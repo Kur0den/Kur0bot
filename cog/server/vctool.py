@@ -115,27 +115,46 @@ class rename(discord.ui.Modal):
         
 
 class select(discord.ui.Select):
-    def __init__(self, channel):
+    def __init__(self, channel, mode):
         self.option = []
         self.channel = channel
+        self.mode = mode
         for user in channel.members:
             self.option.append(discord.SelectOption(label=user.name, value=user.id))
         super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=self.option)
     async def callback(self, interaction: discord.Interaction):
             for member in self.channel.members:
                 if str(member.id) == str(self.values[0]):
-                    try:
-                        await member.move_to(None)
-                        await interaction.response.send_message(content=f"{member.name}をVCからキックしました",ephemeral=True)
-                    except:
-                        await interaction.response.send_message(content=f"{member.name}をVCからキックできませんでした",ephemeral=True)
-                    break
-            
+                    if self.mode =='kick':
+                        try:
+                            await member.move_to(None)
+                            await interaction.response.send_message(content=f"{member.name}をVCからキックしました",ephemeral=True)
+                        except:
+                            await interaction.response.send_message(content=f"{member.name}をVCからキックできませんでした",ephemeral=True)
+                        break
+                    elif self.mode =='owner':
+                        if self.channel.id == 981800095760670730:
+                            await self.channel.send(f'{member.mention}は{self.channel}の所有権を持っています', delete_after=60)
+                            await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
+                            return member
+                            view.stop()
+                        if self.channel.id == 981800262165495828:
+                            await self.channel.send(f'{member.mention}は{self.channel}の所有権を持っています', delete_after=60)
+                            await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
+                            return member
+                            view.stop()
+                        if self.channel.id == 981800316116803636:
+                            await self.channel.send(f'{member.mention}は{self.channel}の所有権を持っています', delete_after=60)
+                            await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
+                            return member
+                            view.stop()
 
 class SelectView(discord.ui.View):
-    def __init__(self, channel, *, timeout = 180):
+    def __init__(self, channel, mode, *, timeout = 180):
         super().__init__(timeout=timeout)
-        self.add_item(select(channel))
+        member = self.add_item(select(channel, mode))
+        
+        
 
 
 
@@ -185,45 +204,12 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
     async def permit(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
-        # VC1
         if result == 'vc1':
-            if await status.check(self, self.bot.vc1) != 'Permit':
-                await self.bot.vc1.edit(sync_permissions=True)
-                member = self.bot.vc1.members
-                for user in member:
-                    await self.bot.vc1.set_permissions(user, connect=True)
-                await self.bot.vc1.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc1.set_permissions(self.bot.botrole, connect=False)
-                await status.set(self, self.bot.vc1, 'Permit')
-                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
-        # VC2
+                await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         elif result == 'vc2':
-            if await status.check(self, self.bot.vc2) != 'Permit':
-                await self.bot.vc2.edit(sync_permissions=True)
-                member = self.bot.vc2.members
-                for user in member:
-                    await self.bot.vc2.set_permissions(user, connect=True)
-                await self.bot.vc2.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc2.set_permissions(self.bot.botrole, connect=False)
-                await status.set(self, self.bot.vc2, 'Permit')
-                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
-        # VC3
+                await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         elif result == 'vc3':
-            if await status.check(self, self.bot.vc3) != 'Permit':
-                await self.bot.vc3.edit(sync_permissions=True)
-                member = self.bot.vc3.members
-                for user in member:
-                    await self.bot.vc3.set_permissions(user, connect=True)
-                await self.bot.vc3.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc3.set_permissions(self.bot.botrole, connect=False)
-                await status.set(self, self.bot.vc3, 'Permit')
-                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
+                await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
@@ -345,13 +331,13 @@ class dashboard(discord.ui.View):
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            view = SelectView(self.bot.vc1)
+            view = SelectView(self.bot.vc1,'kick')
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         elif result == 'vc2':
-            view = SelectView(self.bot.vc2)
+            view = SelectView(self.bot.vc2,'kick')
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         elif result == 'vc3':
-            view = SelectView(self.bot.vc3)
+            view = SelectView(self.bot.vc3,'kick')
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
@@ -361,14 +347,28 @@ class dashboard(discord.ui.View):
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            await interaction.response.send_message('vc1', ephemeral=True)
+            view = SelectView(self.bot.vc1,'owner')
+            member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
+            await view.wait()
+            await self.bot.vc1_dash.delete()
+            self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
+            self.bot.vc1_owner = member
         elif result == 'vc2':
-            await interaction.response.send_message('vc2', ephemeral=True)
+            view = SelectView(self.bot.vc2,'owner')
+            member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
+            await view.wait()
+            await self.bot.vc2_dash.delete()
+            self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
+            self.bot.vc2_owner = member
         elif result == 'vc3':
-            await interaction.response.send_message('vc3', ephemeral=True)
+            view = SelectView(self.bot.vc3,'owner')
+            member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
+            await view.wait()
+            await self.bot.vc3_dash.delete()
+            self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
+            self.bot.vc3_owner = member
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
-
 
 
 
