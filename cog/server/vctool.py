@@ -18,16 +18,19 @@ class owner():
             if after.channel == self.bot.vc1:
                 self.bot.vc1_owner = member
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
                 self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
                 await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc2:
                 self.bot.vc2_owner = member
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
                 self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
                 await self.bot.vc2.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc3:
                 self.bot.vc3_owner = member
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
                 self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
                 await self.bot.vc3.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
     
@@ -56,18 +59,21 @@ class owner():
         if channel == self.bot.vc1:
             await self.bot.vc1_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
             self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
             self.bot.vc1_owner = random.choice(member)
             await channel.send(f'{self.bot.vc1_owner.mention}は{channel}の所有権を持っています', delete_after=60)
         elif channel == self.bot.vc2:
             await self.bot.vc2_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
             self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
             self.bot.vc2_owner = random.choice(member)
             await channel.send(f'{self.bot.vc2_owner.mention}は{channel}の所有権を持っています', delete_after=60)
         elif channel == self.bot.vc3:
             await self.bot.vc3_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
             self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
             self.bot.vc3_owner = random.choice(member)
             await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
@@ -391,12 +397,17 @@ class vctool(commands.Cog):
         if ctx.channel is self.bot.vc1:
             await self.bot.vc1_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
             self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
         elif ctx.channel is self.bot.vc2:
             await self.bot.vc2_dash.delete()
+            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
             self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
         elif ctx.channel is self.bot.vc3:
             await self.bot.vc3_dash.delete()
+            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.set_footer(text="`k/vctool`でダッシュボードを再送信できます")
             self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
         else:
             await ctx.send('チャンネルが違うで')
