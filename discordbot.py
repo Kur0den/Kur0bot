@@ -11,7 +11,6 @@ from discord.ext import commands
 from discord.ext.tasks import loop
 from dotenv import load_dotenv
 
-# import add_socket_response_event
 
 load_dotenv()
 
@@ -23,7 +22,7 @@ bot = commands.Bot(
     intents=discord.Intents.all(),
     )
 
-guild_id = [733707710784340100]
+guild_id = 733707710784340100
 
 
 @bot.event
@@ -34,6 +33,7 @@ async def on_ready():
     bot.owner = bot.get_user(699414261075804201)
     bot.unei_role = bot.guild.get_role(738956776258535575)
     bot.unei_members = bot.unei_role.members
+    bot.everyone = bot.guild.get_role(733707710784340100)
     
     bot.stage = bot.get_channel(884734698759266324)
     osirase_ch = bot.get_channel(734605726491607091)
@@ -54,6 +54,22 @@ async def on_ready():
         bot.siritori_list.insert(0, msg.content)
     bot.siritori = True
     
+    # VC機能系定義
+    
+    bot.vc1 = bot.get_channel(981800095760670730)
+    bot.vc2 = bot.get_channel(981800262165495828)
+    bot.vc3 = bot.get_channel(981800316116803636)
+    bot.vc1_owner = None
+    bot.vc2_owner = None
+    bot.vc3_owner = None
+    bot.vc1_dash = None
+    bot.vc2_dash = None
+    bot.vc3_dash = None
+    bot.vc1_status = 'Nomal'
+    bot.vc2_status = 'Nomal'
+    bot.vc3_status = 'Nomal'
+    
+    bot.botrole = bot.guild.get_role(734059242977230969)
     
     # config.jsonをロード
     try:
