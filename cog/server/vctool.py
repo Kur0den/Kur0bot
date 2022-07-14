@@ -17,15 +17,18 @@ class owner():
         if len(after.channel.members) == 1:
             if after.channel == self.bot.vc1:
                 self.bot.vc1_owner = member
-                self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
+                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
                 await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc2:
                 self.bot.vc2_owner = member
-                self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
+                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
                 await self.bot.vc2.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc3:
                 self.bot.vc3_owner = member
-                self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
+                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
                 await self.bot.vc3.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
     
     # オーナーチェック
@@ -52,17 +55,20 @@ class owner():
         
         if channel == self.bot.vc1:
             await self.bot.vc1_dash.delete()
-            self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
+            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
             self.bot.vc1_owner = random.choice(member)
             await channel.send(f'{self.bot.vc1_owner.mention}は{channel}の所有権を持っています', delete_after=60)
         elif channel == self.bot.vc2:
             await self.bot.vc2_dash.delete()
-            self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
+            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
             self.bot.vc2_owner = random.choice(member)
             await channel.send(f'{self.bot.vc2_owner.mention}は{channel}の所有権を持っています', delete_after=60)
         elif channel == self.bot.vc3:
             await self.bot.vc3_dash.delete()
-            self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
+            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
             self.bot.vc3_owner = random.choice(member)
             await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
 
@@ -343,7 +349,7 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
+'''    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
@@ -368,7 +374,7 @@ class dashboard(discord.ui.View):
             self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
             self.bot.vc3_owner = member
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)'''
 
 
 
@@ -384,13 +390,14 @@ class vctool(commands.Cog):
     async def vctool(self, ctx):
         if ctx.channel is self.bot.vc1:
             await self.bot.vc1_dash.delete()
-            self.bot.vc1_dash = await ctx.send('test', view=dashboard(self))
+            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
         elif ctx.channel is self.bot.vc2:
             await self.bot.vc2_dash.delete()
-            self.bot.vc2_dash = await ctx.send('test', view=dashboard(self))
+            self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
         elif ctx.channel is self.bot.vc3:
             await self.bot.vc3_dash.delete()
-            self.bot.vc3_dash = await ctx.send('test', view=dashboard(self))
+            self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
         else:
             await ctx.send('チャンネルが違うで')
 
