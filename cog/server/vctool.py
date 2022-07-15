@@ -457,7 +457,12 @@ class vctool(commands.Cog):
                         msg = await before.channel.send(embed=discord.Embed(title='チャンネルリセット中...', description='VCに誰もいなくなったためチャンネルをリセットしています', color=0x00ffff))
                         await before.channel.purge(limit=None, check=purge_check)
                         await msg.delete()
-                        
+                        if before.channel == self.bot.vc1:
+                            await self.bot.vc1.edit(name='VC-1(128Kbps)')
+                        elif before.channel == self.bot.vc2:
+                            await self.bot.vc2.edit(name='VC-2(128Kbps)')
+                        elif before.channel == self.bot.vc3:
+                            await self.bot.vc3.edit(name='VC-3(64Kbps)')
                         await before.channel.edit(sync_permissions=True)
                         await status.set(self, before.channel, 'Nomal')
                         
