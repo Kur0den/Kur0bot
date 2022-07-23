@@ -354,7 +354,7 @@ class dashboard(discord.ui.View):
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
-
+# 作り方がよくわからんから放置
 '''    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
