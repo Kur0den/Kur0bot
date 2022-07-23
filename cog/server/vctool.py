@@ -354,7 +354,7 @@ class dashboard(discord.ui.View):
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
     
-    @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=4)
+    @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=3)
     async def invite(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
