@@ -355,16 +355,26 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
     
     @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=4)
-    async def invite(self, interaction: discord.Interaction, button: discord.ui.Button, channel):
-        if await status.check(self, self.bot.vc1) != 'Lock':
-            result = await owner.check(self, interaction.user, interaction.channel)
-            if result:
-                invite = await channel.create_invite(max_age=600)
+    async def invite(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.check(self, interaction.user, interaction.channel)
+        if result == 'vc1':
+            if await status.check(self, self.bot.vc1) == 'Lock':
+                await interaction.response.send_message('Lockされてるから招待してもはいれないよ', ephemeral=True)
+            elif await status.check(self, self.bot.vc1) == 'Normal':
+                invite = await self.bot.vc1.create_invite(max_age=600)
                 await interaction.response.send_message(invite)
-        elif await status.check(self, self.bot.vc1) != 'Normal':
-            invite = await channel.create_invite(max_age=600)
-            await interaction.response.send_message(invite)
-
+        if result == 'vc2':
+            if await status.check(self, self.bot.vc2) == 'Lock':
+                await interaction.response.send_message('Lockされてるから招待してもはいれないよ', ephemeral=True)
+            elif await status.check(self, self.bot.vc2) == 'Normal':
+                invite = await self.bot.vc2.create_invite(max_age=600)
+                await interaction.response.send_message(invite)
+        if result == 'vc3':
+            if await status.check(self, self.bot.vc3) == 'Lock':
+                await interaction.response.send_message('Lockされてるから招待してもはいれないよ', ephemeral=True)
+            elif await status.check(self, self.bot.vc3) == 'Normal':
+                invite = await self.bot.vc3.create_invite(max_age=600)
+                await interaction.response.send_message(invite)
 
 
 

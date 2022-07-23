@@ -16,7 +16,7 @@ load_dotenv()
 
 token = os.environ['DISCORD_BOT_TOKEN']
 bot = commands.Bot(
-    command_prefix='!',
+    command_prefix='k!',
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all(),
@@ -65,9 +65,9 @@ async def on_ready():
     bot.vc1_dash = None
     bot.vc2_dash = None
     bot.vc3_dash = None
-    bot.vc1_status = 'Nomal'
-    bot.vc2_status = 'Nomal'
-    bot.vc3_status = 'Nomal'
+    bot.vc1_status = 'Normal'
+    bot.vc2_status = 'Normal'
+    bot.vc3_status = 'Normal'
     
     bot.botrole = bot.guild.get_role(734059242977230969)
     
