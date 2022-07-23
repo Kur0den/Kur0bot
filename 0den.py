@@ -65,9 +65,11 @@ async def on_ready():
     bot.vc1_dash = None
     bot.vc2_dash = None
     bot.vc3_dash = None
+
     bot.vc1_status = 'Normal'
     bot.vc2_status = 'Normal'
     bot.vc3_status = 'Normal'
+
     
     bot.botrole = bot.guild.get_role(734059242977230969)
     
