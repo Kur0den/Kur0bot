@@ -353,6 +353,20 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+    
+    @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=4)
+    async def invite(self, interaction: discord.Interaction, button: discord.ui.Button, channel):
+        if await status.check(self, self.bot.vc1) != 'Lock':
+            result = await owner.check(self, interaction.user, interaction.channel)
+            if result:
+                invite = await channel.create_invite(max_age=600)
+                await interaction.response.send_message(invite)
+        elif await status.check(self, self.bot.vc1) != 'Normal':
+            invite = await channel.create_invite(max_age=600)
+            await interaction.response.send_message(invite)
+
+
+
 
 # 作り方がよくわからんから放置
 '''    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
