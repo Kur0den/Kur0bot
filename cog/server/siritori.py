@@ -23,7 +23,7 @@ async def siritori_reset(self):
         siritori_fine = -int(self.bot.config['siritori_fine'])
         # siritori_fine = -siritori_fine
         async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
-            await session.patch(url=f'{self.bot.ub_url}{n_member.id}', json={'cash': siritori_fine, 'reason': f'しりとり罰金'}) 
+            await session.patch(url=f'{self.bot.ub_url}{n_member.id}', json={'cash': siritori_fine, 'reason': f'しりとりの罰金'}) 
     
     msg = await self.bot.siritori_ch.send(embed=discord.Embed(title='チャンネルリセット中...', description='しりとりが終了しました', color=0x00ffff))
     await self.bot.siritori_ch.purge(limit=None, check=purge_check)
@@ -107,7 +107,7 @@ class Siritori(commands.Cog):
             pages[page_count] = page_naiyou
             page_count += 1
             page_naiyou = ''
-        await ctx.send(embed=discord.Embed(title='しりとり履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
+        await ctx.send(embed=discord.Embed(title='しりとりの履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
         return
     
     @commands.command(name='len')
