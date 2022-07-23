@@ -237,7 +237,7 @@ class dashboard(discord.ui.View):
                 for user in member:
                     await self.bot.vc1.set_permissions(user, connect=True)
                 await self.bot.vc1.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc1.set_permissions(self.bot.botrole, connect=False)
+                await self.bot.vc1.set_permissions(self.bot.botrole, connect=True)
                 await status.set(self, self.bot.vc1, 'lock')
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
@@ -250,7 +250,7 @@ class dashboard(discord.ui.View):
                 for user in member:
                     await self.bot.vc2.set_permissions(user, connect=True)
                 await self.bot.vc2.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc2.set_permissions(self.bot.botrole, connect=False)
+                await self.bot.vc2.set_permissions(self.bot.botrole, connect=True)
                 await status.set(self, self.bot.vc2, 'Lock')
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
@@ -263,7 +263,7 @@ class dashboard(discord.ui.View):
                 for user in member:
                     await self.bot.vc3.set_permissions(user, connect=True)
                 await self.bot.vc3.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc3.set_permissions(self.bot.botrole, connect=False)
+                await self.bot.vc3.set_permissions(self.bot.botrole, connect=True)
                 await status.set(self, self.bot.vc3, 'Lock')
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
