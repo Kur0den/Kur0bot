@@ -68,7 +68,7 @@ class Siritori(commands.Cog):
         if not self.bot.siritori:
             return
         if not moji in self.bot.siritori_list:
-            await ctx.send(embed=discord.Embed(title='発言されたことのない単語です', color=0xff0000), delete_after=5.0)
+            await ctx.send(embed=discord.Embed(title='発言したことのない単語です', color=0xff0000), delete_after=5.0)
             await ctx.message.delete()
             return
         if self.bot.unei_role in ctx.author.roles:
