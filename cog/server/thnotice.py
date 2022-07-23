@@ -104,12 +104,12 @@ class thnotice(commands.Cog):
 
         
         elif before.locked is True and after.locked is False:
-            await self.bot.owner.send('ロック解除されたよ！')
+            await self.bot.owner.send('ロックが解除されたよ！')
             print(f'ロック解除: {after.name}')
             return
     
         elif before.archived is True and after.archived is False:
-            await self.bot.owner.send('アーカイブ解除されたよ！')
+            await self.bot.owner.send('アーカイブが解除されたよ！')
             print(f'アーカイブ解除: {after.name}')
         
 
