@@ -183,29 +183,29 @@ class dashboard(discord.ui.View):
     
     # 部屋関係
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
-    async def nomal(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def Normal(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         # VC1
         if result == 'vc1':
-            if await status.check(self, self.bot.vc1) != 'Nomal':
+            if await status.check(self, self.bot.vc1) != 'Normal':
                 await self.bot.vc1.edit(sync_permissions=True)
-                await status.set(self, self.bot.vc1, 'Nomal')
+                await status.set(self, self.bot.vc1, 'Normal')
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
         # VC2
         elif result == 'vc2':
-            if await status.check(self, self.bot.vc2) != 'Nomal':
+            if await status.check(self, self.bot.vc2) != 'Normal':
                 await self.bot.vc2.edit(sync_permissions=True)
-                await status.set(self, self.bot.vc2, 'Nomal')
+                await status.set(self, self.bot.vc2, 'Normal')
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
         # VC3
         elif result == 'vc3':
-            if await status.check(self, self.bot.vc3) != 'Nomal':
+            if await status.check(self, self.bot.vc3) != 'Normal':
                 await self.bot.vc3.edit(sync_permissions=True)
-                await status.set(self, self.bot.vc3, 'Nomal')
+                await status.set(self, self.bot.vc3, 'Normal')
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
@@ -352,7 +352,33 @@ class dashboard(discord.ui.View):
             view = SelectView(self.bot.vc3,'kick')
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         else:
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+    
+    @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=3)
+    async def invite(self, interaction: discord.Interaction, button: discord.ui.Button):
+        result = await owner.check(self, interaction.user, interaction.channel)
+        if result == 'vc1':
+            if await status.check(self, self.bot.vc1) == 'Lock':
+                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
+            elif await status.check(self, self.bot.vc1) == 'Normal':
+                invite = await self.bot.vc1.create_invite(max_age=600)
+                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
+        if result == 'vc2':
+            if await status.check(self, self.bot.vc2) == 'Lock':
+                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
+            elif await status.check(self, self.bot.vc2) == 'Normal':
+                invite = await self.bot.vc2.create_invite(max_age=600)
+                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
+        if result == 'vc3':
+            if await status.check(self, self.bot.vc3) == 'Lock':
+                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
+            elif await status.check(self, self.bot.vc3) == 'Normal':
+                invite = await self.bot.vc3.create_invite(max_age=600)
+                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
+        
+        else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
+
 
 # 作り方がよくわからんから放置
 '''    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
@@ -464,7 +490,7 @@ class vctool(commands.Cog):
                         elif before.channel == self.bot.vc3:
                             await self.bot.vc3.edit(name='VC-3(64Kbps)')
                         await before.channel.edit(sync_permissions=True)
-                        await status.set(self, before.channel, 'Nomal')
+                        await status.set(self, before.channel, 'Normal')
                         
                         if before.channel.nsfw == True:
                             await before.channel.edit(nsfw=False)
