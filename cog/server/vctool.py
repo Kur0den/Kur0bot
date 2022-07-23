@@ -359,22 +359,22 @@ class dashboard(discord.ui.View):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
             if await status.check(self, self.bot.vc1) == 'Lock':
-                await interaction.response.send_message('Lockされてるから招待してもはいれないよ', ephemeral=True)
+                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
             elif await status.check(self, self.bot.vc1) == 'Normal':
                 invite = await self.bot.vc1.create_invite(max_age=600)
-                await interaction.response.send_message(invite)
+                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
         if result == 'vc2':
             if await status.check(self, self.bot.vc2) == 'Lock':
-                await interaction.response.send_message('Lockされてるから招待してもはいれないよ', ephemeral=True)
+                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
             elif await status.check(self, self.bot.vc2) == 'Normal':
                 invite = await self.bot.vc2.create_invite(max_age=600)
-                await interaction.response.send_message(invite)
+                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
         if result == 'vc3':
             if await status.check(self, self.bot.vc3) == 'Lock':
-                await interaction.response.send_message('Lockされてるから招待してもはいれないよ', ephemeral=True)
+                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
             elif await status.check(self, self.bot.vc3) == 'Normal':
                 invite = await self.bot.vc3.create_invite(max_age=600)
-                await interaction.response.send_message(invite)
+                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
 
 
 
