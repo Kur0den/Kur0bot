@@ -107,7 +107,7 @@ class Siritori(commands.Cog):
             pages[page_count] = page_naiyou
             page_count += 1
             page_naiyou = ''
-        await ctx.send(embed=discord.Embed(title='しりとりの履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
+        await ctx.send(embed=discord.Embed(title='履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
         return
     
     @commands.command(name='len')
