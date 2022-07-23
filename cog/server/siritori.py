@@ -6,7 +6,7 @@ from discord.ext import commands
 
 
 def purge_check(m):
-    return not m.embeds[0].title in ['しりとりヘルプ', 'チャンネルリセット中...'] if bool(m.embeds) else True
+    return not m.embeds[0].title in ['しりとりのヘルプ', 'チャンネルリセット中...'] if bool(m.embeds) else True
 
 def is_siritori_ch(ctx):
     return ctx.channel.id == 982967189109878804
