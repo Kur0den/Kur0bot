@@ -210,7 +210,7 @@ class dashboard(discord.ui.View):
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
@@ -223,7 +223,7 @@ class dashboard(discord.ui.View):
         elif result == 'vc3':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
     @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
@@ -238,7 +238,7 @@ class dashboard(discord.ui.View):
                     await self.bot.vc1.set_permissions(user, connect=True)
                 await self.bot.vc1.set_permissions(self.bot.everyone, connect=False)
                 await self.bot.vc1.set_permissions(self.bot.botrole, connect=True)
-                await status.set(self, self.bot.vc1, 'lock')
+                await status.set(self, self.bot.vc1, 'Lock')
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
@@ -269,7 +269,7 @@ class dashboard(discord.ui.View):
             else:
                 await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
     # NSFW
@@ -298,7 +298,7 @@ class dashboard(discord.ui.View):
                 await self.bot.vc3.edit(nsfw=True)
                 await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
     # 名前変更
@@ -335,7 +335,7 @@ class dashboard(discord.ui.View):
             else:
                 await self.bot.vc3.edit(name=modal.value)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
     # ユーザー関係
@@ -352,7 +352,7 @@ class dashboard(discord.ui.View):
             view = SelectView(self.bot.vc3,'kick')
             await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
+            await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 # 作り方がよくわからんから放置
 '''    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=3)
