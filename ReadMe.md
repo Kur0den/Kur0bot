@@ -1,14 +1,17 @@
 # Kur0bot
 * くろでんによるくろでんのためのぼっと
 * くろでんが基本作成しているbotです
+<<<<<<< HEAD
 # ファイルの説明
 ## 0den.py
 起動するやつです。
 また、Cogを読み込むやつでもあります
 
+
 ## .env.sample
 tokenが入るファイルです。
 
+<<<<<<< HEAD
 ## add_socket_response_event.py
 gateway関係でしょう
 
@@ -45,6 +48,7 @@ pythonのバージョン記載
 
 ### ./cog/welcome/
 サーバー入退室関係が入ってます
+
 
 </details>
 
