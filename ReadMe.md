@@ -34,7 +34,7 @@ bot.everyone = bot.guild.get_role(733707710784340100)
 * everyoneは@@everyoneのidを張ってください。
 取得方法は知りません
 </details1>
-もう少し下にまだあるからそれも設定してください。
+* もう少し下にまだあるからそれも設定してください。
 ```py:0den.py
 bot.siritori_ch = bot.get_channel(982967189109878804)
 ```
