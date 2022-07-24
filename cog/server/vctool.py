@@ -381,7 +381,7 @@ class dashboard(discord.ui.View):
 
 
 # 作り方がよくわからんから放置
-    '''@discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
+''' @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
