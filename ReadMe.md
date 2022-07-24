@@ -7,7 +7,7 @@
 
 * ```.env.sample```を```.env```に変え、TOKEN=""のところにTOKENを入れてください、
 
-<details><summary>別のBotで使う場合</summary>
+<details><summary>個人で使う場合</summary>
 
 ((ながいけどゆるして))
 * いろいろな定義を変更する必要があります。
@@ -52,6 +52,8 @@ bot.vc3 = bot.get_channel(981800316116803636)
 * というのがあるはずです。
 一つのVCの場合はvc2,vc3のget_channelの中身を殻にしておいてください。
 それ以外はすべて埋めましょう。
+
+**ライセンス守ろうね！！**
 </details>
 
 # ちょうざつ
