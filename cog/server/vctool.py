@@ -381,7 +381,7 @@ class dashboard(discord.ui.View):
 
 
 # 作り方がよくわからんから放置
-''' @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
+    '''@discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
@@ -413,24 +413,30 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='VCの情報', style=discord.ButtonStyle.secondary, emoji='ℹ', row=4)
     async def info(self, interaction: discord.Integration, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
+        if interaction.channel == self.bot.vc1:
             embed = discord.Embed(title='VC1の情報', description='')
             embed.add_field(name='名前', value=self.bot.vc1.name)
             embed.add_field(name='オーナー', value=self.bot.vc1_owner)
             embed.add_field(name='状態', value=self.bot.vc1_status)
-            # embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=self.bot.vc2_members)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc1.nsfw)
             await interaction.response.send_message(embed=embed)
-        if result == 'vc2':
+        elif interaction.channel == self.bot.vc2:
             embed = discord.Embed(title='VC2の情報', description='')
             embed.add_field(name='名前', value=self.bot.vc2.name)
             embed.add_field(name='オーナー', value=self.bot.vc2_owner)
             embed.add_field(name='状態', value=self.bot.vc2_status)
-            # embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=self.bot.vc2_members)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
             await interaction.response.send_message(embed=embed)
-
+        elif interaction.channel == self.bot.vc3:
+            embed = discord.Embed(title='VC3の情報', description='')
+            embed.add_field(name='名前', value=self.bot.vc2.name)
+            embed.add_field(name='オーナー', value=self.bot.vc2_owner)
+            embed.add_field(name='状態', value=self.bot.vc2_status)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
+            embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
+            await interaction.response.send_message(embed=embed)
 
 
 
