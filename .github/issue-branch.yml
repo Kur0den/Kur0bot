@@ -6,9 +6,9 @@ copyIssueAssigneeToPR: true
 copyIssueMilestoneToPR: true
 branches:
   - label: 機能強化
-    prefix: feature/${issue.user.login}/
+    prefix: feature/
   - label: バグ
-    prefix: bugfix/${issue.user.login}/
+    prefix: bugfix/
   - label: '*'
     prefix: issues/
   - label: 助けが必要
