@@ -26,16 +26,18 @@ bot.unei_members = bot.unei_role.members
 bot.everyone = bot.guild.get_role(733707710784340100)
 ```
 とあると思いますのでそこも変えてください。
-<details1><summary>上から順に何かを説明</summary>
+<details><summary>上から順に何かを説明</summary>
+
 * manageguildは管理するサーバーのidを貼ってください。
 * guildはサーバーを貼ってください。
 * ownerはBot所有者のidを貼ってください。
 * unei_roleはサーバーの運営につけましょう
 * everyoneは@@everyoneのidを張ってください。
-取得方法は知りません
-</details1>
-* もう少し下にまだあるからそれも設定してください。
-```py:0den.py
+取得方法は知りません()
+</details>
+もう少し下にまだありますのでそれも設定してください。
+
+  ```py:0den.py
 bot.siritori_ch = bot.get_channel(982967189109878804)
 ```
 しりとりのチャンネルを貼ってください。
