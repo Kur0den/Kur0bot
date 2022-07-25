@@ -1,7 +1,7 @@
 # Kur0bot
 * くろでんによるくろでんのためのぼっと
 * くろでんが基本作成しているbotです
-<<<<<<< HEAD
+
 # ファイルの説明
 ## 0den.py
 起動するやつです。
@@ -11,7 +11,7 @@
 ## .env.sample
 tokenが入るファイルです。
 
-<<<<<<< HEAD
+
 ## add_socket_response_event.py
 gateway関係でしょう
 
