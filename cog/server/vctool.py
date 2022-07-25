@@ -1,3 +1,4 @@
+from tkinter import E
 import discord
 from discord.ext import commands
 from datetime import datetime
@@ -421,7 +422,10 @@ class vctool(commands.Cog):
     @commands.command()
     async def vctool(self, ctx):
         if ctx.channel is self.bot.vc1:
-            await self.bot.vc1_dash.delete()
+            try:
+                await self.bot.vc1_dash.delete()
+            except:
+                print('dashboardがなかったよ')
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
             embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
             self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
