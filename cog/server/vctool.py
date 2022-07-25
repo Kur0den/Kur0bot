@@ -445,7 +445,7 @@ class vctool(commands.Cog):
         self.bot = bot
         
 
-# @todo VCに誰もいないときはコマンドを使えないようにする
+#@todo VCに誰もいないときはコマンドを使えないようにする
     @commands.command()
     async def vctool(self, ctx):
         if ctx.channel is self.bot.vc1:
