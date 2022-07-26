@@ -3,10 +3,6 @@ from discord.ext import commands
 import requests
 
 
-
-
-
-
 class userinfo(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
