@@ -419,7 +419,7 @@ class dashboard(discord.ui.View):
             embed.add_field(name='名前', value=self.bot.vc1.name)
             embed.add_field(name='オーナー', value=self.bot.vc1_owner)
             embed.add_field(name='状態', value=self.bot.vc1_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members) + '人')
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc1.nsfw)
             await interaction.response.send_message(embed=embed, delete_after=60)
         elif interaction.channel == self.bot.vc2:
@@ -428,7 +428,7 @@ class dashboard(discord.ui.View):
             embed.add_field(name='名前', value=self.bot.vc2.name)
             embed.add_field(name='オーナー', value=self.bot.vc2_owner)
             embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members) + '人')
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
             await interaction.response.send_message(embed=embed, delete_after=60)
         elif interaction.channel == self.bot.vc3:
@@ -437,7 +437,7 @@ class dashboard(discord.ui.View):
             embed.add_field(name='名前', value=self.bot.vc2.name)
             embed.add_field(name='オーナー', value=self.bot.vc2_owner)
             embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(member) + '人')
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(member))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
             await interaction.response.send_message(embed=embed, delete_after=60)
 
