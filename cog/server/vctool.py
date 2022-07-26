@@ -431,6 +431,8 @@ class dashboard(discord.ui.View):
             embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc2.nsfw)
             await interaction.response.send_message(embed=embed)
+
+            await interaction.response.send_message(embed=embed, delete_after=60)
         elif interaction.channel == self.bot.vc3:
             members = [i.name for i in self.bot.vc3.members]
             embed = discord.Embed(title='VC3の情報', description='')
@@ -440,6 +442,7 @@ class dashboard(discord.ui.View):
             embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc3.nsfw)
             await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embed, delete_after=60)
 
 
 class vctool(commands.Cog):
