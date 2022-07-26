@@ -1,57 +1,57 @@
 # Kur0bot
+
 * くろでんによるくろでんのためのぼっと
 * くろでんが基本作成しているbotです
 
-# ファイルの説明
-## 0den.py
+## プルリクを出す際の注意
+
+
+## ファイルの説明
+### 0den.py
 起動するやつです。
 また、Cogを読み込むやつでもあります
 
+### .env.example
+tokenが入るファイルです。(環境変数)
 
-## .env.sample
-tokenが入るファイルです。
+### config.json
+vcmoney等の数値がおいてあるファイルです。
 
+### requirements.txt
+必要な外部ライブラリ
 
-## add_socket_response_event.py
-gateway関係でしょう
-
-## config.json
-いろいろな数値がおいてあるところです。
-
-## requirements.txt
-いるものが載ってます
-
-## .gitignore
+##3 .gitignore
 Githubで管理したくない(公開したくない?)ファイルを指定できるファイルです。
 
-## runtime.txt
+### runtime.txt
 pythonのバージョン記載
 
-## ./cog/
+### ./cog/
 機能別に色々載せたものです。
 <details><summary>cogの中身</summary>
 
-### ./cog/fun
-中には過疎通知が入っています
+#### ./cog/fun
+楽しめる機能用のファイル
 
-### ./cog/manage
+##### kaso.py
+とまと
+
+#### ./cog/manage
 管理関係が入っています
 
-### ./cog/money
+#### ./cog/money
 お金関係が入っています
 
-### ./cog/server/
+#### ./cog/server/
 サーバーに関係するものが入っています
 
-### ./cog/util/
+#### ./cog/util/
 その他諸々入ってます
 
-### ./cog/welcome/
+#### ./cog/welcome/
 サーバー入退室関係が入ってます
-
 
 </details>
 
-# ちょうざつ
+## ちょうざつ
 https://7bot.ml/chozatu
-
