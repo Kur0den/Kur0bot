@@ -12,7 +12,7 @@ class userinfo(commands.Cog):
         if user == None:
             user = ctx.author
         member = discord.utils.get(self.bot.get_all_members(), id=user.id)
-        e = discord.Embed(title=f'{user}の詳細', description='詳細だよ', color=discord.Color.orange())
+        e = discord.Embed(title=f'{user}の詳細', description='詳細だよ', color=user.color)
         e.add_field(name='名前', value=user)
         e.add_field(name='Botかどうか', value=user.bot)
         e.add_field(name='ID', value=user.id)
