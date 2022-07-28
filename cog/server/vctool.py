@@ -446,7 +446,6 @@ class vctool(commands.Cog):
         
 
 
-#todo VCに誰もいないときはコマンドを使えないようにする
     @commands.command()
     async def vctool(self, ctx):
         if ctx.author.voice != None:
