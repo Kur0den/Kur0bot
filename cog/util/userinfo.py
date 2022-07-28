@@ -39,7 +39,7 @@ class userinfo(commands.Cog):
         )
         embed.add_field(name="アカウント作成日", value=created_at, inline=False)
 
-        await ctx.replay(embed=embed)
+        await ctx.reply(embed=embed)
 
 
 async def setup(bot):
