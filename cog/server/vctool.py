@@ -448,24 +448,26 @@ class vctool(commands.Cog):
 #todo VCに誰もいないときはコマンドを使えないようにする
     @commands.command()
     async def vctool(self, ctx):
-        if ctx.channel is self.bot.vc1:
-            await self.bot.vc1_dash.delete()
-            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-            self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
-        elif ctx.channel is self.bot.vc2:
-            await self.bot.vc2_dash.delete()
-            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-            self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
-        elif ctx.channel is self.bot.vc3:
-            await self.bot.vc3_dash.delete()
-            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-            self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
+        if ctx.author.voice != None:
+            if ctx.channel is self.bot.vc1 and ctx.author.voice.channel is self.bot.vc1:
+                await self.bot.vc1_dash.delete()
+                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
+                self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
+            elif ctx.channel is self.bot.vc2 and ctx.author.voice.channel is self.bot.vc2:
+                await self.bot.vc2_dash.delete()
+                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
+                self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
+            elif ctx.channel is self.bot.vc3 and ctx.author.voice.channel is self.bot.vc3:
+                await self.bot.vc3_dash.delete()
+                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
+                self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
+            else:
+                await ctx.send('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', delete_after=60)
         else:
-            await ctx.send('チャンネルが違うで')
-
+            await ctx.send('VCに参加してないとこのコマンドは使えないで', delete_after=60)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
