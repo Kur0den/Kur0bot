@@ -154,9 +154,21 @@ async def on_ready():
 # エラー表示
 @bot.event
 async def on_command_error(ctx, error):
+    error_ch = bot.get_channel(1002616704603525151)
     orig_error = getattr(error, "original", error)
     error_msg  = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    embed = discord.Embed(title = 'Error', description = error_msg)
-    await ctx.send(error_msg)
+    embed = discord.Embed(title=":x: Error!", description=f'エラーが発生しました', timestamp=ctx.message.created_at, color=discord.Colour.red())
+    embed.add_field(name='お問い合わせの際', value=f'お問い合わせる際にはこちらのidもお持ちください。{ctx.message.id}')
+    embed.add_field(name='ちなみにエラー内容', value=error, inline=False)
+    embed.set_footer(text="お困りの場合はBot管理者までお問い合わせください")
+    await ctx.send(embed=embed)
+    e = discord.Embed(title='エラー情報', description='',  timestamp=ctx.message.created_at, color=discord.Colour.red())
+    e.add_field(name='エラーが発生したサーバー', value=ctx.message.guild.name, inline=False)
+    e.add_field(name='エラーが発生したチャンネル', value=ctx.message.channel.name, inline=False)
+    e.add_field(name='エラーid', value=ctx.message.id, inline=False)
+    e.add_field(name='エラーが発生したコマンド', value=ctx.message.content, inline=False)
+    e.add_field(name='エラーを発生させた人', value=ctx.author, inline=False)
+    e.add_field(name='エラー内容', value=error, inline=False)
+    await error_ch.send(embed=e)
 
 bot.run(token)
