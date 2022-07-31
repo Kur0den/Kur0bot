@@ -19,18 +19,21 @@ class owner():
             if after.channel == self.bot.vc1:
                 self.bot.vc1_owner = member
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                 self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
                 await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc2:
                 self.bot.vc2_owner = member
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                 self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
                 await self.bot.vc2.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
             elif after.channel == self.bot.vc3:
                 self.bot.vc3_owner = member
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                 self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
                 await self.bot.vc3.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
@@ -60,6 +63,7 @@ class owner():
         if channel == self.bot.vc1:
             await self.bot.vc1_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
             embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
             self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
             self.bot.vc1_owner = random.choice(member)
@@ -67,6 +71,7 @@ class owner():
         elif channel == self.bot.vc2:
             await self.bot.vc2_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
             embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
             self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
             self.bot.vc2_owner = random.choice(member)
@@ -74,6 +79,7 @@ class owner():
         elif channel == self.bot.vc3:
             await self.bot.vc3_dash.delete()
             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
             embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
             self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
             self.bot.vc3_owner = random.choice(member)
@@ -391,11 +397,13 @@ class dashboard(discord.ui.View):
             await view.wait()
             await self.bot.vc1_dash.delete()
             self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
+            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
             self.bot.vc1_owner = member
             await owner.change(self, member)
         elif result == 'vc2':
             view = SelectView(self.bot.vc2,'owner')
             member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
+            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
             await view.wait()
             await self.bot.vc2_dash.delete()
             self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
@@ -404,6 +412,7 @@ class dashboard(discord.ui.View):
         elif result == 'vc3':
             view = SelectView(self.bot.vc3,'owner')
             member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
+            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
             await view.wait()
             await self.bot.vc3_dash.delete()
             self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
@@ -417,7 +426,7 @@ class dashboard(discord.ui.View):
         if interaction.channel == self.bot.vc1:
             embed = discord.Embed(title='VC1の情報', description='', color=self.bot.vc1_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc1.name)
-            embed.add_field(name='オーナー', value=self.bot.vc1_owner)
+            embed.add_field(name='オーナー', value=self.bot.vc1_owner.mention)
             embed.add_field(name='状態', value=self.bot.vc1_status)
             embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc1.members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc1.nsfw)
@@ -426,7 +435,7 @@ class dashboard(discord.ui.View):
         elif interaction.channel == self.bot.vc2:
             embed = discord.Embed(title='VC2の情報', description='', color=self.bot.vc2_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc2.name)
-            embed.add_field(name='オーナー', value=self.bot.vc2_owner)
+            embed.add_field(name='オーナー', value=self.bot.vc2_owner.mention)
             embed.add_field(name='状態', value=self.bot.vc2_status)
             embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2.members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc2.nsfw)
@@ -435,7 +444,7 @@ class dashboard(discord.ui.View):
         elif interaction.channel == self.bot.vc3:
             embed = discord.Embed(title='VC3の情報', description='', color=self.bot.vc3_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc3.name)
-            embed.add_field(name='オーナー', value=self.bot.vc3_owner)
+            embed.add_field(name='オーナー', value=self.bot.vc3_owner.mention)
             embed.add_field(name='状態', value=self.bot.vc3_status)
             embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc3.members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc3.nsfw)
@@ -455,16 +464,19 @@ class vctool(commands.Cog):
             if ctx.channel is self.bot.vc1 and ctx.author.voice.channel is self.bot.vc1:
                 await self.bot.vc1_dash.delete()
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                 self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
             elif ctx.channel is self.bot.vc2 and ctx.author.voice.channel is self.bot.vc2:
                 await self.bot.vc2_dash.delete()
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                 self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
             elif ctx.channel is self.bot.vc3 and ctx.author.voice.channel is self.bot.vc3:
                 await self.bot.vc3_dash.delete()
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                 self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
             else:
