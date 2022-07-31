@@ -520,8 +520,20 @@ class vctool(commands.Cog):
                         if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Permit':
                             await self.bot.vc3.set_permissions(member, connect=None)
                     
+                    vcmembers = before.channel.members
+                    count = 0
+                    for m in before.channel.members:
+                        if m.bot == True:
+                            vcmembers.pop(count)
+                            count -= 1
+                        count += 1
+
+                    
                     # チャンネル初期化
-                    if len(before.channel.members) == 0:
+                    if len(vcmembers) == 0:
+                        if len(before.channel.members) != 0:
+                            for bot in before.channel.members:
+                                await bot.move_to(None)
                         msg = await before.channel.send(embed=discord.Embed(title='チャンネルリセット中...', description='VCに誰もいなくなったためチャンネルをリセットしています', color=0x00ffff))
                         await before.channel.purge(limit=None, check=purge_check)
                         await msg.delete()
@@ -536,6 +548,7 @@ class vctool(commands.Cog):
                         
                         if before.channel.nsfw == True:
                             await before.channel.edit(nsfw=False)
+                    
 
                     # オーナー変更
                     else:
