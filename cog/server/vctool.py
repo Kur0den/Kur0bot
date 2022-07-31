@@ -428,18 +428,18 @@ class dashboard(discord.ui.View):
             embed.add_field(name='名前', value=self.bot.vc2.name)
             embed.add_field(name='オーナー', value=self.bot.vc2_owner)
             embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
-            await interaction.response.send_message(embed=embed, delete_after=60)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members))
+            embed.add_field(name='NSFWかどうか', value=self.bot.vc2.nsfw)
+            await interaction.response.send_message(embed=embed)
         elif interaction.channel == self.bot.vc3:
             members = [i.name for i in self.bot.vc3.members]
             embed = discord.Embed(title='VC3の情報', description='')
-            embed.add_field(name='名前', value=self.bot.vc2.name)
-            embed.add_field(name='オーナー', value=self.bot.vc2_owner)
-            embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
-            await interaction.response.send_message(embed=embed, delete_after=60)
+            embed.add_field(name='名前', value=self.bot.vc3.name)
+            embed.add_field(name='オーナー', value=self.bot.vc3_owner)
+            embed.add_field(name='状態', value=self.bot.vc3_status)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(members))
+            embed.add_field(name='NSFWかどうか', value=self.bot.vc3.nsfw)
+            await interaction.response.send_message(embed=embed)
 
 
 class vctool(commands.Cog):
