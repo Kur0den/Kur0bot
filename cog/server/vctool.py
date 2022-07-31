@@ -511,15 +511,12 @@ class vctool(commands.Cog):
                     
                     # ロック時等の処理
                     if before.channel == self.bot.vc1:
-                        await self.bot.vc1.edit(name='VC-1(128Kbps)')
                         if self.bot.vc1_status == 'Lock' or self.bot.vc1_status == 'Permit':
                             await self.bot.vc1.set_permissions(member, connect=None)
                     elif before.channel == self.bot.vc2:
-                        await self.bot.vc2.edit(name='VC-2(128Kbps)')
                         if self.bot.vc2_status == 'Lock' or self.bot.vc2_status == 'Permit':
                             await self.bot.vc2.set_permissions(member, connect=None)
                     elif before.channel == self.bot.vc3:
-                        await self.bot.vc3.edit(name='VC-3(64Kbps)')
                         if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Permit':
                             await self.bot.vc3.set_permissions(member, connect=None)
                     
