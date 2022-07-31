@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 import random
+import asyncio
 
 
 def purge_check(m):    return not m.embeds[0].title in ['チャンネルリセット中...'] if bool(m.embeds) else True
@@ -414,29 +415,31 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='VCの情報', style=discord.ButtonStyle.secondary, emoji='ℹ', row=4)
     async def info(self, interaction: discord.Integration, button: discord.ui.Button):
         if interaction.channel == self.bot.vc1:
-            embed = discord.Embed(title='VC1の情報', description='')
+            embed = discord.Embed(title='VC1の情報', description='', color=self.bot.vc1_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc1.name)
             embed.add_field(name='オーナー', value=self.bot.vc1_owner)
             embed.add_field(name='状態', value=self.bot.vc1_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc1.members))
             embed.add_field(name='NSFWかどうか', value=self.bot.vc1.nsfw)
-            await interaction.response.send_message(embed=embed, delete_after=60)
+            await interaction.channel.send(embed=embed, delete_after=60)
+        
         elif interaction.channel == self.bot.vc2:
-            embed = discord.Embed(title='VC2の情報', description='')
+            embed = discord.Embed(title='VC2の情報', description='', color=self.bot.vc2_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc2.name)
             embed.add_field(name='オーナー', value=self.bot.vc2_owner)
             embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
-            await interaction.response.send_message(embed=embed, delete_after=60)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2.members))
+            embed.add_field(name='NSFWかどうか', value=self.bot.vc2.nsfw)
+            await interaction.channel.send(embed=embed, delete_after=60)
+        
         elif interaction.channel == self.bot.vc3:
-            embed = discord.Embed(title='VC3の情報', description='')
-            embed.add_field(name='名前', value=self.bot.vc2.name)
-            embed.add_field(name='オーナー', value=self.bot.vc2_owner)
-            embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2_members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc2_nsfw)
-            await interaction.response.send_message(embed=embed, delete_after=60)
+            embed = discord.Embed(title='VC3の情報', description='', color=self.bot.vc3_owner.top_role.color)
+            embed.add_field(name='名前', value=self.bot.vc3.name)
+            embed.add_field(name='オーナー', value=self.bot.vc3_owner)
+            embed.add_field(name='状態', value=self.bot.vc3_status)
+            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc3.members))
+            embed.add_field(name='NSFWかどうか', value=self.bot.vc3.nsfw)
+            await interaction.channel.send(embed=embed, delete_after=60)
 
 
 
@@ -445,7 +448,7 @@ class vctool(commands.Cog):
         self.bot = bot
         
 
-#todo VCに誰もいないときはコマンドを使えないようにする
+
     @commands.command()
     async def vctool(self, ctx):
         if ctx.author.voice != None:
