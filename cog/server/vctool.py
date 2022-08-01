@@ -220,18 +220,27 @@ class dashboard(discord.ui.View):
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
-    @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
-    async def permit(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label='プライベートモード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
+    async def Private(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            if await status.check(self, self.bot.vc1) != 'Permit':
+            if await status.check(self, self.bot.vc1) != 'Private':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにプライベートモードに設定されています', ephemeral=True)
+        
         elif result == 'vc2':
-            if await status.check(self, self.bot.vc1) != 'Permit':
+            if await status.check(self, self.bot.vc1) != 'Private':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにプライベートモードに設定されています', ephemeral=True)
+        
         elif result == 'vc3':
-            if await status.check(self, self.bot.vc1) != 'Permit':
+            if await status.check(self, self.bot.vc1) != 'Private':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
+            else:
+                await interaction.response.send_message('すでにプライベートモードに設定されています', ephemeral=True)
+
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
@@ -514,13 +523,13 @@ class vctool(commands.Cog):
                     
                     # ロック時等の処理
                     if before.channel == self.bot.vc1:
-                        if self.bot.vc1_status == 'Lock' or self.bot.vc1_status == 'Permit':
+                        if self.bot.vc1_status == 'Lock' or self.bot.vc1_status == 'Private':
                             await self.bot.vc1.set_permissions(member, connect=None)
                     elif before.channel == self.bot.vc2:
-                        if self.bot.vc2_status == 'Lock' or self.bot.vc2_status == 'Permit':
+                        if self.bot.vc2_status == 'Lock' or self.bot.vc2_status == 'Private':
                             await self.bot.vc2.set_permissions(member, connect=None)
                     elif before.channel == self.bot.vc3:
-                        if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Permit':
+                        if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Private':
                             await self.bot.vc3.set_permissions(member, connect=None)
                     
                     vcmembers = before.channel.members
