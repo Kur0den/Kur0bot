@@ -11,14 +11,11 @@ timezone = pytz.timezone('UTC')
 
 
 
-
-
-
 def to_min(time_delta):
     seconds = time_delta.seconds
     return seconds // 60
 
-class Voice_money(commands.Cog):
+class VoiceMoney(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
@@ -106,4 +103,4 @@ class Voice_money(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Voice_money(bot))
+    await bot.add_cog(VoiceMoney(bot))
