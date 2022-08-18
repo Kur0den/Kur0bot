@@ -101,6 +101,10 @@ async def on_ready():
     for file in os.listdir('./cog/money'):
         if file.endswith('.py'):
             try:
+                # 一時的にVC報酬を消し飛ばす
+                if file == 'vcmoney.py':
+                    continue
+
                 await bot.load_extension(f'cog.money.{file[:-3]}')
                 print(f'Loaded cog: money.{file[:-3]}')
             except:
