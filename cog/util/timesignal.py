@@ -18,7 +18,7 @@ class timesignal(commands.Cog):
         now = datetime.now().strftime('%H')
         if datetime.now().strftime('%M') == '00':
             
-            self.embed = discord.Embed(title='時報', colour=discord.Colour(0x4b78e6), description=f'{now}時ちょうどをお知らせします')
+            self.embed = discord.Embed(title='時報', colour=discord.Colour(0x4b78e6), description=f'{now}時ぐらいをお知らせします')
 
             self.embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/733707711228674102/986178408696393768/spin.gif')
             
@@ -33,7 +33,7 @@ class timesignal(commands.Cog):
             print(f'時報({now}時)')
             
         elif datetime.now().strftime('%M') == '30':
-                self.embed = discord.Embed(title='時報', colour=discord.Colour(0x4b78e6), description=f'{now}時30分をお知らせします')
+                self.embed = discord.Embed(title='時報', colour=discord.Colour(0x4b78e6), description=f'{now}時30分ぐらいをお知らせします')
 
                 self.embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/733707711228674102/986178408696393768/spin.gif')
                 
