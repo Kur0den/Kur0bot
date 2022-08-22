@@ -224,13 +224,10 @@ class dashboard(discord.ui.View):
     async def permit(self, interaction: discord.Interaction, button: discord.ui.Button):
         result = await owner.check(self, interaction.user, interaction.channel)
         if result == 'vc1':
-            if await status.check(self, self.bot.vc1) != 'Normal':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         elif result == 'vc2':
-            if await status.check(self, self.bot.vc1) != 'Normal':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         elif result == 'vc3':
-            if await status.check(self, self.bot.vc1) != 'Normal':
                 await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
