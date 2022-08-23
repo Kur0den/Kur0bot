@@ -7,7 +7,6 @@ class Slashtest(commands.Cog):
         self.bot = bot
 
     @app_commands.command()
-    @app_commands.guilds(733707710784340100)
     @app_commands.guild_only()
     async def test(self, interaction): 
 
