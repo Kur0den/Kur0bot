@@ -4,3 +4,5 @@ pytz
 python-dotenv
 jishaku
 python-dateutil
+Motor
+dnspython
