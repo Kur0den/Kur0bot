@@ -10,6 +10,7 @@ import discord
 from discord.ext import commands
 from discord.ext.tasks import loop
 from dotenv import load_dotenv
+from motor import motor_asyncio as motor
 
 
 load_dotenv()
@@ -23,6 +24,9 @@ bot = commands.Bot(
     )
 
 guild_id = 733707710784340100
+
+
+
 
 
 @bot.event
@@ -72,6 +76,12 @@ async def on_ready():
 
     
     bot.botrole = bot.guild.get_role(734059242977230969)
+    
+    # DataBase
+    
+    dbclient = motor.AsyncIOMotorClient(f"mongodb+srv://Kur0bot:{os.environ['DB_PASS']}@cluster0.stm6pr5.mongodb.net/<データベース名>?retryWrites=true&w=majority")
+    db = dbclient["Kur0Bot"]
+    profiles_collection = db.profiles
     
     # config.jsonをロード
     try:
