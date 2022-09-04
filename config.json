@@ -14,5 +14,7 @@
     "reply_money_max":      "30",
     "reply_origin_bonus":   "10",
   
-    "siritori_fine":    "100"
+    "siritori_fine":        "100",
+
+    "kazuma_kill_switch":   "True"
 }
