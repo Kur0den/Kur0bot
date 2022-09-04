@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 
 class automod(commands.Cog):
@@ -9,9 +10,8 @@ class automod(commands.Cog):
     @commands.Cog.listener(name='on_automod_action')
     async def automod_notice(self,execution):
         channel = self.bot.get_channel(987240589949034547)
-        print(execution)
-        await channel.send(self.bot.unei_role.mention)
-
+        if execution.action.type == discord.AutoModRuleActionType.send_alert_message:
+            await channel.send("検知(Test)")
     
 
 async def setup(bot):
