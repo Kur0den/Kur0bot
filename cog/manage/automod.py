@@ -11,7 +11,7 @@ class automod(commands.Cog):
     async def automod_notice(self,execution):
         channel = self.bot.get_channel(987240589949034547)
         if execution.action.type == discord.AutoModRuleActionType.send_alert_message:
-            await channel.send("検知(Test)")
+            await channel.send(self.bot.unei_role.mention)
     
 
 async def setup(bot):
