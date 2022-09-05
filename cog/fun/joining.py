@@ -14,15 +14,6 @@ class Joining(commands.Cog):
     @group.command(name="joining", description='このサーバーに参加している期間')
     @app_commands.guild_only()
     async def _joining(self, interaction, user:  discord.Member = None):
-        #options=[
-        #    {
-        #        "name": "user",
-        #        "description": "表示するユーザー ※未指定で自分",
-        #        "type": 6,
-        #        "required": False
-        #    }
-        #])
-        
         now = datetime.datetime.now(tz=datetime.timezone.utc)
         if user == None:
             user = interaction.user
