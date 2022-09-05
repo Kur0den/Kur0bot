@@ -79,9 +79,9 @@ async def on_ready():
     
     # DataBase
     
-    dbclient = motor.AsyncIOMotorClient(f"mongodb+srv://Kur0bot:{os.environ['DB_PASS']}@cluster0.stm6pr5.mongodb.net/<データベース名>?retryWrites=true&w=majority")
-    db = dbclient["Kur0Bot"]
-    profiles_collection = db.profiles
+    bot.dbclient = motor.AsyncIOMotorClient(f"mongodb+srv://Kur0bot:{os.environ['DB_PASS']}@cluster0@0den.swocklk.mongodb.net/0den?retryWrites=true&w=majority")
+    bot.db = bot.dbclient["Kur0Bot"]
+    bot.profiles_collection = bot.db.profiles
     
     # config.jsonをロード
     try:
