@@ -550,7 +550,7 @@ class vctool(commands.Cog):
 
                     
                     # チャンネル初期化
-                    if len(vcmembers) == 1:
+                    if len(vcmembers) == 0:
                         if len(before.channel.members) != 0:
                             for bot in before.channel.members:
                                 await bot.move_to(None)
