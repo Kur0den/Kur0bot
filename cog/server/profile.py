@@ -29,6 +29,23 @@ class profile(commands.Cog):
         embed = discord.Embed(title=f"`{target}`のプロフィール", description=profile["text"])  # 埋め込みを作成
         return await ctx.reply(embed=embed)  # 埋め込みを送信
 
+    @commands.command(name="pdelete", aliases=["pdel"])
+    async def delete_profile(self, ctx, target: discord.User=None):  # ユーザーを指定
+        if target == None:
+            result = await self.bot.profiles_collection.delete_one({
+                "userid": ctx.author.id  # useridで条件を指定
+            })
+        else:
+            if ctx.permissions.administrator == True:
+                result = await self.bot.profiles_collection.delete_one({
+                    "userid": target.id  # useridで条件を指定
+                })
+            else:
+                await ctx.send('他人のプロフィールの削除はできません。')
+                return
+        if result.deleted_count == 0:  # 削除できなかったら
+            return await ctx.reply("見付かりませんでした。")
+        return await ctx.reply("削除しました。")
 
 async def setup(bot):
     await bot.add_cog(profile(bot))
