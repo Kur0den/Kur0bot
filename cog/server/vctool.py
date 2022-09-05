@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 from datetime import datetime
 import random
@@ -464,31 +465,44 @@ class vctool(commands.Cog):
         
 
 
-    @commands.command()
-    async def vctool(self, ctx):
-        if ctx.author.voice != None:
-            if ctx.channel is self.bot.vc1 and ctx.author.voice.channel is self.bot.vc1:
-                await self.bot.vc1_dash.delete()
+    group = app_commands.Group(name="vctool", description="VC系のツールです", guild_ids=[733707710784340100], guild_only=True)
+    
+    @group.command(name="dashboard", description='ダッシュボードを表示します')
+    @app_commands.guild_only()
+    async def vctool(self, interaction: discord.Interaction):
+        if interaction.user.voice != None:
+            if interaction.channel is self.bot.vc1 and interaction.user.voice.channel is self.bot.vc1:
+                try:
+                    await self.bot.vc1_dash.delete()
+                except:
+                    pass
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
                 embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
-            elif ctx.channel is self.bot.vc2 and ctx.author.voice.channel is self.bot.vc2:
-                await self.bot.vc2_dash.delete()
+                self.bot.vc1_dash = await interaction.channel.send(embed=embed, view=dashboard(self, timeout=None))
+            elif interaction.channel is self.bot.vc2 and interaction.user.voice.channel is self.bot.vc2:
+                try:
+                    await self.bot.vc2_dash.delete()
+                except:
+                    pass
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
                 embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
-            elif ctx.channel is self.bot.vc3 and ctx.author.voice.channel is self.bot.vc3:
-                await self.bot.vc3_dash.delete()
+                self.bot.vc2_dash = await interaction.channel.send(embed=embed, view=dashboard(self, timeout=None))
+            elif interaction.channel is self.bot.vc3 and interaction.user.voice.channel is self.bot.vc3:
+                try:
+                    await self.bot.vc3_dash.delete()
+                except:
+                    pass
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
                 embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
                 embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
+                self.bot.vc3_dash = await interaction.channel.send(embed=embed, view=dashboard(self, timeout=None))
             else:
-                await ctx.send('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', delete_after=60)
+                await interaction.response.send_message('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', ephemeral=True)
         else:
-            await ctx.send('VCに参加してないとこのコマンドは使えないで', delete_after=60)
+            await interaction.response.send_message('VCに参加してないとこのコマンドは使えないで', ephemeral=True)
+        await interaction.response.send_message('送信したで', ephemeral=True)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -536,7 +550,7 @@ class vctool(commands.Cog):
 
                     
                     # チャンネル初期化
-                    if len(vcmembers) == 0:
+                    if len(vcmembers) == 1:
                         if len(before.channel.members) != 0:
                             for bot in before.channel.members:
                                 await bot.move_to(None)
