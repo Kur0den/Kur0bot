@@ -11,6 +11,7 @@ from discord.ext import commands
 from discord.ext.tasks import loop
 from dotenv import load_dotenv
 from motor import motor_asyncio as motor
+import urllib
 
 
 load_dotenv()
@@ -78,8 +79,8 @@ async def on_ready():
     bot.botrole = bot.guild.get_role(734059242977230969)
     
     # DataBase
-    
-    bot.dbclient = motor.AsyncIOMotorClient(f"mongodb+srv://Kur0bot:{os.environ['DB_PASS']}@cluster0@0den.swocklk.mongodb.net/0den?retryWrites=true&w=majority")
+    # {os.environ['DB_PASS']}
+    bot.dbclient = motor.AsyncIOMotorClient(f"mongodb+srv://Kur0bot:{os.environ['DB_PASS']}@0den.swocklk.mongodb.net/0den?retryWrites=true&w=majority")
     bot.db = bot.dbclient["Kur0Bot"]
     bot.profiles_collection = bot.db.profiles
     
