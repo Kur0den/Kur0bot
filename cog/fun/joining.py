@@ -13,7 +13,7 @@ class Joining(commands.Cog):
     
     @group.command(name="joining", description='このサーバーに参加している期間')
     @app_commands.guild_only()
-    async def _joining(self, intaraction):
+    async def _joining(self, interaction, user:  discord.Member = None):
         #options=[
         #    {
         #        "name": "user",
@@ -25,7 +25,7 @@ class Joining(commands.Cog):
         
         now = datetime.datetime.now(tz=datetime.timezone.utc)
         if user == None:
-            user = interaction.author
+            user = interaction.user
             joined = user.joined_at
             delta = now - joined
             t = trans(delta)
@@ -34,7 +34,7 @@ class Joining(commands.Cog):
                 description=f'{t.day}日 {t.hour}時間 {t.min}分 {t.sec}秒 {t.milli}ミリ秒 {t.micro}マイクロ秒',
                 color=user.color
             )
-            await ctx.send(embeds=[embed])
+            await interaction.response.send_message(embeds=[embed])
             return
 
         joined = user.joined_at
@@ -45,7 +45,7 @@ class Joining(commands.Cog):
             description=f'{t.day}日 {t.hour}時間 {t.min}分 {t.sec}秒 {t.milli}ミリ秒 {t.micro}マイクロ秒',
             color=user.color
         )
-        await ctx.send(embeds=[embed])
+        await interaction.response.send_message(embeds=[embed])
         return
 
 
