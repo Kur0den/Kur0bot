@@ -177,7 +177,7 @@ class thmanager(commands.Cog):
 
                 await view.wait()
                 if view.value == True:
-                    await interaction.channel.edit(archived=True, reason=f'スレッドアーカイブコマンド\n実行者: {interaction.user}')
+                    await interaction.channel.edit(archived=True, locked=True, reason=f'スレッドアーカイブコマンド\n実行者: {interaction.user}')
 
 
 
