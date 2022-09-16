@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from datetime import datetime
+import chozatu
 
 
 
@@ -10,7 +11,6 @@ class NoticeButton(discord.ui.View):
         super().__init__()
         self.value = None
         self.owner = owner
-
 
     # When the confirm button is pressed, set the inner value to `True` and
     # stop the View from listening to more input.
@@ -34,6 +34,34 @@ class NoticeButton(discord.ui.View):
         else:
             await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
 
+class CloseButton(discord.ui.View):
+    def __init__(self, owner):
+        super().__init__()
+        self.value = None
+        self.owner = owner
+
+    # When the confirm button is pressed, set the inner value to `True` and
+    # stop the View from listening to more input.
+    # We also send the user an ephemeral message that we're confirming their choice.
+    @discord.ui.button(label='アーカイブする', style=discord.ButtonStyle.red, emoji='🔔')
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.owner.id:
+            await interaction.response.send_message('アーカイブしました', ephemeral=True)
+            self.value = True
+            self.stop()
+        else:
+            await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
+
+    # This one is similar to the confirmation button except sets the inner value to `False`
+    @discord.ui.button(label='アーカイブしない', style=discord.ButtonStyle.green, emoji='🔕')
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.owner.id:
+            await interaction.response.send_message('キャンセルしました', ephemeral=True)
+            self.value = False
+            self.stop()
+        else:
+            await interaction.response.send_message('スレッドの作成者ではないため実行できません', ephemeral=True)
+
 
 
 
@@ -43,13 +71,15 @@ class thmanager(commands.Cog):
         self.noticech = bot.get_channel(975618002953318420)
         self.noticerole = bot.guild.get_role(956128433660899358)
     
+    group = app_commands.Group(name="thread", description="Thread manager", guild_ids=[733707710784340100], guild_only=True)
+
     @commands.Cog.listener()
     async def on_thread_create(self,thread):
         await thread.join()
         if not thread.parent.type is discord.ChannelType.forum:
             print(f'スレッド作成: {thread.name}')
             
-            embed = discord.Embed(title="スレッド通知", colour=discord.Colour(0x47ddcc), description="このスレッドを通知しますか?")
+            embed = discord.Embed(title="Thread Manager", colour=discord.Colour(0x47ddcc), description="このスレッドを通知しますか?")
             view =  NoticeButton(thread.owner)
             message = await thread.send(embed = embed, view = view, delete_after = 60)
 
@@ -73,7 +103,7 @@ class thmanager(commands.Cog):
 
     @commands.Cog.listener()
     async def on_thread_update(self, before, after):
-        if not thread.parent.type is discord.ChannelType.forum:
+        if not before.parent.type is discord.ChannelType.forum:
             print(before.archived, after.archived)
             
             if before.locked is False and after.locked is True:
@@ -118,7 +148,6 @@ class thmanager(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_thread_delete(self, payload):
-        if not thread.parent.type is discord.ChannelType.forum:
             thread = payload.thread
             if thread is not None:
                 embed = discord.Embed(title="スレッド通知", colour=0xff4500, description="スレッドが削除されました", timestamp=datetime.now())
@@ -137,6 +166,19 @@ class thmanager(commands.Cog):
             await self.noticech.send(embed=embed)
     
     
+    @group.command(name="close", description='スレッドをアーカイブします')
+    @app_commands.guild_only()
+    async def thclose(self, interaction):
+        if interaction.channel.type is discord.ChannelType.public_thread or discord.ChannelType.private_thread:
+            if not interaction.user is interaction.channel.owner:
+                embed = discord.Embed(title="Thread Manager", colour=discord.Colour(0xff0000), description="このスレッドをアーカイブしますか?")
+                view =  CloseButton(interaction.channel.owner)
+                await interaction.response.send_message(embed = embed, view = view, ephemeral=True)
+
+                await view.wait()
+                if view.value == True:
+                    await interaction.channel.edit(archived=True, reason=f'スレッドアーカイブコマンド\n実行者: {interaction.user}')
+
 
 
 
