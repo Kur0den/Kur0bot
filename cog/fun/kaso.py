@@ -34,8 +34,6 @@ class kaso(commands.Cog):
     async def on_message(self, message):
         if not message.content == '過疎' or message.author.bot:
             return
-
-        # msgs = await message.channel.history(limit=2).flatten()
         msgs = [message async for message in message.channel.history(limit=2)]
 
         n = message.created_at
