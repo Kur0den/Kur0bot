@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 from datetime import datetime
 
 
@@ -134,6 +135,8 @@ class thmanager(commands.Cog):
                 embed.add_field(name="スレッドが削除されたチャンネル", value=self.bot.get_channel(payload.parent_id).name, inline=True)
                 print('スレッド削除(キャッシュ無)')
             await self.noticech.send(embed=embed)
+    
+    
 
 
 
