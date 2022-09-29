@@ -166,18 +166,22 @@ class thmanager(commands.Cog):
             await self.noticech.send(embed=embed)
     
     
-    @group.command(name="close", description='スレッドをアーカイブします')
+    @group.command(name="lock", description='スレッドをロックします')
     @app_commands.guild_only()
     async def thclose(self, interaction):
-        if interaction.channel.type is discord.ChannelType.public_thread or discord.ChannelType.private_thread:
-            if not interaction.user is interaction.channel.owner:
-                embed = discord.Embed(title="Thread Manager", colour=discord.Colour(0xff0000), description="このスレッドをアーカイブしますか?")
+        if interaction.channel.type is (discord.ChannelType.public_thread or discord.ChannelType.private_thread):
+            if interaction.user.id is interaction.channel.owner.id:
+                embed = discord.Embed(title="Thread Manager", colour=discord.Colour(0xff0000), description="このスレッドをロックしますか?")
                 view =  CloseButton(interaction.channel.owner)
                 await interaction.response.send_message(embed = embed, view = view, ephemeral=True)
 
                 await view.wait()
                 if view.value == True:
                     await interaction.channel.edit(archived=True, locked=True, reason=f'スレッドアーカイブコマンド\n実行者: {interaction.user}')
+            else:
+                await interaction.response.send_message('スレッドの作成者ではないため実行できません',ephemeral=True)
+        else:
+            await interaction.response.send_message('このコマンドはスレッド又はフォーラムチャンネルでのみ実行可能です',ephemeral=True)
 
 
 
