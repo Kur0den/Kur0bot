@@ -1,18 +1,17 @@
 import os
+import uuid
 
 import discord
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
 from gtts import gTTS
-from langdetect import detect
-import uuid
-
 
 
 class tts(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.vc_client = None
+        self.file_deleter.start()
 
     group = app_commands.Group(name="tts", description="Text To Speech", guild_ids=[733707710784340100], guild_only=True)
 
@@ -40,20 +39,24 @@ class tts(commands.Cog):
                     return
         await interaction.response.send_message('失敗しました')
 
-
-
-
     # メッセージ取得
     @commands.Cog.listener()
     async def on_message(self, message):
         if self.vc_client != None:
             if message.author.bot is False:
                 if message.channel is self.vc_client.channel:
-                    tts = gTTS(text=message.content, lang=detect(message.content), tld='jp')
+                    g_tts = gTTS(text=message.content, lang='ja', tld='jp')
                     name = uuid.uuid1()
-                    tts.save(f'tts/{name}.mp3')
-                    self.vc_client.play(f'{name}.wav')
-                    os.remove(f'tts/{name}.mp3')
+                    g_tts.save(f'./tts/{name}.mp3')
+                    self.vc_client.play(discord.FFmpegPCMAudio(f"./tts/{name}.mp3"))
+
+    @tasks.loop(seconds=60)
+    async def file_deleter():
+        for file in os.listdir('./tts'):
+            os.remove(file)
+    
+    async def cog_unload(self):
+            self.timesignal.stop()
 
 
 async def setup(bot: commands.Bot) -> None:
