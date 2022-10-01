@@ -1,6 +1,7 @@
-discord
+discord[voice]
 aiohttp
 pytz
 python-dotenv
 jishaku
 python-dateutil
+gtts
