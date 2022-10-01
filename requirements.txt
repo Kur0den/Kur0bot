@@ -6,3 +6,4 @@ jishaku
 python-dateutil
 gtts
 langdetect
+ffmpeg
