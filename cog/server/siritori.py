@@ -3,6 +3,7 @@ import datetime
 import aiohttp
 import discord
 from discord.ext import commands
+from discord import app_commands
 
 
 def purge_check(m):
