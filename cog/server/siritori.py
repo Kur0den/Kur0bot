@@ -55,13 +55,22 @@ class Siritori(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command()
-    @commands.has_role(738956776258535575) # 運営ロール
-    @commands.check(is_siritori_ch) # しりとりチャンネル
-    async def reset(self, ctx):
-        if not self.bot.siritori:
+    group = app_commands.Group(name="siritori", description="しりとり関連", guild_ids=[733707710784340100], guild_only=True)
+    
+    @group.command(name="reset", description='リセットします')
+    async def reset(self, interaction: discord.Interaction):
+        if interaction.user.get_role(self.bot.unei_role.id) is not None:
+            if interaction.channel_id == self.bot.siritori_ch.id:
+                if not self.bot.siritori:
+                    return
+                await interaction.response.send_message('リセットします',ephemeral=True)
+                
+                await siritori_reset(self)
+                return
+            await interaction.response.send_message('しりとり部屋以外は実行できません',ephemeral=True)
             return
-        await siritori_reset(self)
+        await interaction.response.send_message('運営以外は実行できません',ephemeral=True)
+    
     
     @commands.command()
     @commands.check(is_siritori_ch) # しりとりチャンネル
