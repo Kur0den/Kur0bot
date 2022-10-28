@@ -67,36 +67,35 @@ class Siritori(commands.Cog):
                 
                 await siritori_reset(self)
                 return
-            await interaction.response.send_message('しりとり部屋以外は実行できません',ephemeral=True)
+            await interaction.response.send_message('しりとり部屋以外では実行できません',ephemeral=True)
             return
         await interaction.response.send_message('運営以外は実行できません',ephemeral=True)
     
-    
-    @commands.command()
-    @commands.check(is_siritori_ch) # しりとりチャンネル
-    async def rem(self, ctx, moji):
-        if not self.bot.siritori:
-            return
-        if not moji in self.bot.siritori_list:
-            await ctx.send(embed=discord.Embed(title='発言されたことのない単語です', color=0xff0000), delete_after=5.0)
-            await ctx.message.delete()
-            return
-        if self.bot.unei_role in ctx.author.roles:
-            async for msg in ctx.channel.history():
-                if msg.content == moji:
-                    await msg.delete()
-            self.bot.siritori_list.remove(moji)
-            await ctx.send(embed=discord.Embed(title=f'”{moji}”を削除しました', color=0x00ffff))
-            return
-        
-        async for msg in ctx.channel.history():
-            if msg.content == moji and msg.author.id == ctx.author.id:
-                await msg.delete()
-                self.bot.siritori_list.remove(moji)
-                await ctx.send(embed=discord.Embed(title=f'”{moji}”を削除しました', color=0x00ffff))
+    @group.command(name="remove", description='単語を削除します')
+    async def remove(self, interaction: discord.Interaction, moji: str):
+        if interaction.channel_id == self.bot.siritori_ch.id:
+            if not self.bot.siritori:
                 return
-        await ctx.send(embed=discord.Embed(f'過去100メッセージに{ctx.author.mention}が送信した”{moji}”という内容のメッセージがみつかりませんでした', color=0xff0000), delete_after=5.0)
-        return
+            if not moji in self.bot.siritori_list:
+                await interaction.response.send_message(embed=discord.Embed(title='発言されたことのない単語です', color=0xff0000), ephemeral=True)
+                return
+            if self.bot.unei_role in interaction.user.roles:
+                async for msg in interaction.channel.history():
+                    if msg.content == moji:
+                        await msg.delete()
+                self.bot.siritori_list.remove(moji)
+                await interaction.response.send_message(embed=discord.Embed(title=f'”{moji}”を削除しました', color=0x00ffff))
+                return
+            
+            async for msg in interaction.channel.history():
+                if msg.content == moji and msg.author.id == interaction.user.id:
+                    await msg.delete()
+                    self.bot.siritori_list.remove(moji)
+                    await interaction.responce.send_message(embed=discord.Embed(title=f'”{moji}”を削除しました', color=0x00ffff))
+                    return
+            await interaction.response.send(embed=discord.Embed(f'過去100メッセージに{interaction.user.mention}が送信した”{moji}”という内容のメッセージがみつかりませんでした', color=0xff0000), ephemeral=True)
+            return
+        await interaction.response.send_message('しりとり部屋以外では実行できません',ephemeral=True)
     
     @commands.command()
     @commands.check(is_siritori_ch) # しりとりチャンネル
