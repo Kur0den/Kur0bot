@@ -4,5 +4,5 @@ pytz
 python-dotenv
 jishaku
 python-dateutil
-gtts
+gTTS
 ffmpeg

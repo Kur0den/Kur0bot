@@ -1,10 +1,11 @@
 import asyncio
 import os
+import shutil
 import traceback
+from datetime import datetime
 from json import load
 from os import sep as ossep
 from pathlib import Path
-from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -69,6 +70,9 @@ async def on_ready():
     bot.vc2_status = 'Normal'
     bot.vc3_status = 'Normal'
 
+    bot.tts_file = '.tts_voice'
+    shutil.rmtree(bot.tts_file)
+    os.mkdir(bot.tts_file)
     
     bot.botrole = bot.guild.get_role(734059242977230969)
     
