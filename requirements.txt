@@ -1,4 +1,4 @@
-discord[voice]
+discord.py[voice]
 aiohttp
 pytz
 python-dotenv
