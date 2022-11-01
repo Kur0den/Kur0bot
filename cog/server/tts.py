@@ -19,8 +19,8 @@ class tts(commands.Cog):
     @group.command(name='connect', description='VCに接続します')
     @app_commands.guild_only()
     async def join(self, interaction: discord.Interaction):
-        if interaction.channel is (self.bot.vc1 or self.bot.vc2 or self.bot.vc3):
-            if self.bot.voice_clients == []:
+        if interaction.channel is self.bot.vc1 or interaction.channel is self.bot.vc2 or interaction.channel is self.bot.vc3:
+            if self.bot.guild.voice_client == None:
                 if interaction.user.voice.channel is interaction.channel:
                     await interaction.channel.connect()
                     await interaction.response.send_message('接続しました')
