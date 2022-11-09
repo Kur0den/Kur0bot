@@ -71,7 +71,10 @@ async def on_ready():
     bot.vc3_status = 'Normal'
 
     bot.tts_file = '.tts_voice'
-    shutil.rmtree(bot.tts_file)
+    try:
+        shutil.rmtree(bot.tts_file)
+    except:
+        pass
     os.mkdir(bot.tts_file)
     
     bot.botrole = bot.guild.get_role(734059242977230969)
