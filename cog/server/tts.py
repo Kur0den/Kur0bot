@@ -38,7 +38,13 @@ class tts(commands.Cog):
                     await interaction.response.send_message('切断しました')
                     return
         await interaction.response.send_message('失敗しました')
-
+    
+    # stopコマンド
+    @group.command(name='stop', description='読み上げを停止します')
+    async def stop(self, interaction: discord.Interaction)
+        if interaction.channel is self.bot.guild.voice_client.channel:
+            self.bot.guild.voice_client.stop()
+    
     # メッセージ取得
     @commands.Cog.listener()
     async def on_message(self, message):
