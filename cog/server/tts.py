@@ -38,13 +38,19 @@ class tts(commands.Cog):
                     await interaction.response.send_message('切断しました')
                     return
         await interaction.response.send_message('失敗しました')
-    
+
     # stopコマンド
     @group.command(name='stop', description='読み上げを停止します')
-    async def stop(self, interaction: discord.Interaction)
+    async def stop(self, interaction: discord.Interaction):
         if interaction.channel is self.bot.guild.voice_client.channel:
-            self.bot.guild.voice_client.stop()
-    
+            try:
+                self.bot.guild.voice_client.stop()
+                await interaction.responce.send_message('読み上げを停止しました')
+            except:
+                await interaction.responce.send_message('なぜか実行できませんでした', ephemeral=True)
+        else:
+            await interaction.responce.send_message('なぜか実行できませんでした', ephemeral=True)
+
     # メッセージ取得
     @commands.Cog.listener()
     async def on_message(self, message):
