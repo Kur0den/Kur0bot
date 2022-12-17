@@ -94,10 +94,10 @@ class tts(commands.Cog):
                 # 入退出以外は弾く
                 if before.channel != after.channel:
                     # 入室
-                    if after.channel is not None and after.channel != stage:
+                    if after.channel is not None and after.channel != self.bot.stage:
                         message = (f'{member.name}:が入室しました')
                     # 退出
-                    elif before.channel is not None and before.channel != stage:
+                    elif before.channel is not None and before.channel != self.bot.stage:
                         message = (f'{member.name}:が退室しました')
                     else:
                         return
