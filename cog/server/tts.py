@@ -58,9 +58,19 @@ class tts(commands.Cog):
             if message.author.bot is False:
                 if message.channel is self.bot.guild.voice_client.channel:
                     message_queue = deque([])
+                    i = 0
+                    for m in [message async for message in message.channel.history(limit=2)]:
+                        if i == 0:
+                            m1 = m.author.id
+                        else:
+                            m2 = m.author.id
+                        i = +1
                     usernick = message.author.display_name
                     message = message.content[:100]
-                    message = usernick + ":" + message
+                    if m1 == m2:
+                        pass
+                    else:
+                        message = usernick + ":" + message
                     if not self.bot.guild.voice_client.is_playing():
                         g_tts = gTTS(text=message, lang='ja', tld='jp')
                         name = uuid.uuid1()
