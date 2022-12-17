@@ -105,9 +105,6 @@ class tts(commands.Cog):
                     name = uuid.uuid1()
                     g_tts.save(f'./.tts_voice/{name}.mp3')
                     self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
-
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
         if member.id is self.bot.user.id:
             if before.channel is not None:
                 shutil.rmtree(self.bot.tts_file)
