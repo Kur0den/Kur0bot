@@ -87,6 +87,27 @@ class tts(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        # TTS実行中か判断
+        if self.bot.guild.voice_client != None:
+            # 入退出処理
+            if member.bot is False:
+                # 入退出以外は弾く
+                if before.channel != after.channel:
+                    # 入室
+                    if after.channel is not None and after.channel != stage:
+                        message = (f'{member.name}:が入室しました')
+                    # 退出
+                    elif before.channel is not None and before.channel != stage:
+                        message = (f'{member.name}:が退室しました')
+                    else:
+                        return
+                    g_tts = gTTS(text=message, lang='ja', tld = 'jp')
+                    name = uuid.uuid1()
+                    g_tts.save(f'./.tts_voice/{name}.mp3')
+                    self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
         if member.id is self.bot.user.id:
             if before.channel is not None:
                 shutil.rmtree(self.bot.tts_file)
