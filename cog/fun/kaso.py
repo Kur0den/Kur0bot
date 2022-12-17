@@ -42,11 +42,6 @@ class kaso(commands.Cog):
         t = trans(delta)
         embed = discord.Embed(title="ただいまの過疎記録", colour=discord.Colour(0x7289da),description=f'{t.day}日 {t.hour}時間 {t.min}分 {t.sec}秒 {t.milli}ミリ秒')
         await message.reply(embed = embed)
-        
-        
-
-        
-        
 
 async def setup(bot):
     await bot.add_cog(kaso(bot))
