@@ -45,11 +45,11 @@ class tts(commands.Cog):
         if interaction.channel is self.bot.guild.voice_client.channel:
             try:
                 self.bot.guild.voice_client.stop()
-                await interaction.responce.send_message('読み上げを停止しました')
+                await interaction.response.send_message('読み上げを停止しました')
             except:
-                await interaction.responce.send_message('なぜか実行できませんでした', ephemeral=True)
+                await interaction.response.send_message('なぜか実行できませんでした', ephemeral=True)
         else:
-            await interaction.responce.send_message('なぜか実行できませんでした', ephemeral=True)
+            await interaction.response.send_message('なぜか実行できませんでした', ephemeral=True)
 
     # メッセージ取得
     @commands.Cog.listener()
@@ -74,13 +74,13 @@ class tts(commands.Cog):
                         name = uuid.uuid1()
                         g_tts.save(f'./.tts_voice/{name}.mp3')
                         self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
-    
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.id is self.bot.user.id:
             if before.channel is not None:
                 shutil.rmtree(self.bot.tts_file)
                 os.mkdir(self.bot.tts_file)
-                
+
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(tts(bot))
