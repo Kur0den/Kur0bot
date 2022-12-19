@@ -1,44 +1,49 @@
 import discord
 from discord.ext import commands
-
-'''class set_(discord.ui.Modal):
+from discord import app_commands
+import chozatu
+class set_(discord.ui.Modal):
     def __init__(self):
         super().__init__(
-            title="チャンネル名変更",
+            title="自己紹介文の変更",
             timeout=60,
         )
         self.value = None
 
         self.name = discord.ui.TextInput(
-            label="新しいチャンネル名(空白でリセット)",
-            style=discord.TextStyle.short,
-            placeholder="VC-xx",
-            required=False,
+            label="新しい自己紹介文",
+            style=discord.TextStyle.long,
+            placeholder="人間です",
+            max_length=300,
+            required=True,
         )
         self.add_item(self.name)
 
     async def on_submit(self, interaction) -> None:
         self.value = self.name.value
         self.stop()
-        if self.value != '':
-            await interaction.response.send_message(f'チャンネル名を`{self.value}`に設定しました', ephemeral=True)
-        else:
-            await interaction.response.send_message('チャンネル名をリセットしました', ephemeral=True)'''
+        await interaction.response.send_message('設定しました')
 
 class profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="pset")
-    async def set_profile(self, ctx, *text):  # setだと変数名がかぶるので変更、*,で空白を無視
+    @app_commands.command()
+    @app_commands.describe()
+    @app_commands.guilds(chozatu.id)
+    async def set_profile(self, interaction: discord.Interaction):
+        modal = set_()
+        await interaction.response.send_modal(modal)
+        await modal.wait()
         new_data = {
-            "userid": ctx.author.id,
-            "text": text
+            "userid": interaction.user.id,
+            "text": modal.value
         }
         await self.bot.profiles_collection.replace_one({
-            "userid": ctx.author.id  # useridで条件を指定
+            "userid": interaction.user.id  # useridで条件を指定
         }, new_data, upsert=True)
-        await ctx.reply("設定が完了しました。")
+
+
 
     @commands.command(name="pshow")
     async def show_profile(self, ctx, target: discord.User):  # ユーザーを指定
