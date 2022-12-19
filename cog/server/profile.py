@@ -1,13 +1,36 @@
 import discord
 from discord.ext import commands
 
+'''class set_(discord.ui.Modal):
+    def __init__(self):
+        super().__init__(
+            title="チャンネル名変更",
+            timeout=60,
+        )
+        self.value = None
+
+        self.name = discord.ui.TextInput(
+            label="新しいチャンネル名(空白でリセット)",
+            style=discord.TextStyle.short,
+            placeholder="VC-xx",
+            required=False,
+        )
+        self.add_item(self.name)
+
+    async def on_submit(self, interaction) -> None:
+        self.value = self.name.value
+        self.stop()
+        if self.value != '':
+            await interaction.response.send_message(f'チャンネル名を`{self.value}`に設定しました', ephemeral=True)
+        else:
+            await interaction.response.send_message('チャンネル名をリセットしました', ephemeral=True)'''
 
 class profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(name="pset")
-    async def set_profile(self, ctx, text):  # setだと変数名がかぶるので変更、*,で空白を無視
+    async def set_profile(self, ctx, *text):  # setだと変数名がかぶるので変更、*,で空白を無視
         new_data = {
             "userid": ctx.author.id,
             "text": text
