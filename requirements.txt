@@ -5,6 +5,5 @@ python-dotenv
 jishaku
 python-dateutil
 Motor
-dnspython
 gTTS
 ffmpeg
