@@ -1,10 +1,11 @@
 import asyncio
 import os
+import shutil
 import traceback
+from datetime import datetime
 from json import load
 from os import sep as ossep
 from pathlib import Path
-from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -13,7 +14,7 @@ from dotenv import load_dotenv
 from motor import motor_asyncio as motor
 import urllib
 
-
+# 環境変数(.env)をロード
 load_dotenv()
 
 token = os.environ['DISCORD_BOT_TOKEN']
@@ -26,18 +27,16 @@ bot = commands.Bot(
 
 guild_id = 733707710784340100
 
-
-
-
-
 @bot.event
 async def on_ready():
     global osirase_ch, osirase_role
     bot.manageguild = bot.get_guild(981923517736046592)
     bot.guild = bot.get_guild(733707710784340100)
+    bot.guild_id = 733707710784340100
     bot.owner = bot.get_user(699414261075804201)
     bot.unei_role = bot.guild.get_role(738956776258535575)
     bot.unei_members = bot.unei_role.members
+    bot.unei_ch = bot.get_channel(738397603439444028)
     bot.everyone = bot.guild.get_role(733707710784340100)
     
     bot.stage = bot.get_channel(884734698759266324)
@@ -75,6 +74,12 @@ async def on_ready():
     bot.vc2_status = 'Normal'
     bot.vc3_status = 'Normal'
 
+    bot.tts_file = '.tts_voice'
+    try:
+        shutil.rmtree(bot.tts_file)
+    except:
+        pass
+    os.mkdir(bot.tts_file)
     
     bot.botrole = bot.guild.get_role(734059242977230969)
     

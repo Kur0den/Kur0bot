@@ -1,4 +1,4 @@
-discord
+discord.py[voice]
 aiohttp
 pytz
 python-dotenv
@@ -6,3 +6,5 @@ jishaku
 python-dateutil
 Motor
 dnspython
+gTTS
+ffmpeg
