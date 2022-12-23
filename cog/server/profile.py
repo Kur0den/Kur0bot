@@ -21,7 +21,7 @@ class set_(discord.ui.Modal):
     async def on_submit(self, interaction) -> None:
         self.value = self.name.value
         self.stop()
-        await interaction.response.send_message('設定しました')
+        await interaction.response.send_message_message('設定しました')
 
 class profile(commands.Cog):
     def __init__(self, bot):
@@ -31,10 +31,9 @@ class profile(commands.Cog):
 
 
     @group.command(name='set', description='プロファイルを登録します')
-    @app_commands.guild_only()
     async def p_set(self, interaction: discord.Interaction):
         modal = set_()
-        await interaction.response.send_modal(modal)
+        await interaction.response.send_message_modal(modal)
         await modal.wait()
         new_data = {
             "userid": interaction.user.id,
@@ -46,7 +45,6 @@ class profile(commands.Cog):
 
 
     @group.command(name='show', description='プロファイルを閲覧します')
-    @app_commands.guild_only()
     async def p_show(self, interaction, target: discord.User):  # ユーザーを指定
         profile = await self.bot.profiles_collection.find_one({
             "userid": target.id
@@ -54,29 +52,28 @@ class profile(commands.Cog):
             "_id": False  # 内部IDを取得しないように
         })
         if profile is None:
-            return await interaction.respoce.send("見付かりませんでした。")
+            return await interaction.response.send_message("見付かりませんでした。")
         embed = discord.Embed(title=f"`{target}`のプロフィール", description=profile["text"])  # 埋め込みを作成
-        return await interaction.respoce.send(embed=embed)  # 埋め込みを送信
+        return await interaction.response.send_message(embed=embed)  # 埋め込みを送信
 
 
     @group.command(name='delete', description='プロファイルを削除します')
-    @app_commands.guild_only()
     async def delete_profile(self, interaction, target: discord.User=None):  # ユーザーを指定
         if target == None:
             result = await self.bot.profiles_collection.delete_one({
-                "userid": ctx.author.id  # useridで条件を指定
+                "userid": interaction.user.id  # useridで条件を指定
             })
         else:
-            if ctx.permissions.administrator == True:
+            if interaction.permissions.administrator == True:
                 result = await self.bot.profiles_collection.delete_one({
                     "userid": target.id  # useridで条件を指定
                 })
             else:
-                await ctx.send('他人のプロフィールの削除はできません。')
+                await interaction.response.send_message_message('他人のプロフィールの削除はできません。')
                 return
         if result.deleted_count == 0:  # 削除できなかったら
-            return await interaction.respoce.send("見付かりませんでした。")
-        return await interaction.respoce.send("削除しました。")
+            return await interaction.response.send_message("見付かりませんでした。")
+        return await interaction.response.send_message("削除しました。")
 
 async def setup(bot):
     await bot.add_cog(profile(bot))
