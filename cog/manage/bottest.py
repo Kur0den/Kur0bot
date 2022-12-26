@@ -13,11 +13,12 @@ class name(commands.Cog):
 
     @group.command()
     async def start(self, interaction: discord.Interaction):
-        self.p = subprocess.Popen(f'py C:/Users/Kur0den/Desktop/Kur0BotTest/0den.py', shell = True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+        await interaction.response.send_message('実行しました')
+        self.p = subprocess.Popen(f'testrun.bat', stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
         for line in iter(self.p.stdout.readline,b''):
             if line.rstrip().decode("utf8") != '':
                 await self.bot.owner.send(line.rstrip().decode("utf8"))
-        await interaction.response.send_message('実行しました')
+
 
     @group.command()
     async def kill(self, interaction: discord.Interaction):
