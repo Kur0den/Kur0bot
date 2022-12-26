@@ -14,7 +14,7 @@ class name(commands.Cog):
     @group.command()
     async def start(self, interaction: discord.Interaction):
         self.p = subprocess.Popen(['cmd',r'C:\Users\Kur0den\Desktop\Kur0BotTest\0den.py'], stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
-        for line in iter(p.stdout.readline,b''):
+        for line in iter(self.p.stdout.readline,b''):
             await self.bot.owner.send(line.rstrip().decode("utf8"))
         await interaction.response.send_message('実行しました')
 
