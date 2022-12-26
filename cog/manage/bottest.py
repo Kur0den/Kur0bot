@@ -22,7 +22,7 @@ class name(commands.Cog):
     @group.command()
     async def kill(self, interaction: discord.Interaction):
         self.p.kill()
-        await interactio.responce.send_message('実行しました')
+        await interaction.responce.send_message('実行しました')
 
 
 
