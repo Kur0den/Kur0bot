@@ -15,9 +15,12 @@ class name(commands.Cog):
     async def start(self, interaction: discord.Interaction):
         await interaction.response.send_message('実行しました')
         self.p = subprocess.Popen(f'testrun.bat', stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
-        for line in iter(self.p.stdout.readline,b''):
-            if line.rstrip().decode("utf8") != '':
-                await self.bot.owner.send(line.rstrip().decode("utf8"))
+        try:
+            for line in iter(self.p.stdout.readline,b''):
+                if line.rstrip().decode("utf8") != '':
+                    await self.bot.owner.send(line.rstrip().decode("utf8"))
+        except:
+            return
 
 
     @group.command()
