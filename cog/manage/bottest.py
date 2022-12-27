@@ -14,7 +14,7 @@ class name(commands.Cog):
     @group.command()
     async def start(self, interaction: discord.Interaction):
         await interaction.response.send_message('実行しました')
-        self.p = subprocess.Popen(f'testrun.bat', stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+        self.p = subprocess.Popen(f'py 0den.py', cwd=r'C:/Users/Kur0den/Desktop/Kur0BotTest/', shell=True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
         try:
             for line in iter(self.p.stdout.readline,b''):
                 if line.rstrip().decode("utf8") != '':
