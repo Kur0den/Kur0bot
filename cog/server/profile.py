@@ -19,9 +19,8 @@ class set_(discord.ui.Modal):
         self.add_item(self.name)
 
     async def on_submit(self, interaction) -> None:
-        self.value = self.name.value
         self.stop()
-        await interaction.response.send_message_message('設定しました')
+        await interaction.response.send_message('設定しました')
 
 class profile(commands.Cog):
     def __init__(self, bot):
@@ -33,11 +32,11 @@ class profile(commands.Cog):
     @group.command(name='set', description='プロファイルを登録します')
     async def p_set(self, interaction: discord.Interaction):
         modal = set_()
-        await interaction.response.send_message_modal(modal)
+        await interaction.response.send_modal(modal)
         await modal.wait()
         new_data = {
             "userid": interaction.user.id,
-            "text": modal.value
+            "text": modal.name.value
         }
         await self.bot.profiles_collection.replace_one({
             "userid": interaction.user.id  # useridで条件を指定
