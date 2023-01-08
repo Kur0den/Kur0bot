@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 import shutil
 import uuid
 from collections import deque
@@ -8,6 +9,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from gtts import gTTS
+
+
+regex = r"https?://.*?( |$)"
 
 
 class tts(commands.Cog):
@@ -69,6 +73,8 @@ class tts(commands.Cog):
                         i = +1
                     usernick = message.author.display_name
                     message = message.content[:100]
+                    message = re.sub(regex, "URL ", message)
+                    
                     if m1 == m2:
                         pass
                     else:
