@@ -73,7 +73,7 @@ class tts(commands.Cog):
                         i = +1
                     usernick = message.author.display_name
                     message = message.content[:100]
-                    message = re.sub(regex, "URL ", message)
+                    message = re.sub(regex, "URL ", message, flags=re.MULTILINE)
                     
                     if m1 == m2:
                         pass
