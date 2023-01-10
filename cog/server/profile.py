@@ -5,9 +5,8 @@ class set_(discord.ui.Modal):
     def __init__(self):
         super().__init__(
             title="自己紹介文の変更",
-            timeout=60,
+            timeout=1024,
         )
-        self.value = None
 
         self.name = discord.ui.TextInput(
             label="新しい自己紹介文",
