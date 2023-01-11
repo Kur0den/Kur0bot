@@ -35,7 +35,7 @@ class profile(commands.Cog):
         await modal.wait()
         new_data = {
             "userid": interaction.user.id,
-            "text": modal.name.value
+            "name": modal.name.value
         }
         await self.bot.profiles_collection.replace_one({
             "userid": interaction.user.id  # useridで条件を指定
