@@ -10,12 +10,20 @@ class set_(discord.ui.Modal):
 
         self.name = discord.ui.TextInput(
             label="新しい自己紹介文",
-            style=discord.TextStyle.long,
+            style=discord.TextStyle.short,
             placeholder="人間です",
-            max_length=300,
+            max_length=20,
             required=True,
         )
         self.add_item(self.name)
+        self.free = discord.ui.TextInput(
+            label="自由入力欄",
+            style=discord.TextStyle.long,
+            placeholder="人間です",
+            max_length=300,
+            required=False,
+        )
+        self.add_item(self.free)
 
     async def on_submit(self, interaction) -> None:
         self.stop()
@@ -35,7 +43,8 @@ class profile(commands.Cog):
         await modal.wait()
         new_data = {
             "userid": interaction.user.id,
-            "name": modal.name.value
+            "name": modal.name.value,
+            "free": modal.free.value
         }
         await self.bot.profiles_collection.replace_one({
             "userid": interaction.user.id  # useridで条件を指定
@@ -51,7 +60,9 @@ class profile(commands.Cog):
         })
         if profile is None:
             return await interaction.response.send_message("見付かりませんでした。")
-        embed = discord.Embed(title=f"`{target}`のプロフィール", description=profile["text"])  # 埋め込みを作成
+        embed = discord.Embed(title=f"`{target}`のプロフィール")  # 埋め込みを作成
+        embed.add_field(name='名前', value=profile['name'])
+        embed.add_field(name='一言', value=profile['free'])
         return await interaction.response.send_message(embed=embed)  # 埋め込みを送信
 
 
