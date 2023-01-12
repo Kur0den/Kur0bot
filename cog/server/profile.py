@@ -52,7 +52,7 @@ class profile(commands.Cog):
 
 
     @group.command(name='show', description='プロファイルを閲覧します')
-    async def p_show(self, interaction, target: discord.User):  # ユーザーを指定
+    async def p_show(self, interaction, target: discord.User, show: bool =True):  # ユーザーを指定
         profile = await self.bot.profiles_collection.find_one({
             "userid": target.id
         }, {
@@ -63,7 +63,11 @@ class profile(commands.Cog):
         embed = discord.Embed(title=f"`{target}`のプロフィール")  # 埋め込みを作成
         embed.add_field(name='名前', value=profile['name'])
         embed.add_field(name='一言', value=profile['free'])
-        return await interaction.response.send_message(embed=embed)  # 埋め込みを送信
+        if show == True:
+            show = False
+        else:
+            show = True
+        return await interaction.response.send_message(embed=embed, ephemeral=show)  # 埋め込みを送信
 
 
     @group.command(name='delete', description='プロファイルを削除します')
