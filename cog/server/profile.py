@@ -1,21 +1,30 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-class set_(discord.ui.Modal):
+
+class set_2(discord.ui.Modal):
     def __init__(self):
         super().__init__(
-            title="自己紹介文の変更",
-            timeout=1024,
+            title="自己紹介文の変更(2/2)",
+            timeout=None,
         )
 
-        self.name = discord.ui.TextInput(
-            label="新しい自己紹介文",
+        self.work = discord.ui.TextInput(
+            label="職業",
             style=discord.TextStyle.short,
-            placeholder="人間です",
+            placeholder="自宅警備員",
             max_length=20,
-            required=True,
+            required=False,
         )
-        self.add_item(self.name)
+        self.add_item(self.work)
+        self.tastes = discord.ui.TextInput(
+            label="趣味",
+            style=discord.TextStyle.short,
+            placeholder="睡眠",
+            max_length=20,
+            required=False,
+        )
+        self.add_item(self.tastes)
         self.free = discord.ui.TextInput(
             label="自由入力欄",
             style=discord.TextStyle.long,
@@ -24,21 +33,62 @@ class set_(discord.ui.Modal):
             required=False,
         )
         self.add_item(self.free)
+    
+        async def on_submit(self, interaction) -> None:
+            self.stop()
+            await interaction.response.send_message('設定しました')
+
+
+class set_1(discord.ui.Modal):
+    def __init__(self):
+        super().__init__(
+            title="自己紹介文の変更(1/2)",
+            timeout=None,
+        )
+
+        self.name = discord.ui.TextInput(
+            label="名前",
+            style=discord.TextStyle.short,
+            placeholder="田中",
+            max_length=20,
+            required=True,
+        )
+        self.add_item(self.name)
+        self.read = discord.ui.TextInput(
+            label="読み方",
+            style=discord.TextStyle.short,
+            placeholder="たなか",
+            max_length=20,
+            required=True,
+        )
+        self.add_item(self.read)
+        self.dob = discord.ui.TextInput(
+            label="生年月日",
+            style=discord.TextStyle.short,
+            placeholder="yyyy/mm/dd",
+            max_length=10,
+            required=False,
+        )
+        self.add_item(self.dob)
+        self.gender = discord.ui.TextInput(
+            label="性別",
+            style=discord.TextStyle.short,
+            placeholder="男性/女性/その他",
+            max_length=3,
+            required=False,
+        )
+        self.add_item(self.gender)
+        self.place = discord.ui.TextInput(
+            label="居住地",
+            style=discord.TextStyle.short,
+            placeholder="日本",
+            max_length=5,
+            required=False,
+        )
+        self.add_item(self.place)
 
     async def on_submit(self, interaction) -> None:
-        self.stop()
-        await interaction.response.send_message('設定しました')
-
-class profile(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    group = app_commands.Group(name="profile", description="プロファイル", guild_ids=[733707710784340100], guild_only=True)
-
-
-    @group.command(name='set', description='プロファイルを登録します')
-    async def p_set(self, interaction: discord.Interaction):
-        modal = set_()
+        modal = set_2()
         await interaction.response.send_modal(modal)
         await modal.wait()
         new_data = {
@@ -49,6 +99,18 @@ class profile(commands.Cog):
         await self.bot.profiles_collection.replace_one({
             "userid": interaction.user.id  # useridで条件を指定
         }, new_data, upsert=True)
+
+class profile(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    group = app_commands.Group(name="profile", description="プロファイル", guild_ids=[733707710784340100], guild_only=True)
+
+
+    @group.command(name='set', description='プロファイルを登録します')
+    async def p_set(self, interaction: discord.Interaction):
+        modal = set_1()
+        await interaction.response.send_modal(modal)
 
 
     @group.command(name='show', description='プロファイルを閲覧します')
