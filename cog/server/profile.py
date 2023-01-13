@@ -17,59 +17,29 @@ class set_2(discord.ui.Modal):
             required=False,
         )
         self.add_item(self.work)
-        self.tastes = discord.ui.TextInput(
-            label="趣味",
-            style=discord.TextStyle.short,
-            placeholder="睡眠",
-            max_length=20,
-            required=False,
-        )
-        self.add_item(self.tastes)
-        self.free = discord.ui.TextInput(
-            label="自由入力欄",
-            style=discord.TextStyle.long,
-            placeholder="人間です",
-            max_length=300,
-            required=False,
-        )
-        self.add_item(self.free)
-    
+
+
+
         async def on_submit(self, interaction) -> None:
             self.stop()
             await interaction.response.send_message('設定しました')
 
 
-class set_1(discord.ui.Modal):
+class set_(discord.ui.Modal):
     def __init__(self):
         super().__init__(
             title="自己紹介文の変更(1/2)",
             timeout=None,
         )
 
-        self.name = discord.ui.TextInput(
-            label="名前",
-            style=discord.TextStyle.short,
-            placeholder="田中",
-            max_length=20,
-            required=True,
-        )
-        self.add_item(self.name)
         self.read = discord.ui.TextInput(
-            label="読み方",
+            label="名前の読み方",
             style=discord.TextStyle.short,
             placeholder="たなか",
             max_length=20,
             required=True,
         )
         self.add_item(self.read)
-        self.dob = discord.ui.TextInput(
-            label="生年月日",
-            style=discord.TextStyle.short,
-            placeholder="yyyy/mm/dd",
-            max_length=10,
-            required=False,
-        )
-        self.add_item(self.dob)
         self.gender = discord.ui.TextInput(
             label="性別",
             style=discord.TextStyle.short,
@@ -86,19 +56,26 @@ class set_1(discord.ui.Modal):
             required=False,
         )
         self.add_item(self.place)
+        self.tastes = discord.ui.TextInput(
+            label="趣味",
+            style=discord.TextStyle.short,
+            placeholder="睡眠",
+            max_length=20,
+            required=False,
+        )
+        self.add_item(self.tastes)
+        self.free = discord.ui.TextInput(
+            label="自由入力欄",
+            style=discord.TextStyle.long,
+            placeholder="人間です",
+            max_length=300,
+            required=False,
+        )
+        self.add_item(self.free)
 
     async def on_submit(self, interaction) -> None:
-        modal = set_2()
-        await interaction.response.send_modal(modal)
-        await modal.wait()
-        new_data = {
-            "userid": interaction.user.id,
-            "name": modal.name.value,
-            "free": modal.free.value
-        }
-        await self.bot.profiles_collection.replace_one({
-            "userid": interaction.user.id  # useridで条件を指定
-        }, new_data, upsert=True)
+        self.stop()
+
 
 class profile(commands.Cog):
     def __init__(self, bot):
@@ -109,8 +86,20 @@ class profile(commands.Cog):
 
     @group.command(name='set', description='プロファイルを登録します')
     async def p_set(self, interaction: discord.Interaction):
-        modal = set_1()
-        await interaction.response.send_modal(modal)
+        modal1 = set_1()
+        await interaction.response.send_modal(modal1)
+        await modal1.wait()
+        modal2 = set_2()
+        await interaction.response.send_modal(modal2)
+        await modal2.wait()
+        new_data = {
+            "userid": interaction.user.id,
+            "name": modal.name.value,
+            "free": modal.free.value
+        }
+        await self.bot.profiles_collection.replace_one({
+            "userid": interaction.user.id  # useridで条件を指定
+        }, new_data, upsert=True)
 
 
     @group.command(name='show', description='プロファイルを閲覧します')
