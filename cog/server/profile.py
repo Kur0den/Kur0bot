@@ -104,7 +104,7 @@ class profile(commands.Cog):
 
     @group.command(name='delete', description='プロフィールを削除します')
     async def delete_profile(self, interaction, target: discord.User=None):  # ユーザーを指定
-        if target == None:
+        if target is None:
             result = await self.bot.profiles_collection.delete_one({
                 "userid": interaction.user.id  # useridで条件を指定
             })
