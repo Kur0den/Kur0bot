@@ -109,7 +109,7 @@ class profile(commands.Cog):
                 "userid": interaction.user.id  # useridで条件を指定
             })
         else:
-            if interaction.permissions.administrator == True:
+            if interaction.permissions.administrator is True:
                 result = await self.bot.profiles_collection.delete_one({
                     "userid": target.id  # useridで条件を指定
                 })
