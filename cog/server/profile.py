@@ -95,7 +95,7 @@ class profile(commands.Cog):
         embed.add_field(name='居住地', value=profile['place'])
         embed.add_field(name='趣味', value=profile['tastes'])
         embed.add_field(name='一言', value=profile['free'])
-        if show == True:
+        if show is True:
             show = False
         else:
             show = True
