@@ -432,8 +432,7 @@ class dashboard(discord.ui.View):
             embed.add_field(name='NSFWかどうか', value=self.bot.vc1.nsfw)
             await interaction.response.send_message('送信したで', ephemeral=True)
             await interaction.channel.send(embed=embed, delete_after=60)
-            
-        
+
         elif interaction.channel == self.bot.vc2:
             embed = discord.Embed(title='VC2の情報', description='', color=self.bot.vc2_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc2.name)
@@ -443,8 +442,7 @@ class dashboard(discord.ui.View):
             embed.add_field(name='NSFWかどうか', value=self.bot.vc2.nsfw)
             await interaction.response.send_message('送信したで', ephemeral=True)
             await interaction.channel.send(embed=embed, delete_after=60)
-            
-        
+
         elif interaction.channel == self.bot.vc3:
             embed = discord.Embed(title='VC3の情報', description='', color=self.bot.vc3_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc3.name)

@@ -11,6 +11,8 @@ import discord
 from discord.ext import commands
 from discord.ext.tasks import loop
 from dotenv import load_dotenv
+from motor import motor_asyncio as motor
+import urllib
 
 # 環境変数(.env)をロード
 load_dotenv()
@@ -22,6 +24,8 @@ bot = commands.Bot(
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all(),
     )
+
+guild_id = 733707710784340100
 
 @bot.event
 async def on_ready():
@@ -78,6 +82,11 @@ async def on_ready():
     os.mkdir(bot.tts_file)
     
     bot.botrole = bot.guild.get_role(734059242977230969)
+    
+    # DataBase
+    bot.dbclient = motor.AsyncIOMotorClient('mongodb://localhost:27017')
+    bot.db = bot.dbclient["Kur0Bot"]
+    bot.profiles_collection = bot.db.profiles
     
     # config.jsonをロード
     try:
