@@ -148,6 +148,14 @@ async def on_ready():
                 print(f'Loaded cog: manage.{file[:-3]}')
             except:
                 traceback.print_exc()
+    # vcフォルダ内のcogをロード
+    for file in os.listdir('./cog/vc'):
+        if file.endswith('.py'):
+            try:
+                await bot.load_extension(f'cog.vc.{file[:-3]}')
+                print(f'Loaded cog: vc.{file[:-3]}')
+            except:
+                traceback.print_exc()
     try:
         await bot.load_extension('jishaku')
         print('Loaded cog: jishaku')
