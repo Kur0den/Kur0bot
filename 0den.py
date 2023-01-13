@@ -19,7 +19,7 @@ load_dotenv()
 
 token = os.environ['DISCORD_BOT_TOKEN']
 bot = commands.Bot(
-    command_prefix='k!',
+    command_prefix='k/',
     case_insensitive=True,
     activity = discord.Activity(name = 'くろでんのくろでんによるくろでんのためのぼっと', type = discord.ActivityType.playing),
     intents=discord.Intents.all(),
