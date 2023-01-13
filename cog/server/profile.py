@@ -2,33 +2,10 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-class set_2(discord.ui.Modal):
-    def __init__(self):
-        super().__init__(
-            title="自己紹介文の変更(2/2)",
-            timeout=None,
-        )
-
-        self.work = discord.ui.TextInput(
-            label="職業",
-            style=discord.TextStyle.short,
-            placeholder="自宅警備員",
-            max_length=20,
-            required=False,
-        )
-        self.add_item(self.work)
-
-
-
-        async def on_submit(self, interaction) -> None:
-            self.stop()
-            await interaction.response.send_message('設定しました')
-
-
 class set_(discord.ui.Modal):
     def __init__(self):
         super().__init__(
-            title="自己紹介文の変更(1/2)",
+            title="プロフィールの変更",
             timeout=None,
         )
 
@@ -75,35 +52,36 @@ class set_(discord.ui.Modal):
 
     async def on_submit(self, interaction) -> None:
         self.stop()
+        await interaction.response.send_message('設定しました', ephemeral=True)
 
 
 class profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    group = app_commands.Group(name="profile", description="プロファイル", guild_ids=[733707710784340100], guild_only=True)
+    group = app_commands.Group(name="profile", description="プロフィール", guild_ids=[733707710784340100], guild_only=True)
 
 
-    @group.command(name='set', description='プロファイルを登録します')
+    @group.command(name='set', description='プロフィールを登録します')
     async def p_set(self, interaction: discord.Interaction):
-        modal1 = set_1()
-        await interaction.response.send_modal(modal1)
-        await modal1.wait()
-        modal2 = set_2()
-        await interaction.response.send_modal(modal2)
-        await modal2.wait()
+        modal = set_()
+        await interaction.response.send_modal(modal)
+        await modal.wait()
         new_data = {
-            "userid": interaction.user.id,
-            "name": modal.name.value,
-            "free": modal.free.value
+            "userid":   interaction.user.id,
+            "read":     modal.read.value,
+            "gender":   modal.gender.value,
+            "place":    modal.place.value,
+            "tastes":   modal.tastes.value,
+            "free":     modal.free.value
         }
         await self.bot.profiles_collection.replace_one({
             "userid": interaction.user.id  # useridで条件を指定
         }, new_data, upsert=True)
 
 
-    @group.command(name='show', description='プロファイルを閲覧します')
-    async def p_show(self, interaction, target: discord.User, show: bool =True):  # ユーザーを指定
+    @group.command(name='show', description='プロフィールを閲覧します')
+    async def p_show(self, interaction, target: discord.User, show: bool =False):  # ユーザーを指定
         profile = await self.bot.profiles_collection.find_one({
             "userid": target.id
         }, {
@@ -112,7 +90,10 @@ class profile(commands.Cog):
         if profile is None:
             return await interaction.response.send_message("見付かりませんでした。")
         embed = discord.Embed(title=f"`{target}`のプロフィール")  # 埋め込みを作成
-        embed.add_field(name='名前', value=profile['name'])
+        embed.add_field(name='読み方', value=profile['read'])
+        embed.add_field(name='性別', value=profile['gender'])
+        embed.add_field(name='居住地', value=profile['place'])
+        embed.add_field(name='趣味', value=profile['tastes'])
         embed.add_field(name='一言', value=profile['free'])
         if show == True:
             show = False
@@ -121,7 +102,7 @@ class profile(commands.Cog):
         return await interaction.response.send_message(embed=embed, ephemeral=show)  # 埋め込みを送信
 
 
-    @group.command(name='delete', description='プロファイルを削除します')
+    @group.command(name='delete', description='プロフィールを削除します')
     async def delete_profile(self, interaction, target: discord.User=None):  # ユーザーを指定
         if target == None:
             result = await self.bot.profiles_collection.delete_one({
@@ -138,6 +119,12 @@ class profile(commands.Cog):
         if result.deleted_count == 0:  # 削除できなかったら
             return await interaction.response.send_message("見付かりませんでした。")
         return await interaction.response.send_message("削除しました。")
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        await self.bot.profiles_collection.delete_one({
+                "userid": member.id  # useridで条件を指定
+            })
 
 async def setup(bot):
     await bot.add_cog(profile(bot))
