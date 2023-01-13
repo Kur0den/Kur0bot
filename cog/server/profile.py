@@ -95,7 +95,7 @@ class profile(commands.Cog):
         embed.add_field(name='居住地', value=profile['place'])
         embed.add_field(name='趣味', value=profile['tastes'])
         embed.add_field(name='一言', value=profile['free'])
-        if show == True:
+        if show is True:
             show = False
         else:
             show = True
@@ -104,12 +104,12 @@ class profile(commands.Cog):
 
     @group.command(name='delete', description='プロフィールを削除します')
     async def delete_profile(self, interaction, target: discord.User=None):  # ユーザーを指定
-        if target == None:
+        if target is None:
             result = await self.bot.profiles_collection.delete_one({
                 "userid": interaction.user.id  # useridで条件を指定
             })
         else:
-            if interaction.permissions.administrator == True:
+            if interaction.permissions.administrator is True:
                 result = await self.bot.profiles_collection.delete_one({
                     "userid": target.id  # useridで条件を指定
                 })

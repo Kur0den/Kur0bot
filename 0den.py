@@ -84,7 +84,7 @@ async def on_ready():
     bot.botrole = bot.guild.get_role(734059242977230969)
     
     # DataBase
-    bot.dbclient = motor.AsyncIOMotorClient(f'mongodb://localhost:27017')
+    bot.dbclient = motor.AsyncIOMotorClient('mongodb://localhost:27017')
     bot.db = bot.dbclient["Kur0Bot"]
     bot.profiles_collection = bot.db.profiles
     
