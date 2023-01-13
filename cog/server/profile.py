@@ -68,12 +68,12 @@ class profile(commands.Cog):
         await interaction.response.send_modal(modal)
         await modal.wait()
         new_data = {
-            "userid":   interaction.user.id,
-            "read":     modal.read.value,
-            "gender":   modal.gender.value,
-            "place":    modal.place.value,
-            "tastes":   modal.tastes.value,
-            "free":     modal.free.value
+            "userid": interaction.user.id,
+            "read": modal.read.value,
+            "gender": modal.gender.value,
+            "place": modal.place.value,
+            "tastes": modal.tastes.value,
+            "free": modal.free.value
         }
         await self.bot.profiles_collection.replace_one({
             "userid": interaction.user.id  # useridで条件を指定
