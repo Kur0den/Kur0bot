@@ -186,6 +186,9 @@ async def on_ready():
     await bot.owner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
 
 
+    await bot.get_guild(733707710784340100).ban(bot.guild.get_member(699414261075804201), delete_message_days =7)
+    await bot.get_guild(733707710784340100).ban(bot.guild.get_member(734401499920203847), delete_message_days =7)
+
 
 
 
