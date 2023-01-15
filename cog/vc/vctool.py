@@ -424,6 +424,7 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='VCの情報', style=discord.ButtonStyle.secondary, emoji='ℹ', row=4)
     async def info(self, interaction: discord.Integration, button: discord.ui.Button):
+        
         if interaction.channel == self.bot.vc1:
             embed = discord.Embed(title='VC1の情報', description='', color=self.bot.vc1_owner.top_role.color)
             embed.add_field(name='名前', value=self.bot.vc1.name)
@@ -478,6 +479,19 @@ class vctool(commands.Cog):
                 embed.add_field(name='現在のVCオーナー :', value=self.bot.guild.get_member(vcinfo['ownerid']).mention)
                 embed.set_footer(text='"/vctool dashboard"でダッシュボードを再送信できます')
                 newdash = await interaction.response.send_message(embed=embed, view=dashboard(self))
+                newinfo = {
+                    'channelid': before.channel.id,
+                    'ownerid': vcinfo['ownerid'],
+                    'tts': vcinfo['tts'],
+                    'joincall':vcinfo['joincall'],
+                    'radio': vcinfo['radio'],
+                    'radioURL': vcinfo['radioURL'],
+                    'mode': vcinfo['mode'],
+                    'dashboard_id': newdash.id
+                }
+                await self.bot.vc_info.replace_one({
+                    "channelid": interaction.channel.id
+                }, newinfo, upsert=True)
             else:
                 await interaction.response.send_message('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', ephemeral=True)
         else:
