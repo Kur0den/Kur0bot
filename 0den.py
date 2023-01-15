@@ -163,6 +163,23 @@ async def on_ready():
     except:
         traceback.print_exc()
     print('cog loaded')
+    ttsinfo = await bot.vc_info.find_one({
+        "tts": True
+    }, {
+        "_id": False  # 内部IDを取得しないように
+    })
+    radioinfo = await bot.vc_info.find_one({
+        "tts": True
+    }, {
+        "_id": False  # 内部IDを取得しないように
+    })
+    if ttsinfo is not None:
+        channel = bot.guild.get_channel(ttsinfo['channelid'])
+        await channel.connect()
+    elif radioinfo is not None:
+        channel = bot.guild.get_channel(ttsinfo['channelid'])
+        await channel.connect()
+        bot.guild.voice_client.play(discord.FFmpegPCMAudio(radioinfo['radioURL']))
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await bot.owner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
 
