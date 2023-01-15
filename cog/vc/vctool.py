@@ -135,11 +135,13 @@ class rename(discord.ui.Modal):
         
 
 class select(discord.ui.Select):
-    def __init__(self, channel, mode):
+    def __init__(vcinfo, mode, *, bot):
         self.option = []
         self.channel = channel
         self.mode = mode
-        for user in channel.members:
+        self.bot = bot.bot.bot.bot
+        
+        for user in self.bot.guild.get_channel(vcinfo['channelid']).members: # 全ユーザー分の選択できる要素追加
             self.option.append(discord.SelectOption(label=user.name, value=user.id))
         super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=self.option)
     async def callback(self, interaction: discord.Interaction):
@@ -169,12 +171,11 @@ class select(discord.ui.Select):
                             return member
                             view.stop()
 
-class SelectView(discord.ui.View):
-    def __init__(self, channel, mode, *, timeout = 180):
+class SelectView(discord.ui.View): # view追加用のクラス
+    def __init__(self, bot.vc_info, vcinfo, mode, timeout = 180):
         super().__init__(timeout=timeout)
-        member = self.add_item(select(channel, mode))
-        
-        
+        member = self.add_item(select(self, bot.vc_info, vcinfo, mode))
+
 
 
 
@@ -389,38 +390,18 @@ class dashboard(discord.ui.View):
 
 
 # 作り方がよくわからんから放置
-    '''@discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
+    @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            view = SelectView(self.bot.vc1,'owner')
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            view = SelectView(self, self.bot.vc_info, vcinfo, 'owner')
             member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
-            await view.wait()
-            await self.bot.vc1_dash.delete()
-            self.bot.vc1_dash = await self.bot.vc1.send('test', view=dashboard(self))
-            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
-            self.bot.vc1_owner = member
-            await owner.change(self, member)
-        elif result == 'vc2':
-            view = SelectView(self.bot.vc2,'owner')
-            member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
-            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
-            await view.wait()
-            await self.bot.vc2_dash.delete()
-            self.bot.vc2_dash = await self.bot.vc2.send('test', view=dashboard(self))
-            self.bot.vc2_owner = member
-            await owner.change(self, member)
-        elif result == 'vc3':
-            view = SelectView(self.bot.vc3,'owner')
-            member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
-            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
-            await view.wait()
-            await self.bot.vc3_dash.delete()
-            self.bot.vc3_dash = await self.bot.vc3.send('test', view=dashboard(self))
-            self.bot.vc3_owner = member
-            await owner.change(self, member)
         else:
-            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)'''
+            await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
     @discord.ui.button(label='VCの情報', style=discord.ButtonStyle.secondary, emoji='ℹ', row=4)
     async def info(self, interaction: discord.Integration, button: discord.ui.Button):
