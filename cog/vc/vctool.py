@@ -478,9 +478,10 @@ class vctool(commands.Cog):
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
                 embed.add_field(name='現在のVCオーナー :', value=self.bot.guild.get_member(vcinfo['owner_id']).mention)
                 embed.set_footer(text='"/vctool dashboard"でダッシュボードを再送信できます')
-                newdash = await interaction.response.send_message(embed=embed, view=dashboard(self))
+                newdash = await interaction.channel.send(embed=embed, view=dashboard(self))
+                await interaction.response.send_message('送信しました',  ephemeral=True)
                 newinfo = {
-                    'channelid': before.channel.id,
+                    'channelid': interaction.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': vcinfo['tts'],
                     'joincall':vcinfo['joincall'],
