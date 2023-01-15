@@ -562,9 +562,30 @@ class vctool(commands.Cog):
                 # 入室
                 if after.channel is not None and after.channel != stage:
                     # オーナー指定
-                    
-                    await owner.setup(self, member, after)
-                    
+                    vcinfo = await self.bot.vc_info.find_one({
+                        "channelid": after.channel.id
+                    }, {
+                        "_id": False  # 内部IDを取得しないように
+                    })
+                    if vcinfo['ownerid'] is None:
+                        embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                        embed.add_field(name='現在のVCオーナー :',value=member.mention)
+                        embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
+                        message = await after.channel.send(embed=embed, view=dashboard(self))
+                        await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
+                        newinfo = {
+                            'channelid': after.channel.id,
+                            'ownerid': member.id,
+                            'tts': vcinfo['tts'],
+                            'joincall':vcinfo['joincall'],
+                            'radio': vcinfo['radio'],
+                            'radioURL': vcinfo['radioURL'],
+                            'mode': 'Nomal',
+                            'dashboard': message
+                        }
+                        await self.bot.vc_info.replace_one({
+                            "channelid": after.channel.id
+                        }, newinfo, upsert=True)
                     embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
 
                     embed.set_author(name=member.name, icon_url=member.display_avatar.url)
