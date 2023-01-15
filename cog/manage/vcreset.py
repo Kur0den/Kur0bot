@@ -20,6 +20,7 @@ class vcreset(commands.Cog):
             'tts': False,
             'joincall':False,
             'radio': False,
+            'radioURL': None,
             'mode': 'Nomal',
             'dashboard': None
         }
@@ -32,6 +33,7 @@ class vcreset(commands.Cog):
             'tts': False,
             'joincall': False,
             'radio': False,
+            'radioURL': None,
             'mode': 'Nomal',
             'dashboard': None
         }
@@ -44,6 +46,7 @@ class vcreset(commands.Cog):
             'tts': False,
             'joincall': False,
             'radio': False,
+            'radioURL': None,
             'mode': 'Nomal',
             'dashboard': None
         }
