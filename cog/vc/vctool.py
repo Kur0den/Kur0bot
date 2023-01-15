@@ -424,37 +424,20 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='VCの情報', style=discord.ButtonStyle.secondary, emoji='ℹ', row=4)
     async def info(self, interaction: discord.Integration, button: discord.ui.Button):
-        
-        if interaction.channel == self.bot.vc1:
-            embed = discord.Embed(title='VC1の情報', description='', color=self.bot.vc1_owner.top_role.color)
-            embed.add_field(name='名前', value=self.bot.vc1.name)
-            embed.add_field(name='オーナー', value=self.bot.vc1_owner.mention)
-            embed.add_field(name='状態', value=self.bot.vc1_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc1.members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc1.nsfw)
-            await interaction.response.send_message('送信したで', ephemeral=True)
-            await interaction.channel.send(embed=embed, delete_after=60)
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        embed = discord.Embed(title='VCの情報', description='', color=self.bot.guild.get_member(vcinfo['owner_id']).top_role.color)
+        embed.add_field(name='名前', value=interaction.channel.name)
+        embed.add_field(name='オーナー', value=self.bot.guild.get_member(vcinfo['owner_id']).mention)
+        embed.add_field(name='状態', value=vcinfo['mode'])
+        embed.add_field(name='参加人数', value=len(interaction.channel.members))
+        embed.add_field(name='NSFWかどうか', value=interaction.channel.nsfw)
+        await interaction.response.send_message('送信したで', ephemeral=True)
+        await interaction.channel.send(embed=embed, delete_after=60)
 
-        elif interaction.channel == self.bot.vc2:
-            embed = discord.Embed(title='VC2の情報', description='', color=self.bot.vc2_owner.top_role.color)
-            embed.add_field(name='名前', value=self.bot.vc2.name)
-            embed.add_field(name='オーナー', value=self.bot.vc2_owner.mention)
-            embed.add_field(name='状態', value=self.bot.vc2_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc2.members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc2.nsfw)
-            await interaction.response.send_message('送信したで', ephemeral=True)
-            await interaction.channel.send(embed=embed, delete_after=60)
-
-        elif interaction.channel == self.bot.vc3:
-            embed = discord.Embed(title='VC3の情報', description='', color=self.bot.vc3_owner.top_role.color)
-            embed.add_field(name='名前', value=self.bot.vc3.name)
-            embed.add_field(name='オーナー', value=self.bot.vc3_owner.mention)
-            embed.add_field(name='状態', value=self.bot.vc3_status)
-            embed.add_field(name='何人いるか(Bot再起動などで正常に取得できてない場合があります。)', value=len(self.bot.vc3.members))
-            embed.add_field(name='NSFWかどうか', value=self.bot.vc3.nsfw)
-            await interaction.response.send_message('送信したで', ephemeral=True)
-            await interaction.channel.send(embed=embed, delete_after=60)
-            
 
 
 
