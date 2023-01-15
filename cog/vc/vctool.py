@@ -476,12 +476,12 @@ class vctool(commands.Cog):
                 message = await interaction.channel.fetch_message(vcinfo['dashboard_id'])
                 await message.delete()
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :', value=self.bot.guild.get_member(vcinfo['ownerid']).mention)
+                embed.add_field(name='現在のVCオーナー :', value=self.bot.guild.get_member(vcinfo['owner_id']).mention)
                 embed.set_footer(text='"/vctool dashboard"でダッシュボードを再送信できます')
                 newdash = await interaction.response.send_message(embed=embed, view=dashboard(self))
                 newinfo = {
                     'channelid': before.channel.id,
-                    'ownerid': vcinfo['ownerid'],
+                    'owner_id': vcinfo['owner_id'],
                     'tts': vcinfo['tts'],
                     'joincall':vcinfo['joincall'],
                     'radio': vcinfo['radio'],
@@ -555,7 +555,7 @@ class vctool(commands.Cog):
 
                         newinfo = {
                             'channelid': before.channel.id,
-                            'ownerid': None,
+                            'owner_id': None,
                             'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
                             'radio': vcinfo['radio'],
@@ -573,7 +573,7 @@ class vctool(commands.Cog):
 
                     # オーナー変更
                     else:
-                        if vcinfo['ownerid'] is member.id: # 抜けた人がオーナーだったら
+                        if vcinfo['owner_id'] is member.id: # 抜けた人がオーナーだったら
                             await owner.change(self, before.channel)
     
                             newowner = random.choice(vcmembers)
@@ -586,7 +586,7 @@ class vctool(commands.Cog):
 
                             newinfo = {
                                 'channelid': after.channel.id,
-                                'ownerid': newowner.id,
+                                'owner_id': newowner.id,
                                 'tts': vcinfo['tts'],
                                 'joincall':vcinfo['joincall'],
                                 'radio': vcinfo['radio'],
@@ -606,7 +606,7 @@ class vctool(commands.Cog):
                     }, {
                         "_id": False  # 内部IDを取得しないように
                     })
-                    if vcinfo['ownerid'] is None:
+                    if vcinfo['owner_id'] is None:
                         embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
                         embed.add_field(name='現在のVCオーナー :',value=member.mention)
                         embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
@@ -614,7 +614,7 @@ class vctool(commands.Cog):
                         await after.channel.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
                         newinfo = {
                             'channelid': after.channel.id,
-                            'ownerid': member.id,
+                            'owner_id': member.id,
                             'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
                             'radio': vcinfo['radio'],

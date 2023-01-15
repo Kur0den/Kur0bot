@@ -53,7 +53,7 @@ class tts(commands.Cog):
                     })
                     new_info = {
                         'channelid': interaction.channel_id,
-                        'ownerid': vcinfo['ownerid'],
+                        'owner_id': vcinfo['owner_id'],
                         'tts': True,
                         'joincall': joinannounce,
                         'radio': False,
@@ -81,7 +81,7 @@ class tts(commands.Cog):
                     })
                     new_info = {
                         'channelid': interaction.channel_id,
-                        'ownerid': vcinfo['ownerid'],
+                        'owner_id': vcinfo['owner_id'],
                         'tts': False,
                         'joincall': False,
                         'radio': False,
@@ -227,7 +227,7 @@ class tts(commands.Cog):
                 })
                 new_info = {
                     'channelid': before.channel.id,
-                    'ownerid': vcinfo['ownerid'],
+                    'owner_id': vcinfo['owner_id'],
                     'tts': False,
                     'joincall': False,
                     'radio': False,

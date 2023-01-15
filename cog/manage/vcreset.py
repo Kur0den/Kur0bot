@@ -16,7 +16,7 @@ class vcreset(commands.Cog):
     async def vcreset(self, interaction: discord.Interaction):
         vc1 = {
             'channelid': 981800095760670730,
-            'ownerid': None,
+            'owner_id': None,
             'tts': False,
             'joincall':False,
             'radio': False,
@@ -29,7 +29,7 @@ class vcreset(commands.Cog):
         }, vc1, upsert=True)
         vc2 = {
             'channelid': 981800262165495828,
-            'ownerid': None,
+            'owner_id': None,
             'tts': False,
             'joincall': False,
             'radio': False,
@@ -42,7 +42,7 @@ class vcreset(commands.Cog):
         }, vc2, upsert=True)
         vc3 = {
             'channelid': 981800316116803636,
-            'ownerid': None,
+            'owner_id': None,
             'tts': False,
             'joincall': False,
             'radio': False,
