@@ -24,12 +24,45 @@ class tts(commands.Cog):
     @group.command(name='connect', description='VCに接続します')
     @app_commands.guild_only()
     async def join(self, interaction: discord.Interaction, joinannounce: bool = False):
-        if interaction.channel is self.bot.vc1 or interaction.channel is self.bot.vc2 or interaction.channel is self.bot.vc3:
-            if self.bot.guild.voice_client == None:
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel_id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        ttsinfo = await self.bot.vc_info.find_one({
+            "tts": True
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        radioinfo = await self.bot.vc_info.find_one({
+            "radio": True
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        print(ttsinfo)
+        print(radioinfo)
+        if vcinfo is not None:
+            if ttsinfo is None and radioinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
                     await interaction.channel.connect()
                     await interaction.response.send_message('接続しました')
-                    self.jcall = joinannounce
+                    vcinfo = await self.bot.vc_info.find_one({
+                        "channelid": interaction.channel_id
+                    }, {
+                        "_id": False  # 内部IDを取得しないように
+                    })
+                    new_info = {
+                        'channelid': interaction.channel_id,
+                        'ownerid': vcinfo['ownerid'],
+                        'tts': True,
+                        'joincall': joinannounce,
+                        'radio': False,
+                        'mode': 'Nomal',
+                        'dashboard': None
+                    }
+                    await self.bot.vc_info.replace_one({
+                        "channelid": interaction.channel_id
+                    }, new_info, upsert=True)
                     return
         await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
 
@@ -40,7 +73,23 @@ class tts(commands.Cog):
             if interaction.channel is self.bot.guild.voice_client.channel:
                 if interaction.user.voice.channel is self.bot.guild.voice_client.channel:
                     await self.bot.guild.voice_client.disconnect()
-                    self.vc = None
+                    vcinfo = await self.bot.vc_info.find_one({
+                        "channelid": interaction.channel_id
+                    }, {
+                        "_id": False  # 内部IDを取得しないように
+                    })
+                    new_info = {
+                        'channelid': interaction.channel_id,
+                        'ownerid': vcinfo['ownerid'],
+                        'tts': False,
+                        'joincall': False,
+                        'radio': False,
+                        'mode': 'Nomal',
+                        'dashboard': None
+                    }
+                    await self.bot.vc_info.replace_one({
+                        "channelid": interaction.channel_id
+                    }, new_info, upsert=True)
                     await interaction.response.send_message('切断しました')
                     return
         await interaction.response.send_message('失敗しました')
