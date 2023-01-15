@@ -512,18 +512,17 @@ class vctool(commands.Cog):
                     embed.set_footer(text="VC入退出通知")
 
                     await before.channel.send(embed=embed)
+
+                    vcinfo = await self.bot.vc_info.find_one({
+                        "channelid": before.channel.id
+                    }, {
+                        "_id": False  # 内部IDを取得しないように
+                    })
                     
                     # ロック時等の処理
-                    if before.channel == self.bot.vc1:
-                        if self.bot.vc1_status == 'Lock' or self.bot.vc1_status == 'Permit':
+                    if vcinfo['mode'] is 'Lock' or vcinfo['mode'] is  'Permit':
                             await self.bot.vc1.set_permissions(member, connect=None)
-                    elif before.channel == self.bot.vc2:
-                        if self.bot.vc2_status == 'Lock' or self.bot.vc2_status == 'Permit':
-                            await self.bot.vc2.set_permissions(member, connect=None)
-                    elif before.channel == self.bot.vc3:
-                        if self.bot.vc3_status == 'Lock' or self.bot.vc3_status == 'Permit':
-                            await self.bot.vc3.set_permissions(member, connect=None)
-                    
+
                     vcmembers = before.channel.members
                     count = 0
                     for m in before.channel.members:
@@ -532,7 +531,6 @@ class vctool(commands.Cog):
                             count -= 1
                         count += 1
 
-                    
                     # チャンネル初期化
                     if len(vcmembers) == 0:
                         if len(before.channel.members) != 0:
@@ -547,18 +545,54 @@ class vctool(commands.Cog):
                             await self.bot.vc2.edit(name='VC-2(128Kbps)')
                         elif before.channel == self.bot.vc3:
                             await self.bot.vc3.edit(name='VC-3(64Kbps)')
-                        await before.channel.edit(sync_permissions=True)
-                        await status.set(self, before.channel, 'Normal')
-                        
+
+                        await before.channel.edit(sync_permissions=True) # 権限をカテゴリに同期
+
+                        newinfo = {
+                            'channelid': after.channel.id,
+                            'ownerid': None,
+                            'tts': vcinfo['tts'],
+                            'joincall':vcinfo['joincall'],
+                            'radio': vcinfo['radio'],
+                            'radioURL': vcinfo['radioURL'],
+                            'mode': 'Nomal',
+                            'dashboard': None
+                        }
+                        await self.bot.vc_info.replace_one({
+                            "channelid": after.channel.id
+                        }, newinfo, upsert=True)
+
                         if before.channel.nsfw == True:
                             await before.channel.edit(nsfw=False)
-                    
+
 
                     # オーナー変更
                     else:
-                        if await owner.check(self, member, before.channel) != None:
+                        if vcinfo['ownerid'] is member.id: # 抜けた人がオーナーだったら
                             await owner.change(self, before.channel)
-                    
+    
+                            newowner = random.choice(vcmembers)
+                            await vcinfo['dashboard'].delete()
+                            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
+                            embed.add_field(name='現在のVCオーナー :',value=newowner.mention)
+                            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
+                            newdash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
+                            await after.channel.send(f'{newowner.mention}は{after.channel}の所有権を持っています', delete_after=60)
+
+                            newinfo = {
+                                'channelid': after.channel.id,
+                                'ownerid': newowner.id,
+                                'tts': vcinfo['tts'],
+                                'joincall':vcinfo['joincall'],
+                                'radio': vcinfo['radio'],
+                                'radioURL': vcinfo['radioURL'],
+                                'mode': vcinfo['mode'],
+                                'dashboard': newdash
+                            }
+                            await self.bot.vc_info.replace_one({
+                                "channelid": after.channel.id
+                            }, newinfo, upsert=True)
+
                 # 入室
                 if after.channel is not None and after.channel != stage:
                     # オーナー指定
