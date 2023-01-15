@@ -549,7 +549,7 @@ class vctool(commands.Cog):
                         await before.channel.edit(sync_permissions=True) # 権限をカテゴリに同期
 
                         newinfo = {
-                            'channelid': after.channel.id,
+                            'channelid': before.channel.id,
                             'ownerid': None,
                             'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
@@ -559,7 +559,7 @@ class vctool(commands.Cog):
                             'dashboard': None
                         }
                         await self.bot.vc_info.replace_one({
-                            "channelid": after.channel.id
+                            "channelid": before.channel.id
                         }, newinfo, upsert=True)
 
                         if before.channel.nsfw == True:
@@ -587,7 +587,7 @@ class vctool(commands.Cog):
                                 'radio': vcinfo['radio'],
                                 'radioURL': vcinfo['radioURL'],
                                 'mode': vcinfo['mode'],
-                                'dashboard': newdash
+                                'dashboard': newdash.id
                             }
                             await self.bot.vc_info.replace_one({
                                 "channelid": after.channel.id
@@ -606,7 +606,7 @@ class vctool(commands.Cog):
                         embed.add_field(name='現在のVCオーナー :',value=member.mention)
                         embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
                         message = await after.channel.send(embed=embed, view=dashboard(self))
-                        await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
+                        await after.channel.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
                         newinfo = {
                             'channelid': after.channel.id,
                             'ownerid': member.id,
@@ -615,7 +615,7 @@ class vctool(commands.Cog):
                             'radio': vcinfo['radio'],
                             'radioURL': vcinfo['radioURL'],
                             'mode': 'Nomal',
-                            'dashboard': message
+                            'dashboard': message.id
                         }
                         await self.bot.vc_info.replace_one({
                             "channelid": after.channel.id
