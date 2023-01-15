@@ -1,8 +1,9 @@
-import discord
-from discord.ext import commands
-from datetime import datetime
 import random
-import asyncio
+from datetime import datetime
+
+import discord
+from discord import app_commands
+from discord.ext import commands
 
 
 def purge_check(m):    return not m.embeds[0].title in ['チャンネルリセット中...'] if bool(m.embeds) else True
@@ -459,44 +460,34 @@ class dashboard(discord.ui.View):
 class vctool(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
 
+    group = app_commands.Group(name="vctool", description="VC tool", guild_ids=[733707710784340100], guild_only=True)
 
-    @commands.command()
-    async def vctool(self, ctx):
-        if ctx.author.voice != None:
-            if ctx.channel is self.bot.vc1 and ctx.author.voice.channel is self.bot.vc1:
-                await self.bot.vc1_dash.delete()
+    @group.command()
+    async def dashboard(self, interaction):
+        if interaction.user.voice != None:
+            if interaction.user.voice.channel == interaction.channel:
+                vcinfo = await self.bot.vc_info.find_one({
+                    "channelid": interaction.channel.id
+                }, {
+                    "_id": False  # 内部IDを取得しないように
+                })
+                message = await interaction.channel.fetch_message(vcinfo['dashboard_id'])
+                await message.delete()
                 embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
-                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc1_dash = await ctx.send(embed=embed, view=dashboard(self))
-            elif ctx.channel is self.bot.vc2 and ctx.author.voice.channel is self.bot.vc2:
-                await self.bot.vc2_dash.delete()
-                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
-                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc2_dash = await ctx.send(embed=embed, view=dashboard(self))
-            elif ctx.channel is self.bot.vc3 and ctx.author.voice.channel is self.bot.vc3:
-                await self.bot.vc3_dash.delete()
-                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
-                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc3_dash = await ctx.send(embed=embed, view=dashboard(self))
+                embed.add_field(name='現在のVCオーナー :', value=self.bot.guild.get_member(vcinfo['ownerid']).mention)
+                embed.set_footer(text='"/vctool dashboard"でダッシュボードを再送信できます')
+                newdash = await interaction.response.send_message(embed=embed, view=dashboard(self))
             else:
-                await ctx.send('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', delete_after=60)
+                await interaction.response.send_message('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', ephemeral=True)
         else:
-            await ctx.send('VCに参加してないとこのコマンドは使えないで', delete_after=60)
+            await interaction.response.send_message('VCに参加してないとこのコマンドは使えないで', ephemeral=True)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        
+
         stage = self.bot.get_channel(884734698759266324)
-        log1 = self.bot.get_channel(983753547705372722)
-        log2 = self.bot.get_channel(983753718094766152)
-        log3 = self.bot.get_channel(983753740093911090)
-        
-        
+
         # 入退出処理
         if member.bot is False:
             # 入退出以外は弾く
@@ -518,7 +509,7 @@ class vctool(commands.Cog):
                     }, {
                         "_id": False  # 内部IDを取得しないように
                     })
-                    
+
                     # ロック時等の処理
                     if vcinfo['mode'] is 'Lock' or vcinfo['mode'] is  'Permit':
                             await self.bot.vc1.set_permissions(member, connect=None)
@@ -556,7 +547,7 @@ class vctool(commands.Cog):
                             'radio': vcinfo['radio'],
                             'radioURL': vcinfo['radioURL'],
                             'mode': 'Nomal',
-                            'dashboard': None
+                            'dashboard_id': None
                         }
                         await self.bot.vc_info.replace_one({
                             "channelid": before.channel.id
@@ -572,7 +563,7 @@ class vctool(commands.Cog):
                             await owner.change(self, before.channel)
     
                             newowner = random.choice(vcmembers)
-                            await vcinfo['dashboard'].delete()
+                            await vcinfo['dashboard_id'].delete()
                             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
                             embed.add_field(name='現在のVCオーナー :',value=newowner.mention)
                             embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
@@ -587,7 +578,7 @@ class vctool(commands.Cog):
                                 'radio': vcinfo['radio'],
                                 'radioURL': vcinfo['radioURL'],
                                 'mode': vcinfo['mode'],
-                                'dashboard': newdash.id
+                                'dashboard_id': newdash.id
                             }
                             await self.bot.vc_info.replace_one({
                                 "channelid": after.channel.id
@@ -615,7 +606,7 @@ class vctool(commands.Cog):
                             'radio': vcinfo['radio'],
                             'radioURL': vcinfo['radioURL'],
                             'mode': 'Nomal',
-                            'dashboard': message.id
+                            'dashboard_id': message.id
                         }
                         await self.bot.vc_info.replace_one({
                             "channelid": after.channel.id
