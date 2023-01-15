@@ -58,8 +58,8 @@ class tts(commands.Cog):
                         'joincall': joinannounce,
                         'radio': False,
                         'radioURL': None,
-                        'mode': 'Nomal',
-                        'dashboard': None
+                        'mode': vcinfo['mode'],
+                        'dashboard_id': vcinfo['dashboard_id']
                     }
                     await self.bot.vc_info.replace_one({
                         "channelid": interaction.channel_id
@@ -86,8 +86,8 @@ class tts(commands.Cog):
                         'joincall': False,
                         'radio': False,
                         'radioURL': None,
-                        'mode': 'Nomal',
-                        'dashboard': None
+                        'mode': vcinfo['mode'],
+                        'dashboard_id': vcinfo['dashboard_id']
                     }
                     await self.bot.vc_info.replace_one({
                         "channelid": interaction.channel_id
@@ -232,8 +232,8 @@ class tts(commands.Cog):
                     'joincall': False,
                     'radio': False,
                     'radioURL': None,
-                    'mode': 'Nomal',
-                    'dashboard': None
+                    'mode': vcinfo['mode'],
+                    'dashboard_id': vcinfo['dashboard_id']
                 }
                 await self.bot.vc_info.replace_one({
                     "channelid": before.channel.id
