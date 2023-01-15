@@ -18,6 +18,7 @@ class vcreset(commands.Cog):
             'channelid': '981800095760670730',
             'ownerid': '',
             'tts': 'False',
+            'joincall': 'False',
             'radio': 'False',
             'mode': 'Nomal'
         }
@@ -28,6 +29,7 @@ class vcreset(commands.Cog):
             'channelid': '981800262165495828',
             'ownerid': '',
             'tts': 'False',
+            'joincall': 'False',
             'radio': 'False',
             'mode': 'Nomal'
         }
@@ -38,6 +40,7 @@ class vcreset(commands.Cog):
             'channelid': '981800316116803636',
             'ownerid': '',
             'tts': 'False',
+            'joincall': 'False',
             'radio': 'False',
             'mode': 'Nomal'
         }
