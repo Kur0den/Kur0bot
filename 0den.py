@@ -176,15 +176,16 @@ async def on_ready():
     if ttsinfo is not None:
         channel = bot.guild.get_channel(ttsinfo['channelid'])
         await channel.connect()
+        await channel.send('再接続しました')
     elif radioinfo is not None:
         channel = bot.guild.get_channel(ttsinfo['channelid'])
         await channel.connect()
         bot.guild.voice_client.play(discord.FFmpegPCMAudio(radioinfo['radioURL']))
+        await channel.send('再接続しました')
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await bot.owner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
 
 
-#    DiscordComponents(bot)
 
 
 
