@@ -21,6 +21,14 @@ class radio(commands.Cog):
                     await interaction.response.send_message(f'{url} を再生します')
                     self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
                     return
+            elif self.bot.guild.voice_client.channel == interaction.channel:
+                if interaction.user.voice.channel is interaction.channel:
+                    self.bot.guild.voice_client.stop()
+                    await interaction.response.send_message(f'現在再生しているラジオを止めて{url} を再生します')
+                    self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                    return
+            await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
+            return
         await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
 
     @group.command(name='disconnect', description='VCから切断します')
