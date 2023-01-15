@@ -15,37 +15,40 @@ class vcreset(commands.Cog):
     @app_commands.default_permissions(administrator=True)
     async def vcreset(self, interaction: discord.Interaction):
         vc1 = {
-            'channelid': '981800095760670730',
-            'ownerid': '',
-            'tts': 'False',
-            'joincall': 'False',
-            'radio': 'False',
-            'mode': 'Nomal'
+            'channelid': 981800095760670730,
+            'ownerid': None,
+            'tts': False,
+            'joincall':False,
+            'radio': False,
+            'mode': 'Nomal',
+            'dashboard': None
         }
         await self.bot.vc_info.replace_one({
-            "channelid": '981800095760670730'
+            "channelid": 981800095760670730
         }, vc1, upsert=True)
         vc2 = {
-            'channelid': '981800262165495828',
-            'ownerid': '',
-            'tts': 'False',
-            'joincall': 'False',
-            'radio': 'False',
-            'mode': 'Nomal'
+            'channelid': 981800262165495828,
+            'ownerid': None,
+            'tts': False,
+            'joincall': False,
+            'radio': False,
+            'mode': 'Nomal',
+            'dashboard': None
         }
         await self.bot.vc_info.replace_one({
-            "channelid": '981800262165495828'
+            "channelid": 981800262165495828
         }, vc2, upsert=True)
         vc3 = {
-            'channelid': '981800316116803636',
-            'ownerid': '',
-            'tts': 'False',
-            'joincall': 'False',
-            'radio': 'False',
-            'mode': 'Nomal'
+            'channelid': 981800316116803636,
+            'ownerid': None,
+            'tts': False,
+            'joincall': False,
+            'radio': False,
+            'mode': 'Nomal',
+            'dashboard': None
         }
         await self.bot.vc_info.replace_one({
-            "channelid": '981800316116803636'
+            "channelid": 981800316116803636
         }, vc3, upsert=True)
         await interaction.response.send_message('成功')
 
