@@ -57,6 +57,7 @@ class tts(commands.Cog):
                         'tts': True,
                         'joincall': joinannounce,
                         'radio': False,
+                        'radioURL': None,
                         'mode': 'Nomal',
                         'dashboard': None
                     }
@@ -84,6 +85,7 @@ class tts(commands.Cog):
                         'tts': False,
                         'joincall': False,
                         'radio': False,
+                        'radioURL': None,
                         'mode': 'Nomal',
                         'dashboard': None
                     }
