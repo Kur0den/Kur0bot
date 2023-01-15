@@ -22,7 +22,7 @@ class vcreset(commands.Cog):
             'radio': False,
             'radioURL': None,
             'mode': 'Nomal',
-            'dashboard': None
+            'dashboard_id': None
         }
         await self.bot.vc_info.replace_one({
             "channelid": 981800095760670730
@@ -35,7 +35,7 @@ class vcreset(commands.Cog):
             'radio': False,
             'radioURL': None,
             'mode': 'Nomal',
-            'dashboard': None
+            'dashboard_id': None
         }
         await self.bot.vc_info.replace_one({
             "channelid": 981800262165495828
@@ -48,7 +48,7 @@ class vcreset(commands.Cog):
             'radio': False,
             'radioURL': None,
             'mode': 'Nomal',
-            'dashboard': None
+            'dashboard_id': None
         }
         await self.bot.vc_info.replace_one({
             "channelid": 981800316116803636
