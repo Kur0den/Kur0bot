@@ -39,13 +39,13 @@ class tts(commands.Cog):
         }, {
             "_id": False  # 内部IDを取得しないように
         })
-        print(ttsinfo)
-        print(radioinfo)
         if vcinfo is not None:
             if ttsinfo is None and radioinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
                     await interaction.channel.connect()
                     await interaction.response.send_message('接続しました')
+                    shutil.rmtree(self.bot.tts_file)
+                    os.mkdir(self.bot.tts_file)
                     vcinfo = await self.bot.vc_info.find_one({
                         "channelid": interaction.channel_id
                     }, {
@@ -111,74 +111,133 @@ class tts(commands.Cog):
     # メッセージ取得
     @commands.Cog.listener()
     async def on_message(self, message):
-        if self.bot.guild.voice_client != None:
-            if message.author.bot is False:
-                if message.channel is self.bot.guild.voice_client.channel:
-                    message_queue = deque([])
-                    i = 0
-                    for m in [message async for message in message.channel.history(limit=2)]:
-                        if i == 0:
-                            m1 = m.author.id
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": message.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        try:
+            if vcinfo['tts'] is True:
+                if message.author.bot is False:
+                        message_queue = deque([])
+                        i = 0
+                        for m in [message async for message in message.channel.history(limit=2)]:
+                            if i == 0:
+                                m1 = m.author.id
+                            else:
+                                m2 = m.author.id
+                            i = +1
+                        usernick = message.author.display_name
+                        message = message.content[:100]
+                        message = re.sub(regex, "URL ", message, flags=re.MULTILINE)
+                        if m1 == m2:
+                            pass
                         else:
-                            m2 = m.author.id
-                        i = +1
-                    usernick = message.author.display_name
-                    message = message.content[:100]
-                    message = re.sub(regex, "URL ", message, flags=re.MULTILINE)
-                    
-                    if m1 == m2:
-                        pass
-                    else:
-                        message = usernick + ":" + message
-                    if not self.bot.guild.voice_client.is_playing():
-                        g_tts = gTTS(text=message, lang='ja', tld='jp')
-                        name = uuid.uuid1()
-                        g_tts.save(f'./.tts_voice/{name}.mp3')
-                        self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
-                    else:
-                        message_queue.append(message)
-                        while self.bot.guild.voice_client.is_playing():
-                            await asyncio.sleep(0.1)
-                        g_tts = gTTS(message_queue.popleft(), lang='ja', tld='jp')
-                        name = uuid.uuid1()
-                        g_tts.save(f'./.tts_voice/{name}.mp3')
-                        self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
+                            message = usernick + ":" + message
+                        if not self.bot.guild.voice_client.is_playing():
+                            g_tts = gTTS(text=message, lang='ja', tld='jp')
+                            name = uuid.uuid1()
+                            g_tts.save(f'./.tts_voice/{name}.mp3')
+                            self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
+                        else:
+                            message_queue.append(message)
+                            while self.bot.guild.voice_client.is_playing():
+                                await asyncio.sleep(0.1)
+                            g_tts = gTTS(message_queue.popleft(), lang='ja', tld='jp')
+                            name = uuid.uuid1()
+                            g_tts.save(f'./.tts_voice/{name}.mp3')
+                            self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
+        except TypeError:
+            return
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        # TTS実行中か判断
-        if self.bot.guild.voice_client != None:
-            # 入退出処理
-            if member.bot is False:
-                # 入退出以外は弾く
-                if before.channel != after.channel:
-                    if self.jcall is True:
-                        # 入室
+        beforeinfo = None
+        afterinfo = None
+        try:
+            beforeinfo = await self.bot.vc_info.find_one({
+                "channelid": before.channel.id
+            }, {
+                "_id": False  # 内部IDを取得しないように
+            })
+        except AttributeError:
+            pass
+        try:
+            afterinfo = await self.bot.vc_info.find_one({
+                "channelid": after.channel.id
+            }, {
+                "_id": False  # 内部IDを取得しないように
+            })
+        except AttributeError:
+            pass
+
+        # Botは弾く
+        if member.bot is False:
+            # 入退出以外は弾く
+            if before.channel != after.channel:
+                a = 0
+                b = 0
+                # TTS実行中か判断&入退出判断
+                # 退出
+                try:
+                    if beforeinfo['joincall'] is True:
                         call_queue = deque([])
-                        if after.channel is not None and after.channel != self.bot.stage:
-                            message = (f'{member.name}:が入室しました')
-                        # 退出
-                        elif before.channel is not None and before.channel != self.bot.stage:
+                        if afterinfo is not None:
+                            message = (f'{member.name}:が移動しました')
+                        else:
                             message = (f'{member.name}:が退室しました')
-                        else:
-                            return
-                        if not self.bot.guild.voice_client.is_playing():
-                            g_tts = gTTS(text=message, lang='ja', tld = 'jp')
-                            name = uuid.uuid1()
-                            g_tts.save(f'./.tts_voice/{name}.mp3')
-                            self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
-                        else:
-                            call_queue.append(message)
-                            while self.bot.guild.voice_client.is_playing():
-                                await asyncio.sleep(0.1)
-                            g_tts = gTTS(call_queue.popleft(), lang='ja', tld='jp')
-                            name = uuid.uuid1()
-                            g_tts.save(f'./.tts_voice/{name}.mp3')
-                            self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
+                    else:
+                        b = 1
+                except TypeError:
+                    b = 1
+                    pass
+                #入室
+                try:
+                    call_queue = deque([])
+                    if afterinfo['joincall'] is True:
+                        message = (f'{member.name}:が入室しました')
+                    else:
+                        a = 1
+                except TypeError:
+                    a = 1
+                    pass
+
+                if b+a is 2:
+                    return
+
+                if not self.bot.guild.voice_client.is_playing():
+                    g_tts = gTTS(text=message, lang='ja', tld = 'jp')
+                    name = uuid.uuid1()
+                    g_tts.save(f'./.tts_voice/{name}.mp3')
+                    self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
+                else:
+                    call_queue.append(message)
+                    while self.bot.guild.voice_client.is_playing():
+                        await asyncio.sleep(0.1)
+                    g_tts = gTTS(call_queue.popleft(), lang='ja', tld='jp')
+                    name = uuid.uuid1()
+                    g_tts.save(f'./.tts_voice/{name}.mp3')
+                    self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
         if member.id is self.bot.user.id:
-            if before.channel is not None:
-                shutil.rmtree(self.bot.tts_file)
-                os.mkdir(self.bot.tts_file)
+            if before.channel is not None and after.channel is None:
+                vcinfo = await self.bot.vc_info.find_one({
+                    "channelid": before.channel.id
+                }, {
+                    "_id": False  # 内部IDを取得しないように
+                })
+                new_info = {
+                    'channelid': before.channel.id,
+                    'ownerid': vcinfo['ownerid'],
+                    'tts': False,
+                    'joincall': False,
+                    'radio': False,
+                    'radioURL': None,
+                    'mode': 'Nomal',
+                    'dashboard': None
+                }
+                await self.bot.vc_info.replace_one({
+                    "channelid": before.channel.id
+                }, new_info, upsert=True)
 
 
 async def setup(bot: commands.Bot) -> None:
