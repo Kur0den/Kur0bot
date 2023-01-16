@@ -135,7 +135,7 @@ class rename(discord.ui.Modal):
         
 
 class select(discord.ui.Select):
-    def __init__(vcinfo, mode, *, bot):
+    def __init__(self, vcinfo, mode, *, bot):
         self.option = []
         self.channel = channel
         self.mode = mode
@@ -172,9 +172,9 @@ class select(discord.ui.Select):
                             view.stop()
 
 class SelectView(discord.ui.View): # view追加用のクラス
-    def __init__(self, bot.vc_info, vcinfo, mode, timeout = 180):
+    def __init__(self, vcinfo, mode, timeout = 180):
         super().__init__(timeout=timeout)
-        member = self.add_item(select(self, bot.vc_info, vcinfo, mode))
+        member = self.add_item(select(self, vcinfo, mode))
 
 
 
