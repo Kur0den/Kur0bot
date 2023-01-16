@@ -135,14 +135,17 @@ class rename(discord.ui.Modal):
         
 
 class select(discord.ui.Select):
-    def __init__(self, vcinfo, mode, *, bot):
+    def __init__(self, vc_info, channel, owmerid, mode):
         self.option = []
         self.channel = channel
         self.mode = mode
-        self.bot = bot.bot.bot.bot
-        
-        for user in self.bot.guild.get_channel(vcinfo['channelid']).members: # 全ユーザー分の選択できる要素追加
-            self.option.append(discord.SelectOption(label=user.name, value=user.id))
+        self.vc_info = vc_info
+
+
+        for user in channel.members: # 全ユーザー分の選択できる要素追加
+            if user.bot is False:
+                if user.id != owmerid:
+                    self.option.append(discord.SelectOption(label=user.name, value=user.id))
         super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=self.option)
     async def callback(self, interaction: discord.Interaction):
             for member in self.channel.members:
@@ -155,26 +158,31 @@ class select(discord.ui.Select):
                             await interaction.response.send_message(content=f"{member.name}をVCからキックできませんでした",ephemeral=True)
                         break
                     elif self.mode =='owner':
-                        if self.channel.id == 981800095760670730:
-                            await self.channel.send(f'{member.mention}は{self.channel}の所有権を持っています', delete_after=60)
-                            await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
-                            return member
-                            view.stop()
-                        if self.channel.id == 981800262165495828:
-                            await self.channel.send(f'{member.mention}は{self.channel}の所有権を持っています', delete_after=60)
-                            await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
-                            return member
-                            view.stop()
-                        if self.channel.id == 981800316116803636:
-                            await self.channel.send(f'{member.mention}は{self.channel}の所有権を持っています', delete_after=60)
-                            await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
-                            return member
-                            view.stop()
+                        vcinfo = await self.vc_info.find_one({
+                            "channelid": interaction.channel.id
+                        }, {
+                            "_id": False  # 内部IDを取得しないように
+                        })
+                        newinfo = {
+                            'channelid': interaction.channel.id,
+                            'owner_id': member.id,
+                            'tts': vcinfo['tts'],
+                            'joincall':vcinfo['joincall'],
+                            'radio': vcinfo['radio'],
+                            'radioURL': vcinfo['radioURL'],
+                            'mode': vcinfo['mode'],
+                            'dashboard_id': vcinfo['dashboard_id']
+                        }
+                        await self.bot.vc_info.replace_one({
+                            "channelid": interaction.channel.id
+                        }, newinfo, upsert=True)
+                        await interaction.channel.send(f'{member.mention}は{interaction.channel}の所有権を持っています', delete_after=60)
+                        await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
 
 class SelectView(discord.ui.View): # view追加用のクラス
-    def __init__(self, vcinfo, mode, timeout = 180):
+    def __init__(self, vcinfo, channel, ownerid, mode, timeout = 180):
         super().__init__(timeout=timeout)
-        member = self.add_item(select(self, vcinfo, mode))
+        self.add_item(select(vcinfo, channel, ownerid, mode))
 
 
 
@@ -398,7 +406,7 @@ class dashboard(discord.ui.View):
             "_id": False  # 内部IDを取得しないように
         })
         if vcinfo['owner_id'] == interaction.user.id:
-            view = SelectView(self, self.bot.vc_info, vcinfo, 'owner')
+            view = SelectView(self.bot.vc_info, interaction.channel, vcinfo['owner_id'], 'owner')
             member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
