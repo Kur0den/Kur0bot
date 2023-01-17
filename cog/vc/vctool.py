@@ -293,27 +293,17 @@ class dashboard(discord.ui.View):
     # NSFW
     @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=2)
     async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            if self.bot.vc1.nsfw == True:
-                await self.bot.vc1.edit(nsfw=False)
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            if interaction.channel.nsfw == False:
+                await interaction.channel.edit(nsfw=False)
                 await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
             else:
-                await self.bot.vc1.edit(nsfw=True)
-                await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
-        elif result == 'vc2':
-            if self.bot.vc2.nsfw == True:
-                await self.bot.vc2.edit(nsfw=False)
-                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
-            else:
-                await self.bot.vc2.edit(nsfw=True)
-                await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
-        elif result == 'vc3':
-            if self.bot.vc3.nsfw == True:
-                await self.bot.vc3.edit(nsfw=False)
-                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
-            else:
-                await self.bot.vc3.edit(nsfw=True)
+                await interaction.channel.edit(nsfw=True)
                 await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
