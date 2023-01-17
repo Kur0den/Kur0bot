@@ -8,106 +8,6 @@ from discord.ext import commands
 
 def purge_check(m):    return not m.embeds[0].title in ['チャンネルリセット中...'] if bool(m.embeds) else True
 
-
-class owner():
-    def __init__(self, bot):
-        super().__init__()
-        self.vcowner = None
-    
-    # オーナー設定
-    async def setup(self, member, after):
-        if len(after.channel.members) == 1:
-            if after.channel == self.bot.vc1:
-                self.bot.vc1_owner = member
-                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
-                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
-                await self.bot.vc1.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
-            elif after.channel == self.bot.vc2:
-                self.bot.vc2_owner = member
-                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
-                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
-                await self.bot.vc2.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
-            elif after.channel == self.bot.vc3:
-                self.bot.vc3_owner = member
-                embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-                embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
-                embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-                self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
-                await self.bot.vc3.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
-    
-    # オーナーチェック
-    async def check(self, member, channel):
-        if channel == self.bot.vc1 and member == self.bot.vc1_owner:
-            result = 'vc1'
-        elif channel == self.bot.vc2 and member == self.bot.vc2_owner:
-            result = 'vc2'
-        elif channel == self.bot.vc3 and member == self.bot.vc3_owner:
-            result = 'vc3'
-        else:
-            result = None
-        return result
-    
-    
-    # オーナー変更
-    async def change(self, channel):
-        member = channel.members
-        count = 0
-        for user in member:
-            if user.bot == True:
-                member.pop(count)
-            count + 1
-        
-        if channel == self.bot.vc1:
-            await self.bot.vc1_dash.delete()
-            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc1_owner.mention)
-            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-            self.bot.vc1_dash = await self.bot.vc1.send(embed=embed, view=dashboard(self))
-            self.bot.vc1_owner = random.choice(member)
-            await channel.send(f'{self.bot.vc1_owner.mention}は{channel}の所有権を持っています', delete_after=60)
-        elif channel == self.bot.vc2:
-            await self.bot.vc2_dash.delete()
-            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc2_owner.mention)
-            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-            self.bot.vc2_dash = await self.bot.vc2.send(embed=embed, view=dashboard(self))
-            self.bot.vc2_owner = random.choice(member)
-            await channel.send(f'{self.bot.vc2_owner.mention}は{channel}の所有権を持っています', delete_after=60)
-        elif channel == self.bot.vc3:
-            await self.bot.vc3_dash.delete()
-            embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
-            embed.add_field(name='現在のVCオーナー :',value=self.bot.vc3_owner.mention)
-            embed.set_footer(text='"k/vctool"でダッシュボードを再送信できます')
-            self.bot.vc3_dash = await self.bot.vc3.send(embed=embed, view=dashboard(self))
-            self.bot.vc3_owner = random.choice(member)
-            await channel.send(f'{self.bot.vc3_owner.mention}は{channel}の所有権を持っています', delete_after=60)
-
-class status():
-    def __init__(self, bot):
-        super().__init__()
-    
-    async def set(self, chanel, status):
-        if chanel == self.bot.vc1:
-            self.bot.vc1_status = status
-        elif chanel == self.bot.vc2:
-            self.bot.vc2_status = status
-        elif chanel == self.bot.vc3:
-            self.bot.vc3_status = status
-    
-    async def check(self, channel):
-        if channel == self.bot.vc1:
-            result = self.bot.vc1_status
-        elif channel == self.bot.vc2:
-            result  = self.bot.vc2_status
-        elif channel == self.bot.vc3:
-            result = self.bot.vc3_status
-        return result
-
-
 #名前変更用のやつ
 class rename(discord.ui.Modal):
     def __init__(self):
@@ -510,8 +410,6 @@ class vctool(commands.Cog):
                     # オーナー変更
                     else:
                         if vcinfo['owner_id'] is member.id: # 抜けた人がオーナーだったら
-                            await owner.change(self, before.channel)
-    
                             newowner = random.choice(vcmembers)
                             await vcinfo['dashboard_id'].delete()
                             embed = discord.Embed(title="だっしゅぼーど", colour=discord.Colour(0x1122a6), description="いろいろできるよ(未完成)")
