@@ -10,7 +10,6 @@ from discord import app_commands
 from discord.ext import commands
 from gtts import gTTS
 
-
 regex = r"https?://.*?( |$)"
 
 
@@ -218,8 +217,10 @@ class tts(commands.Cog):
                     name = uuid.uuid1()
                     g_tts.save(f'./.tts_voice/{name}.mp3')
                     self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
-        if member.id is self.bot.user.id:
-            if before.channel is not None and after.channel is None:
+        elif member.id is self.bot.user.id:
+            if before.channel is not None and after.channel is None and beforeinfo['tts'] is True:
+                await self.bot.guild.voice_client.disconnect()
+                await asyncio.sleep(10)
                 vcinfo = await self.bot.vc_info.find_one({
                     "channelid": before.channel.id
                 }, {
