@@ -3,7 +3,7 @@ import asyncio
 import discord
 from discord import app_commands
 from discord.ext import commands
-
+from datetime import datetime
 
 class radio(commands.Cog):
     bot: commands.Bot
@@ -52,6 +52,8 @@ class radio(commands.Cog):
                         await self.bot.vc_info.replace_one({
                             'channel_id': interaction.channel_id
                         }, new_info, upsert=True)
+                        status = discord.Game(name=f'VCで{url}を再生中', start=datetime.utcnow)
+                        await self.bot.change_presence(activity=status)
                         return
                     elif radioinfo['channel_id'] == interaction.channel.id:
                         self.bot.guild.voice_client.stop()
@@ -71,6 +73,8 @@ class radio(commands.Cog):
                         await self.bot.vc_info.replace_one({
                             'channel_id': interaction.channel_id
                         }, new_info, upsert=True)
+                        status = discord.Game(name=f'VCで{url}を再生中', start=datetime.utcnow)
+                        await self.bot.change_presence(activity=status)
                         return
                 await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
                 return
@@ -102,6 +106,8 @@ class radio(commands.Cog):
                 await self.bot.vc_info.replace_one({
                     'channel_id': interaction.channel_id
                 }, new_info, upsert=True)
+                status = discord.Game(name='くろでんのくろでんによるくろでんのためのぼっと')
+                await self.bot.change_presence(activity=status)
                 await interaction.response.send_message('切断しました')
                 return
         await interaction.response.send_message('失敗しました')
@@ -150,6 +156,7 @@ class radio(commands.Cog):
                 await self.bot.vc_info.replace_one({
                     'channel_id': before.channel.id
                 }, new_info, upsert=True)
+                await self.bot.change_presence(activity=discord.Activity(name='くろでんのくろでんによるくろでんのためのぼっと', type=discord.ActivityType.playing))
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(radio(bot))
