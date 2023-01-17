@@ -1,18 +1,20 @@
-import asyncio
+# 使われてないライブラリは余分な時間かかるからインポートしないほうがいい
+import asyncio # 使われてない
 import os
 import shutil
 import traceback
 from datetime import datetime
 from json import load
 from os import sep as ossep
-from pathlib import Path
+from pathlib import Path # 使われてない
 
 import discord
 from discord.ext import commands
-from discord.ext.tasks import loop
+from discord.ext.tasks import loop # 使われてない
 from dotenv import load_dotenv
 from motor import motor_asyncio as motor
-import urllib
+import urllib # 使われてない
+
 
 # 環境変数(.env)をロード
 load_dotenv()
@@ -22,24 +24,26 @@ bot = commands.Bot(
     command_prefix='k/',
     case_insensitive=True,
     activity=discord.Activity(
-        name='くろでんのくろでんによるくろでんのためのぼっと', type=discord.ActivityType.playing),
+        name='くろでんのくろでんによるくろでんのためのぼっと',
+        type=discord.ActivityType.playing
+    ),
     intents=discord.Intents.all(),
 )
-
-guild_id = 733707710784340100
 
 
 @bot.event
 async def on_ready():
-    global osirase_ch, osirase_role
-    bot.manageguild = bot.get_guild(981923517736046592)
-    bot.guild = bot.get_guild(733707710784340100)
     bot.guild_id = 733707710784340100
+    bot.manageguild = bot.get_guild(981923517736046592)
+    bot.guild = bot.get_guild(bot.guild_id)
+    
     bot.owner = bot.get_user(699414261075804201)
+
     bot.unei_role = bot.guild.get_role(738956776258535575)
     bot.unei_members = bot.unei_role.members
     bot.unei_ch = bot.get_channel(738397603439444028)
-    bot.everyone = bot.guild.get_role(733707710784340100)
+
+    bot.everyone = bot.guild.get_role(bot.guild_id)
 
     bot.stage = bot.get_channel(884734698759266324)
     osirase_ch = bot.get_channel(734605726491607091)
@@ -49,8 +53,10 @@ async def on_ready():
     # UnbelievaBoatのAPI系のやつを定義
     UB_API_TOKEN = os.environ.get('UNB_TOKEN')
     bot.ub_url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
-    bot.ub_header = {'Authorization': UB_API_TOKEN,
-                     'Accept': 'application/json'}
+    bot.ub_header = {
+        'Authorization': UB_API_TOKEN,
+        'Accept': 'application/json'
+    }
 
     # しりとり機能のやつ定義
     bot.siritori_ch = bot.get_channel(982967189109878804)
@@ -62,7 +68,6 @@ async def on_ready():
     bot.siritori = True
 
     # VC機能系定義
-
     bot.vc1 = bot.get_channel(981800095760670730)
     bot.vc2 = bot.get_channel(981800262165495828)
     bot.vc3 = bot.get_channel(981800316116803636)
@@ -78,6 +83,7 @@ async def on_ready():
     bot.vc1_status = 'Normal'
     bot.vc2_status = 'Normal'
     bot.vc3_status = 'Normal'
+
 
     bot.tts_file = '.tts_voice'
     try:
@@ -102,92 +108,65 @@ async def on_ready():
     except:
         traceback.print_exc()
         print('Config not loaded')
-    # welcomeフォルダ内のcogをロード
-    for file in os.listdir('./cog/welcome'):
-        if file.endswith('.py'):
-            try:
-                await bot.load_extension(f'cog.welcome.{file[:-3]}')
-                print(f'Loaded cog: welcome.{file[:-3]}')
-            except:
-                traceback.print_exc()
-    # funフォルダ内のcogをロード
-    for file in os.listdir('./cog/fun'):
-        if file.endswith('.py'):
-            try:
-                await bot.load_extension(f'cog.fun.{file[:-3]}')
-                print(f'Loaded cog: fun.{file[:-3]}')
-            except:
-                traceback.print_exc()
-    # moneyフォルダ内のcogをロード
-    for file in os.listdir('./cog/money'):
-        if file.endswith('.py'):
-            try:
-                # 一時的にVC報酬を消し飛ばす
-                if file == 'vcmoney.py':
-                    continue
 
-                await bot.load_extension(f'cog.money.{file[:-3]}')
-                print(f'Loaded cog: money.{file[:-3]}')
-            except:
-                traceback.print_exc()
-    # serverフォルダ内のcogをロード
-    for file in os.listdir('./cog/server'):
-        if file.endswith('.py'):
-            try:
-                await bot.load_extension(f'cog.server.{file[:-3]}')
-                print(f'Loaded cog: server.{file[:-3]}')
-            except:
-                traceback.print_exc()
-    # utilフォルダ内のcogをロード
-    for file in os.listdir('./cog/util'):
-        if file.endswith('.py'):
-            try:
-                await bot.load_extension(f'cog.util.{file[:-3]}')
-                print(f'Loaded cog: util.{file[:-3]}')
-            except:
-                traceback.print_exc()
-    # manageフォルダ内のcogをロード
-    for file in os.listdir('./cog/manage'):
-        if file.endswith('.py'):
-            try:
-                await bot.load_extension(f'cog.manage.{file[:-3]}')
-                print(f'Loaded cog: manage.{file[:-3]}')
-            except:
-                traceback.print_exc()
-    # vcフォルダ内のcogをロード
-    for file in os.listdir('./cog/vc'):
-        if file.endswith('.py'):
-            try:
-                await bot.load_extension(f'cog.vc.{file[:-3]}')
-                print(f'Loaded cog: vc.{file[:-3]}')
-            except:
-                traceback.print_exc()
+    # Cogをロード
+    directories = filter(lambda x: os.path.isdir(os.path.join("cog", x)), os.listdir("cog"))
+    for directory in directories:
+        for file in os.listdir(os.path.join("cog", directory)):
+
+            # 一時的にVC報酬を消し飛ばす
+            if file == 'vcmoney.py':
+                continue
+
+            if file.endswith(".py"):
+                try:
+                    cogpath = f"cog.{directory}.{file[:-3]}"
+                    await bot.load_extension(cogpath)
+                    print("Cog loaded:", cogpath)
+                except:
+                    traceback.print_exc
+
+    # jishakuを読み込む
     try:
         await bot.load_extension('jishaku')
         print('Loaded cog: jishaku')
     except:
         traceback.print_exc()
+
     print('cog loaded')
-    ttsinfo = await bot.vc_info.find_one({
-        "tts": True
-    }, {
-        "_id": False  # 内部IDを取得しないように
-    })
-    radioinfo = await bot.vc_info.find_one({
-        "tts": True
-    }, {
-        "_id": False  # 内部IDを取得しないように
-    })
+
+
+    # ここ `"tts": True` と `"_id": False` 統合できない？
+    ttsinfo = await bot.vc_info.find_one(
+        {
+            "tts": True
+        },
+        {
+            "_id": False  # 内部IDを取得しないように
+        }
+    )
+    radioinfo = await bot.vc_info.find_one(
+        {
+            "tts": True
+        },
+        {
+            "_id": False  # 内部IDを取得しないように
+        }
+    )
+
     if ttsinfo is not None:
         channel = bot.guild.get_channel(ttsinfo['channel_id'])
         await channel.connect()
         await channel.send('再接続しました')
+
     elif radioinfo is not None:
         channel = bot.guild.get_channel(ttsinfo['channel_id'])
         await channel.connect()
         bot.guild.voice_client.play(
-            discord.FFmpegPCMAudio(radioinfo['radioURL']))
+            discord.FFmpegPCMAudio(radioinfo['radioURL'])
+        )
         await channel.send('再接続しました')
+
     print(f'ready: {bot.user} (ID: {bot.user.id})')
     await bot.owner.send(f'きどうしたよ！！！！！！！ほめて！！！！！！！！\n起動時刻: {datetime.now()}')
 
@@ -196,25 +175,37 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     error_ch = bot.get_channel(1002616704603525151)
+
     orig_error = getattr(error, "original", error)
-    error_msg = ''.join(
-        traceback.TracebackException.from_exception(orig_error).format())
-    embed = discord.Embed(title="<:guard_ng:748539994557120614> Error!", description='エラーが発生しました',
-                          timestamp=ctx.message.created_at, color=discord.Colour.red())
-    embed.add_field(
-        name='メッセージID', value=f'お問い合わせの際にはこちらのidもお持ちください:\n`{ctx.message.id}`')
+    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+
+    embed = discord.Embed(
+        title="<:guard_ng:748539994557120614> Error!",
+        description='エラーが発生しました',
+        timestamp=ctx.message.created_at,
+        color=discord.Colour.red()
+    )
+    embed.add_field(name='メッセージID', value=f'お問い合わせの際にはこちらのidもお持ちください:\n`{ctx.message.id}`')
     embed.add_field(name='エラー内容', value=error, inline=False)
     embed.set_footer(text="お困りの場合はBot管理者までお問い合わせください")
+
     await ctx.send(embed=embed)
-    embed2 = discord.Embed(title='エラー情報', description='',
-                           timestamp=ctx.message.created_at, color=discord.Colour.red())
+
+
+    embed2 = discord.Embed(
+        title='エラー情報',
+        description='',
+        timestamp=ctx.message.created_at,
+        color=discord.Colour.red()
+    )
     embed2.add_field(name='サーバー', value=ctx.message.guild.name, inline=False)
-    embed2.add_field(
-        name='チャンネル', value=ctx.message.channel.name, inline=False)
+    embed2.add_field(name='チャンネル', value=ctx.message.channel.name, inline=False)
     embed2.add_field(name='コマンド', value=ctx.message.content, inline=False)
     embed2.add_field(name='実行ユーザー名', value=ctx.author, inline=False)
     embed2.add_field(name='id', value=ctx.message.id, inline=False)
     embed2.add_field(name='内容', value=error, inline=False)
+
     await error_ch.send(embed=embed2)
+
 
 bot.run(token)
