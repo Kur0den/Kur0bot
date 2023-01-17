@@ -65,6 +65,8 @@ class tts(commands.Cog):
                         'channel_id': interaction.channel_id
                     }, new_info, upsert=True)
                     return
+            await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
+            return
         await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
 
     @group.command(name='disconnect', description='VCから切断します')

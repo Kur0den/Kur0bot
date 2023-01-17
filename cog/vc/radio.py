@@ -1,6 +1,8 @@
-from discord.ext import commands
-from discord import app_commands
+import asyncio
+
 import discord
+from discord import app_commands
+from discord.ext import commands
 
 
 class radio(commands.Cog):
@@ -36,11 +38,39 @@ class radio(commands.Cog):
                         await interaction.channel.connect()
                         await interaction.response.send_message(f'{url} を再生します')
                         self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                        new_info = {
+                            'channel': vcinfo['channel'],
+                            'channel_id': interaction.channel_id,
+                            'owner_id': vcinfo['owner_id'],
+                            'tts': vcinfo['tts'],
+                            'joincall': vcinfo['joincall'],
+                            'radio': True,
+                            'radioURL': str(url),
+                            'mode': vcinfo['mode'],
+                            'dashboard_id': vcinfo['dashboard_id']
+                        }
+                        await self.bot.vc_info.replace_one({
+                            'channel_id': interaction.channel_id
+                        }, new_info, upsert=True)
                         return
                     elif radioinfo['channel_id'] == interaction.channel.id:
                         self.bot.guild.voice_client.stop()
                         await interaction.response.send_message(f'現在再生しているラジオを止めて{url} を再生します')
                         self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                        new_info = {
+                            'channel': vcinfo['channel'],
+                            'channel_id': interaction.channel_id,
+                            'owner_id': vcinfo['owner_id'],
+                            'tts': vcinfo['tts'],
+                            'joincall': vcinfo['joincall'],
+                            'radio': True,
+                            'radioURL': str(url),
+                            'mode': vcinfo['mode'],
+                            'dashboard_id': vcinfo['dashboard_id']
+                        }
+                        await self.bot.vc_info.replace_one({
+                            'channel_id': interaction.channel_id
+                        }, new_info, upsert=True)
                         return
                 await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
                 return
@@ -50,14 +80,76 @@ class radio(commands.Cog):
     @group.command(name='disconnect', description='VCから切断します')
     @app_commands.guild_only()
     async def radio_leave(self, interaction: discord.Interaction):
-        if self.bot.guild.voice_client != None:
-            if interaction.channel is self.bot.guild.voice_client.channel:
-                if interaction.user.voice.channel is self.bot.guild.voice_client.channel:
-                    await self.bot.guild.voice_client.disconnect()
-                    self.vc = None
-                    await interaction.response.send_message('切断しました')
-                    return
+        vcinfo = await self.bot.vc_info.find_one({
+            'channel_id': interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['radio'] is True:
+            if interaction.user.voice.channel is interaction.channel:
+                await self.bot.guild.voice_client.disconnect()
+                new_info = {
+                    'channel': vcinfo['channel'],
+                    'channel_id': interaction.channel_id,
+                    'owner_id': vcinfo['owner_id'],
+                    'tts': vcinfo['tts'],
+                    'joincall': vcinfo['joincall'],
+                    'radio': False,
+                    'radioURL': None,
+                    'mode': vcinfo['mode'],
+                    'dashboard_id': vcinfo['dashboard_id']
+                }
+                await self.bot.vc_info.replace_one({
+                    'channel_id': interaction.channel_id
+                }, new_info, upsert=True)
+                await interaction.response.send_message('切断しました')
+                return
         await interaction.response.send_message('失敗しました')
+
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        beforeinfo = None
+        afterinfo = None
+        try:
+            beforeinfo = await self.bot.vc_info.find_one({
+                'channel_id': before.channel.id
+            }, {
+                "_id": False  # 内部IDを取得しないように
+            })
+        except AttributeError:
+            pass
+        try:
+            afterinfo = await self.bot.vc_info.find_one({
+                'channel_id': after.channel.id
+            }, {
+                "_id": False  # 内部IDを取得しないように
+            })
+        except AttributeError:
+            pass
+        if member.id is self.bot.user.id:
+            if before.channel is not None and after.channel is None and beforeinfo['radio'] is True:
+                await self.bot.guild.voice_client.disconnect()
+                await asyncio.sleep(10)
+                vcinfo = await self.bot.vc_info.find_one({
+                    'channel_id': before.channel.id
+                }, {
+                    "_id": False  # 内部IDを取得しないように
+                })
+                new_info = {
+                    'channel': vcinfo['channel'],
+                    'channel_id': before.channel.id,
+                    'owner_id': vcinfo['owner_id'],
+                    'tts': False,
+                    'joincall': False,
+                    'radio': False,
+                    'radioURL': None,
+                    'mode': vcinfo['mode'],
+                    'dashboard_id': vcinfo['dashboard_id']
+                }
+                await self.bot.vc_info.replace_one({
+                    'channel_id': before.channel.id
+                }, new_info, upsert=True)
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(radio(bot))
