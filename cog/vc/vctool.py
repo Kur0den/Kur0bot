@@ -321,36 +321,19 @@ class dashboard(discord.ui.View):
     # 名前変更
     @discord.ui.button(label='名前変更', style=discord.ButtonStyle.secondary, emoji='📝', row=2)
     async def rename(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        # VC1
-        if result == 'vc1':
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['ownerid'] == interaction.user.id:
             modal = rename()
             await interaction.response.send_modal(modal)
             await modal.wait()
             if modal.value == '':
-                await self.bot.vc1.edit(name='VC-1(128Kbps)')
+                await interaction.channel.edit(name='VC-1(128Kbps)')
             else:
-                await self.bot.vc1.edit(name=modal.value)
-        
-        # VC2
-        elif result == 'vc2':
-            modal = rename()
-            await interaction.response.send_modal(modal)
-            await modal.wait()
-            if modal.value == '':
-                await self.bot.vc2.edit(name='VC-2(128Kbps)')
-            else:
-                await self.bot.vc2.edit(name=modal.value)
-        
-        # VC3
-        elif result == 'vc3':
-            modal = rename()
-            await interaction.response.send_modal(modal)
-            await modal.wait()
-            if modal.value == '':
-                await self.bot.vc3.edit(name='VC-3(64Kbps)')
-            else:
-                await self.bot.vc3.edit(name=modal.value)
+                await interaction.channel.edit(name=modal.value)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
