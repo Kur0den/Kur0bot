@@ -358,16 +358,14 @@ class dashboard(discord.ui.View):
     # ユーザー関係
     @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=3)
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            view = SelectView(self.bot.vc1,'kick')
-            await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
-        elif result == 'vc2':
-            view = SelectView(self.bot.vc2,'kick')
-            await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
-        elif result == 'vc3':
-            view = SelectView(self.bot.vc3,'kick')
-            await interaction.response.send_message('キックするユーザーを選択してください', view=view, ephemeral=True)
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            view = SelectView(self.bot.vc_info, interaction.channel, vcinfo['owner_id'], 'kick')
+            await interaction.response.send_message('VCからキックするユーザーを選択してください', view=view, ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
     
