@@ -13,7 +13,7 @@ class radio(commands.Cog):
 
     group = app_commands.Group(name="radio", description="web radio", guild_ids=[733707710784340100], guild_only=True)
 
-    @group.command(name='connect', description='VCに接続します')
+    @group.command(name='connect', description='ラジオを再生します')
     @app_commands.guild_only()
     async def radio_join(self, interaction: discord.Interaction, url: str):
         vcinfo = await self.bot.vc_info.find_one({
