@@ -73,6 +73,8 @@ async def on_ready():
     bot.vc2_dash = None
     bot.vc3_dash = None
 
+    bot.afk_id = 979780593388781639
+
     bot.vc1_status = 'Normal'
     bot.vc2_status = 'Normal'
     bot.vc3_status = 'Normal'

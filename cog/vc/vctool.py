@@ -132,7 +132,7 @@ class rename(discord.ui.Modal):
             await interaction.response.send_message(f'チャンネル名を`{self.value}`に設定しました', ephemeral=True)
         else:
             await interaction.response.send_message('チャンネル名をリセットしました', ephemeral=True)
-        
+
 
 class select(discord.ui.Select):
     def __init__(self, vc_info, channel, owmerid, mode):
@@ -173,7 +173,7 @@ class select(discord.ui.Select):
                             'mode': vcinfo['mode'],
                             'dashboard_id': vcinfo['dashboard_id']
                         }
-                        await self.bot.vc_info.replace_one({
+                        await self.vc_info.replace_one({
                             "channelid": interaction.channel.id
                         }, newinfo, upsert=True)
                         await interaction.channel.send(f'{member.mention}は{interaction.channel}の所有権を持っています', delete_after=60)
@@ -407,7 +407,7 @@ class dashboard(discord.ui.View):
         })
         if vcinfo['owner_id'] == interaction.user.id:
             view = SelectView(self.bot.vc_info, interaction.channel, vcinfo['owner_id'], 'owner')
-            member = await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
+            await interaction.response.send_message('所有権を渡すユーザーを選択してください', view=view, ephemeral=True)
         else:
             await interaction.response.send_message('VCのオーナーではないため実行できません', ephemeral=True)
 
@@ -480,7 +480,7 @@ class vctool(commands.Cog):
             # 入退出以外は弾く
             if before.channel != after.channel:
                 # 退出
-                if before.channel is not None and before.channel != stage:
+                if before.channel is not None and before.channel != stage and before.channel.id != self.bot.afk_id:
 
 
                     # 通知
@@ -572,7 +572,7 @@ class vctool(commands.Cog):
                             }, newinfo, upsert=True)
 
                 # 入室
-                if after.channel is not None and after.channel != stage:
+                if after.channel is not None and after.channel != stage and after.channel.id != self.bot.afk_id:
                     # オーナー指定
                     vcinfo = await self.bot.vc_info.find_one({
                         "channelid": after.channel.id
