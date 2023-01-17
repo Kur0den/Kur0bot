@@ -205,7 +205,7 @@ class tts(commands.Cog):
                     a = 1
                     pass
 
-                if b+a is 2:
+                if b+a == 2:
                     return
 
                 if not self.bot.guild.voice_client.is_playing():
