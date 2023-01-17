@@ -199,7 +199,7 @@ async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
     error_msg = ''.join(
         traceback.TracebackException.from_exception(orig_error).format())
-    embed = discord.Embed(title="<:guard_ng:748539994557120614> Error!", description=f'エラーが発生しました',
+    embed = discord.Embed(title="<:guard_ng:748539994557120614> Error!", description='エラーが発生しました',
                           timestamp=ctx.message.created_at, color=discord.Colour.red())
     embed.add_field(
         name='メッセージID', value=f'お問い合わせの際にはこちらのidもお持ちください:\n`{ctx.message.id}`')
