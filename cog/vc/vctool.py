@@ -202,28 +202,28 @@ class dashboard(discord.ui.View):
     # 部屋関係
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def Normal(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        # VC1
-        if result == 'vc1':
-            if await status.check(self, self.bot.vc1) != 'Normal':
-                await self.bot.vc1.edit(sync_permissions=True)
-                await status.set(self, self.bot.vc1, 'Normal')
-                await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
-        # VC2
-        elif result == 'vc2':
-            if await status.check(self, self.bot.vc2) != 'Normal':
-                await self.bot.vc2.edit(sync_permissions=True)
-                await status.set(self, self.bot.vc2, 'Normal')
-                await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
-        # VC3
-        elif result == 'vc3':
-            if await status.check(self, self.bot.vc3) != 'Normal':
-                await self.bot.vc3.edit(sync_permissions=True)
-                await status.set(self, self.bot.vc3, 'Normal')
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            if vcinfo['mode'] != 'Normal':
+                await interaction.channel.edit(sync_permissions=True)
+                newinfo = {
+                    'channel': vcinfo['channel'],
+                    'channelid': interaction.channel.id,
+                    'owner_id': vcinfo['owner_id'],
+                    'tts': vcinfo['tts'],
+                    'joincall':vcinfo['joincall'],
+                    'radio': vcinfo['radio'],
+                    'radioURL': vcinfo['radioURL'],
+                    'mode': 'Normal',
+                    'dashboard_id': vcinfo['dashboard_id']
+                }
+                await self.bot.vc_info.replace_one({
+                    "channelid": interaction.channel.id
+                }, newinfo, upsert=True)
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
@@ -233,56 +233,46 @@ class dashboard(discord.ui.View):
 
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
     async def permit(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-                await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
-        elif result == 'vc2':
-                await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
-        elif result == 'vc3':
-                await interaction.response.send_message('やる気が出たら実装します', ephemeral=True)
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            await interaction.response.send_message('やる気が出たら実装するかもしれません', ephemeral=True)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
 
     @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
     async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        # VC1
-        if result == 'vc1':
-            if await status.check(self, self.bot.vc1) != 'Lock':
-                await self.bot.vc1.edit(sync_permissions=True)
-                member = self.bot.vc1.members
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            if vcinfo['mode'] != 'Lock':
+                await interaction.channel.edit(sync_permissions=True)
+                member = interaction.channel.members
                 for user in member:
-                    await self.bot.vc1.set_permissions(user, connect=True)
-                await self.bot.vc1.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc1.set_permissions(self.bot.botrole, connect=True)
-                await status.set(self, self.bot.vc1, 'Lock')
-                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
-        # VC2
-        elif result == 'vc2':
-            if await status.check(self, self.bot.vc2) != 'Lock':
-                await self.bot.vc2.edit(sync_permissions=True)
-                member = self.bot.vc2.members
-                for user in member:
-                    await self.bot.vc2.set_permissions(user, connect=True)
-                await self.bot.vc2.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc2.set_permissions(self.bot.botrole, connect=True)
-                await status.set(self, self.bot.vc2, 'Lock')
-                await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
-            else:
-                await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
-        # VC3
-        elif result == 'vc3':
-            if await status.check(self, self.bot.vc3) != 'Lock':
-                await self.bot.vc3.edit(sync_permissions=True)
-                member = self.bot.vc3.members
-                for user in member:
-                    await self.bot.vc3.set_permissions(user, connect=True)
-                await self.bot.vc3.set_permissions(self.bot.everyone, connect=False)
-                await self.bot.vc3.set_permissions(self.bot.botrole, connect=True)
-                await status.set(self, self.bot.vc3, 'Lock')
+                    await interaction.channel.set_permissions(user, connect=True)
+                await interaction.channel.set_permissions(self.bot.everyone, connect=False)
+                await interaction.channel.set_permissions(self.bot.botrole, connect=True)
+                newinfo = {
+                    'channel': vcinfo['channel'],
+                    'channelid': interaction.channel.id,
+                    'owner_id': vcinfo['owner_id'],
+                    'tts': vcinfo['tts'],
+                    'joincall':vcinfo['joincall'],
+                    'radio': vcinfo['radio'],
+                    'radioURL': vcinfo['radioURL'],
+                    'mode': 'Lock',
+                    'dashboard_id': vcinfo['dashboard_id']
+                }
+                await self.bot.vc_info.replace_one({
+                    "channelid": interaction.channel.id
+                }, newinfo, upsert=True)
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
