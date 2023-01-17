@@ -51,6 +51,7 @@ class tts(commands.Cog):
                         "_id": False  # 内部IDを取得しないように
                     })
                     new_info = {
+                        'channel': vcinfo['channel'],
                         'channelid': interaction.channel_id,
                         'owner_id': vcinfo['owner_id'],
                         'tts': True,
@@ -79,6 +80,7 @@ class tts(commands.Cog):
                         "_id": False  # 内部IDを取得しないように
                     })
                     new_info = {
+                        'channel': vcinfo['channel'],
                         'channelid': interaction.channel_id,
                         'owner_id': vcinfo['owner_id'],
                         'tts': False,
@@ -227,6 +229,7 @@ class tts(commands.Cog):
                     "_id": False  # 内部IDを取得しないように
                 })
                 new_info = {
+                    'channel': vcinfo['channel'],
                     'channelid': before.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': False,

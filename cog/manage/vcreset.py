@@ -15,6 +15,7 @@ class vcreset(commands.Cog):
     @app_commands.default_permissions(administrator=True)
     async def vcreset(self, interaction: discord.Interaction):
         vc1 = {
+            'channel': 1,
             'channelid': 981800095760670730,
             'owner_id': None,
             'tts': False,
@@ -28,6 +29,7 @@ class vcreset(commands.Cog):
             "channelid": 981800095760670730
         }, vc1, upsert=True)
         vc2 = {
+            'channel': 2,
             'channelid': 981800262165495828,
             'owner_id': None,
             'tts': False,
@@ -41,6 +43,7 @@ class vcreset(commands.Cog):
             "channelid": 981800262165495828
         }, vc2, upsert=True)
         vc3 = {
+            'channel': 3,
             'channelid': 981800316116803636,
             'owner_id': None,
             'tts': False,

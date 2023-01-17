@@ -164,6 +164,7 @@ class select(discord.ui.Select):
                             "_id": False  # 内部IDを取得しないように
                         })
                         newinfo = {
+                            'channel': vcinfo['channel'],
                             'channelid': interaction.channel.id,
                             'owner_id': member.id,
                             'tts': vcinfo['tts'],
@@ -326,12 +327,18 @@ class dashboard(discord.ui.View):
         }, {
             "_id": False  # 内部IDを取得しないように
         })
-        if vcinfo['ownerid'] == interaction.user.id:
+        if vcinfo['owner_id'] == interaction.user.id:
             modal = rename()
             await interaction.response.send_modal(modal)
             await modal.wait()
             if modal.value == '':
-                await interaction.channel.edit(name='VC-1(128Kbps)')
+                match vcinfo['channel']:
+                    case 1:
+                        await interaction.channel.edit(name=self.bot.config['vc1_name'])
+                    case 2:
+                        await interaction.channel.edit(name=self.bot.config['vc2_name'])
+                    case 3:
+                        await interaction.channel.edit(name=self.bot.config['vc3_name'])
             else:
                 await interaction.channel.edit(name=modal.value)
         else:
@@ -426,6 +433,7 @@ class vctool(commands.Cog):
                 newdash = await interaction.channel.send(embed=embed, view=dashboard(self))
                 await interaction.response.send_message('送信しました',  ephemeral=True)
                 newinfo = {
+                    'channel': vcinfo['channel'],
                     'channelid': interaction.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': vcinfo['tts'],
@@ -490,16 +498,18 @@ class vctool(commands.Cog):
                         msg = await before.channel.send(embed=discord.Embed(title='チャンネルリセット中...', description='VCに誰もいなくなったためチャンネルをリセットしています', color=0x00ffff))
                         await before.channel.purge(limit=None, check=purge_check)
                         await msg.delete()
-                        if before.channel == self.bot.vc1:
-                            await self.bot.vc1.edit(name='VC-1(128Kbps)')
-                        elif before.channel == self.bot.vc2:
-                            await self.bot.vc2.edit(name='VC-2(128Kbps)')
-                        elif before.channel == self.bot.vc3:
-                            await self.bot.vc3.edit(name='VC-3(64Kbps)')
+                        match vcinfo['channel']:
+                            case 1:
+                                await before.channel.edit(name=self.bot.config['vc1_name'])
+                            case 2:
+                                await before.channel.edit(name=self.bot.config['vc2_name'])
+                            case 3:
+                                await before.channel.edit(name=self.bot.config['vc3_name'])
 
                         await before.channel.edit(sync_permissions=True) # 権限をカテゴリに同期
 
                         newinfo = {
+                            'channel': vcinfo['channel'],
                             'channelid': before.channel.id,
                             'owner_id': None,
                             'tts': vcinfo['tts'],
@@ -531,6 +541,7 @@ class vctool(commands.Cog):
                             await after.channel.send(f'{newowner.mention}は{after.channel}の所有権を持っています', delete_after=60)
 
                             newinfo = {
+                                'channel': vcinfo['channel'],
                                 'channelid': after.channel.id,
                                 'owner_id': newowner.id,
                                 'tts': vcinfo['tts'],
@@ -559,6 +570,7 @@ class vctool(commands.Cog):
                         message = await after.channel.send(embed=embed, view=dashboard(self))
                         await after.channel.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
                         newinfo = {
+                            'channel': vcinfo['channel'],
                             'channelid': after.channel.id,
                             'owner_id': member.id,
                             'tts': vcinfo['tts'],
