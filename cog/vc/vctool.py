@@ -290,11 +290,11 @@ class dashboard(discord.ui.View):
         })
         if vcinfo['owner_id'] == interaction.user.id:
             if interaction.channel.nsfw == False:
-                await interaction.channel.edit(nsfw=False)
-                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
-            else:
                 await interaction.channel.edit(nsfw=True)
                 await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
+            else:
+                await interaction.channel.edit(nsfw=False)
+                await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
