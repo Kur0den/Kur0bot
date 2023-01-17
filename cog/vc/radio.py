@@ -14,22 +14,38 @@ class radio(commands.Cog):
     @group.command(name='connect', description='VCに接続します')
     @app_commands.guild_only()
     async def radio_join(self, interaction: discord.Interaction, url: str):
-        if interaction.channel is self.bot.vc1 or interaction.channel is self.bot.vc2 or interaction.channel is self.bot.vc3:
-            if self.bot.guild.voice_client == None:
+        vcinfo = await self.bot.vc_info.find_one({
+            'channel_id': interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        ttsinfo = await self.bot.vc_info.find_one({
+            "tts": True
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        radioinfo = await self.bot.vc_info.find_one({
+            "radio": True
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo is not None:
+            if ttsinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
-                    await interaction.channel.connect()
-                    await interaction.response.send_message(f'{url} を再生します')
-                    self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
-                    return
-            elif self.bot.guild.voice_client.channel == interaction.channel:
-                if interaction.user.voice.channel is interaction.channel:
-                    self.bot.guild.voice_client.stop()
-                    await interaction.response.send_message(f'現在再生しているラジオを止めて{url} を再生します')
-                    self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
-                    return
-            await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
-            return
-        await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
+                    if radioinfo is None:
+                        await interaction.channel.connect()
+                        await interaction.response.send_message(f'{url} を再生します')
+                        self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                        return
+                    elif radioinfo['channel_id'] == interaction.channel.id:
+                        self.bot.guild.voice_client.stop()
+                        await interaction.response.send_message(f'現在再生しているラジオを止めて{url} を再生します')
+                        self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                        return
+                await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
+                return
+        await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
+        return
 
     @group.command(name='disconnect', description='VCから切断します')
     @app_commands.guild_only()
