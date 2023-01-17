@@ -24,7 +24,7 @@ class tts(commands.Cog):
     @app_commands.guild_only()
     async def join(self, interaction: discord.Interaction, joinannounce: bool = False):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel_id
+            'channel_id': interaction.channel_id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -46,13 +46,13 @@ class tts(commands.Cog):
                     shutil.rmtree(self.bot.tts_file)
                     os.mkdir(self.bot.tts_file)
                     vcinfo = await self.bot.vc_info.find_one({
-                        "channelid": interaction.channel_id
+                        'channel_id': interaction.channel_id
                     }, {
                         "_id": False  # 内部IDを取得しないように
                     })
                     new_info = {
                         'channel': vcinfo['channel'],
-                        'channelid': interaction.channel_id,
+                        'channel_id': interaction.channel_id,
                         'owner_id': vcinfo['owner_id'],
                         'tts': True,
                         'joincall': joinannounce,
@@ -62,7 +62,7 @@ class tts(commands.Cog):
                         'dashboard_id': vcinfo['dashboard_id']
                     }
                     await self.bot.vc_info.replace_one({
-                        "channelid": interaction.channel_id
+                        'channel_id': interaction.channel_id
                     }, new_info, upsert=True)
                     return
         await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
@@ -75,13 +75,13 @@ class tts(commands.Cog):
                 if interaction.user.voice.channel is self.bot.guild.voice_client.channel:
                     await self.bot.guild.voice_client.disconnect()
                     vcinfo = await self.bot.vc_info.find_one({
-                        "channelid": interaction.channel_id
+                        'channel_id': interaction.channel_id
                     }, {
                         "_id": False  # 内部IDを取得しないように
                     })
                     new_info = {
                         'channel': vcinfo['channel'],
-                        'channelid': interaction.channel_id,
+                        'channel_id': interaction.channel_id,
                         'owner_id': vcinfo['owner_id'],
                         'tts': False,
                         'joincall': False,
@@ -91,7 +91,7 @@ class tts(commands.Cog):
                         'dashboard_id': vcinfo['dashboard_id']
                     }
                     await self.bot.vc_info.replace_one({
-                        "channelid": interaction.channel_id
+                        'channel_id': interaction.channel_id
                     }, new_info, upsert=True)
                     await interaction.response.send_message('切断しました')
                     return
@@ -113,7 +113,7 @@ class tts(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": message.channel.id
+            'channel_id': message.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -157,7 +157,7 @@ class tts(commands.Cog):
         afterinfo = None
         try:
             beforeinfo = await self.bot.vc_info.find_one({
-                "channelid": before.channel.id
+                'channel_id': before.channel.id
             }, {
                 "_id": False  # 内部IDを取得しないように
             })
@@ -165,7 +165,7 @@ class tts(commands.Cog):
             pass
         try:
             afterinfo = await self.bot.vc_info.find_one({
-                "channelid": after.channel.id
+                'channel_id': after.channel.id
             }, {
                 "_id": False  # 内部IDを取得しないように
             })
@@ -224,13 +224,13 @@ class tts(commands.Cog):
                 await self.bot.guild.voice_client.disconnect()
                 await asyncio.sleep(10)
                 vcinfo = await self.bot.vc_info.find_one({
-                    "channelid": before.channel.id
+                    'channel_id': before.channel.id
                 }, {
                     "_id": False  # 内部IDを取得しないように
                 })
                 new_info = {
                     'channel': vcinfo['channel'],
-                    'channelid': before.channel.id,
+                    'channel_id': before.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': False,
                     'joincall': False,
@@ -240,7 +240,7 @@ class tts(commands.Cog):
                     'dashboard_id': vcinfo['dashboard_id']
                 }
                 await self.bot.vc_info.replace_one({
-                    "channelid": before.channel.id
+                    'channel_id': before.channel.id
                 }, new_info, upsert=True)
 
 

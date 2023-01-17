@@ -179,11 +179,11 @@ async def on_ready():
         "_id": False  # 内部IDを取得しないように
     })
     if ttsinfo is not None:
-        channel = bot.guild.get_channel(ttsinfo['channelid'])
+        channel = bot.guild.get_channel(ttsinfo['channel_id'])
         await channel.connect()
         await channel.send('再接続しました')
     elif radioinfo is not None:
-        channel = bot.guild.get_channel(ttsinfo['channelid'])
+        channel = bot.guild.get_channel(ttsinfo['channel_id'])
         await channel.connect()
         bot.guild.voice_client.play(
             discord.FFmpegPCMAudio(radioinfo['radioURL']))

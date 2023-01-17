@@ -59,13 +59,13 @@ class select(discord.ui.Select):
                         break
                     elif self.mode =='owner':
                         vcinfo = await self.vc_info.find_one({
-                            "channelid": interaction.channel.id
+                            'channel_id': interaction.channel.id
                         }, {
                             "_id": False  # 内部IDを取得しないように
                         })
                         newinfo = {
                             'channel': vcinfo['channel'],
-                            'channelid': interaction.channel.id,
+                            'channel_id': interaction.channel.id,
                             'owner_id': member.id,
                             'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
@@ -75,7 +75,7 @@ class select(discord.ui.Select):
                             'dashboard_id': vcinfo['dashboard_id']
                         }
                         await self.vc_info.replace_one({
-                            "channelid": interaction.channel.id
+                            'channel_id': interaction.channel.id
                         }, newinfo, upsert=True)
                         await interaction.channel.send(f'{member.mention}は{interaction.channel}の所有権を持っています', delete_after=60)
                         await interaction.response.send_message(content=f"{member.name}に所有権を移動しました",ephemeral=True)
@@ -103,7 +103,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='通常モード', style=discord.ButtonStyle.green, emoji='✅', row=1)
     async def Normal(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -112,7 +112,7 @@ class dashboard(discord.ui.View):
                 await interaction.channel.edit(sync_permissions=True)
                 newinfo = {
                     'channel': vcinfo['channel'],
-                    'channelid': interaction.channel.id,
+                    'channel_id': interaction.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': vcinfo['tts'],
                     'joincall':vcinfo['joincall'],
@@ -122,7 +122,7 @@ class dashboard(discord.ui.View):
                     'dashboard_id': vcinfo['dashboard_id']
                 }
                 await self.bot.vc_info.replace_one({
-                    "channelid": interaction.channel.id
+                    'channel_id': interaction.channel.id
                 }, newinfo, upsert=True)
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
@@ -134,7 +134,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='許可モード', style=discord.ButtonStyle.secondary, emoji='📩', row=1)
     async def permit(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -147,7 +147,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='ロック', style=discord.ButtonStyle.secondary, emoji='🔒', row=1)
     async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -161,7 +161,7 @@ class dashboard(discord.ui.View):
                 await interaction.channel.set_permissions(self.bot.botrole, connect=True)
                 newinfo = {
                     'channel': vcinfo['channel'],
-                    'channelid': interaction.channel.id,
+                    'channel_id': interaction.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': vcinfo['tts'],
                     'joincall':vcinfo['joincall'],
@@ -171,7 +171,7 @@ class dashboard(discord.ui.View):
                     'dashboard_id': vcinfo['dashboard_id']
                 }
                 await self.bot.vc_info.replace_one({
-                    "channelid": interaction.channel.id
+                    'channel_id': interaction.channel.id
                 }, newinfo, upsert=True)
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
@@ -184,7 +184,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='NSFW', style=discord.ButtonStyle.secondary, emoji='🔞', row=2)
     async def nsfw(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -203,7 +203,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='名前変更', style=discord.ButtonStyle.secondary, emoji='📝', row=2)
     async def rename(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -229,7 +229,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='キック', style=discord.ButtonStyle.secondary, emoji='🦵', row=3)
     async def kick(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -242,7 +242,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=3)
     async def invite(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -261,7 +261,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='オーナー変更', style=discord.ButtonStyle.secondary, emoji='🔑', row=4)
     async def change(self, interaction: discord.Interaction, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -274,7 +274,7 @@ class dashboard(discord.ui.View):
     @discord.ui.button(label='VCの情報', style=discord.ButtonStyle.secondary, emoji='ℹ', row=4)
     async def info(self, interaction: discord.Integration, button: discord.ui.Button):
         vcinfo = await self.bot.vc_info.find_one({
-            "channelid": interaction.channel.id
+            'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
         })
@@ -301,7 +301,7 @@ class vctool(commands.Cog):
         if interaction.user.voice != None:
             if interaction.user.voice.channel == interaction.channel:
                 vcinfo = await self.bot.vc_info.find_one({
-                    "channelid": interaction.channel.id
+                    'channel_id': interaction.channel.id
                 }, {
                     "_id": False  # 内部IDを取得しないように
                 })
@@ -314,7 +314,7 @@ class vctool(commands.Cog):
                 await interaction.response.send_message('送信しました',  ephemeral=True)
                 newinfo = {
                     'channel': vcinfo['channel'],
-                    'channelid': interaction.channel.id,
+                    'channel_id': interaction.channel.id,
                     'owner_id': vcinfo['owner_id'],
                     'tts': vcinfo['tts'],
                     'joincall':vcinfo['joincall'],
@@ -324,7 +324,7 @@ class vctool(commands.Cog):
                     'dashboard_id': newdash.id
                 }
                 await self.bot.vc_info.replace_one({
-                    "channelid": interaction.channel.id
+                    'channel_id': interaction.channel.id
                 }, newinfo, upsert=True)
             else:
                 await interaction.response.send_message('チャンネルが違うで\n自分が参加してるVCのチャンネルで実行してな', ephemeral=True)
@@ -353,7 +353,7 @@ class vctool(commands.Cog):
                     await before.channel.send(embed=embed)
 
                     vcinfo = await self.bot.vc_info.find_one({
-                        "channelid": before.channel.id
+                        'channel_id': before.channel.id
                     }, {
                         "_id": False  # 内部IDを取得しないように
                     })
@@ -390,7 +390,7 @@ class vctool(commands.Cog):
 
                         newinfo = {
                             'channel': vcinfo['channel'],
-                            'channelid': before.channel.id,
+                            'channel_id': before.channel.id,
                             'owner_id': None,
                             'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
@@ -400,7 +400,7 @@ class vctool(commands.Cog):
                             'dashboard_id': None
                         }
                         await self.bot.vc_info.replace_one({
-                            "channelid": before.channel.id
+                            'channel_id': before.channel.id
                         }, newinfo, upsert=True)
 
                         if before.channel.nsfw == True:
@@ -420,7 +420,7 @@ class vctool(commands.Cog):
 
                             newinfo = {
                                 'channel': vcinfo['channel'],
-                                'channelid': after.channel.id,
+                                'channel_id': after.channel.id,
                                 'owner_id': newowner.id,
                                 'tts': vcinfo['tts'],
                                 'joincall':vcinfo['joincall'],
@@ -430,14 +430,14 @@ class vctool(commands.Cog):
                                 'dashboard_id': newdash.id
                             }
                             await self.bot.vc_info.replace_one({
-                                "channelid": after.channel.id
+                                'channel_id': after.channel.id
                             }, newinfo, upsert=True)
 
                 # 入室
                 if after.channel is not None and after.channel != stage and after.channel.id != self.bot.afk_id:
                     # オーナー指定
                     vcinfo = await self.bot.vc_info.find_one({
-                        "channelid": after.channel.id
+                        'channel_id': after.channel.id
                     }, {
                         "_id": False  # 内部IDを取得しないように
                     })
@@ -449,7 +449,7 @@ class vctool(commands.Cog):
                         await after.channel.send(f'{member.mention}は{after.channel}の所有権を持っています', delete_after=60)
                         newinfo = {
                             'channel': vcinfo['channel'],
-                            'channelid': after.channel.id,
+                            'channel_id': after.channel.id,
                             'owner_id': member.id,
                             'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
@@ -459,7 +459,7 @@ class vctool(commands.Cog):
                             'dashboard_id': message.id
                         }
                         await self.bot.vc_info.replace_one({
-                            "channelid": after.channel.id
+                            'channel_id': after.channel.id
                         }, newinfo, upsert=True)
                     embed = discord.Embed(title = "VC入室", colour = discord.Colour(0x7ed321), description = "ユーザーが入室しました", timestamp = datetime.now())
 
