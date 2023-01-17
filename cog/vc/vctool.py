@@ -296,7 +296,7 @@ class vctool(commands.Cog):
 
     group = app_commands.Group(name="vctool", description="VC tool", guild_ids=[733707710784340100], guild_only=True)
 
-    @group.command()
+    @group.command(description='ダッシュボードを再送信します')
     async def dashboard(self, interaction):
         if interaction.user.voice != None:
             if interaction.user.voice.channel == interaction.channel:
