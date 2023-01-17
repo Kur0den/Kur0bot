@@ -371,24 +371,16 @@ class dashboard(discord.ui.View):
     
     @discord.ui.button(label='招待作成', style=discord.ButtonStyle.secondary, emoji='🔗', row=3)
     async def invite(self, interaction: discord.Interaction, button: discord.ui.Button):
-        result = await owner.check(self, interaction.user, interaction.channel)
-        if result == 'vc1':
-            if await status.check(self, self.bot.vc1) == 'Lock':
+        vcinfo = await self.bot.vc_info.find_one({
+            "channelid": interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
+        if vcinfo['owner_id'] == interaction.user.id:
+            if vcinfo['mode'] != 'Normal':
                 await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
-            elif await status.check(self, self.bot.vc1) == 'Normal':
-                invite = await self.bot.vc1.create_invite(max_age=600)
-                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
-        if result == 'vc2':
-            if await status.check(self, self.bot.vc2) == 'Lock':
-                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
-            elif await status.check(self, self.bot.vc2) == 'Normal':
-                invite = await self.bot.vc2.create_invite(max_age=600)
-                await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
-        if result == 'vc3':
-            if await status.check(self, self.bot.vc3) == 'Lock':
-                await interaction.response.send_message('VCがロックされているため招待を発行できません\nロックを解除してからもう一度行ってください', ephemeral=True)
-            elif await status.check(self, self.bot.vc3) == 'Normal':
-                invite = await self.bot.vc3.create_invite(max_age=600)
+            else:
+                invite = await interaction.channel.create_invite(max_age=600)
                 await interaction.response.send_message(f'招待リンクを発行しました\n招待リンクは約10分間有効です\n{invite}', ephemeral=True)
         
         else:
