@@ -136,26 +136,6 @@ class radio(commands.Cog):
         if member.id is self.bot.user.id:
             if before.channel is not None and after.channel is None and beforeinfo['radio'] is True:
                 await self.bot.guild.voice_client.disconnect()
-                await asyncio.sleep(10)
-                vcinfo = await self.bot.vc_info.find_one({
-                    'channel_id': before.channel.id
-                }, {
-                    "_id": False  # 内部IDを取得しないように
-                })
-                new_info = {
-                    'channel': vcinfo['channel'],
-                    'channel_id': before.channel.id,
-                    'owner_id': vcinfo['owner_id'],
-                    'tts': False,
-                    'joincall': False,
-                    'radio': False,
-                    'radioURL': None,
-                    'mode': vcinfo['mode'],
-                    'dashboard_id': vcinfo['dashboard_id']
-                }
-                await self.bot.vc_info.replace_one({
-                    'channel_id': before.channel.id
-                }, new_info, upsert=True)
                 await self.bot.change_presence(activity=discord.Activity(name='くろでんのくろでんによるくろでんのためのぼっと', type=discord.ActivityType.playing))
 
 async def setup(bot: commands.Bot) -> None:
