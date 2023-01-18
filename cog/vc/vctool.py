@@ -392,10 +392,10 @@ class vctool(commands.Cog):
                             'channel': vcinfo['channel'],
                             'channel_id': before.channel.id,
                             'owner_id': None,
-                            'tts': vcinfo['tts'],
-                            'joincall':vcinfo['joincall'],
-                            'radio': vcinfo['radio'],
-                            'radioURL': vcinfo['radioURL'],
+                            'tts': False,
+                            'joincall':False,
+                            'radio': False,
+                            'radioURL': False,
                             'mode': 'Nomal',
                             'dashboard_id': None
                         }
