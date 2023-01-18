@@ -67,7 +67,7 @@ class select(discord.ui.Select):
                             'channel': vcinfo['channel'],
                             'channel_id': interaction.channel.id,
                             'owner_id': member.id,
-                            'tts': vcinfo['tts'],
+                            'tts': False,
                             'joincall':vcinfo['joincall'],
                             'radio': vcinfo['radio'],
                             'radioURL': vcinfo['radioURL'],
@@ -395,7 +395,7 @@ class vctool(commands.Cog):
                             'tts': False,
                             'joincall':False,
                             'radio': False,
-                            'radioURL': False,
+                            'radioURL': None,
                             'mode': 'Nomal',
                             'dashboard_id': None
                         }
