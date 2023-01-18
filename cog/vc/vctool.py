@@ -67,7 +67,7 @@ class select(discord.ui.Select):
                             'channel': vcinfo['channel'],
                             'channel_id': interaction.channel.id,
                             'owner_id': member.id,
-                            'tts': False,
+                            'tts': vcinfo['tts'],
                             'joincall':vcinfo['joincall'],
                             'radio': vcinfo['radio'],
                             'radioURL': vcinfo['radioURL'],
