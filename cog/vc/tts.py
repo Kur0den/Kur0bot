@@ -43,8 +43,6 @@ class tts(commands.Cog):
                 if interaction.user.voice.channel is interaction.channel:
                     await interaction.channel.connect()
                     await interaction.response.send_message('接続しました')
-                    shutil.rmtree(self.bot.tts_file)
-                    os.mkdir(self.bot.tts_file)
                     vcinfo = await self.bot.vc_info.find_one({
                         'channel_id': interaction.channel_id
                     }, {
@@ -64,6 +62,11 @@ class tts(commands.Cog):
                     await self.bot.vc_info.replace_one({
                         'channel_id': interaction.channel_id
                     }, new_info, upsert=True)
+                    try:
+                        shutil.rmtree(self.bot.tts_file)
+                        os.mkdir(self.bot.tts_file)
+                    except:
+                        pass
                     return
             await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
             return
