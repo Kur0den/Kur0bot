@@ -95,7 +95,7 @@ class SelectView(discord.ui.View): # view追加用のクラス
 class dashboard(discord.ui.View):
     def __init__(self, bot):
         super().__init__()
-        discord.ui.view.timeout = None # タイムアウトをなしに
+        self.timeout = None# タイムアウトをなしに
         self.bot = bot.bot
 
     
