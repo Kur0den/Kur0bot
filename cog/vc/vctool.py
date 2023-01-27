@@ -341,7 +341,7 @@ class vctool(commands.Cog):
             # 入退出以外は弾く
             if before.channel != after.channel:
                 # 退出
-                if before.channel is not None and before.channel != stage and before.channel.id != self.bot.afk_id:
+                if before.channel is not None and before.channel != stage and before.channel.afk is not False:
 
 
                     # 通知
@@ -434,7 +434,7 @@ class vctool(commands.Cog):
                             }, newinfo, upsert=True)
 
                 # 入室
-                if after.channel is not None and after.channel != stage and after.channel.id != self.bot.afk_id:
+                if after.channel is not None and after.channel != stage and after.channel.afk != False:
                     # オーナー指定
                     vcinfo = await self.bot.vc_info.find_one({
                         'channel_id': after.channel.id
