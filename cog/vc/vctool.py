@@ -434,7 +434,7 @@ class vctool(commands.Cog):
                             }, newinfo, upsert=True)
 
                 # 入室
-                if after.channel is not None and after.channel != stage and after.channel.afk != False:
+                if after.channel is not None and after.channel != stage and after.channel.afk is not False:
                     # オーナー指定
                     vcinfo = await self.bot.vc_info.find_one({
                         'channel_id': after.channel.id
