@@ -1,9 +1,6 @@
 discord.py[voice]
-aiohttp
-pytz
 python-dotenv
 jishaku
-python-dateutil
 Motor
 gTTS
 ffmpeg
