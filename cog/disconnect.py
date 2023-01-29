@@ -14,6 +14,10 @@ class disconnect(commands.Cog):
         if member.id == self.bot.user.id:
             if before.channel != after.channel:
                 if before.channel is not None and before.channel != stage and before.channel == self.bot.guild.afk_channel:
+                    try:
+                        await self.bot.guild.voice_client.disconnect()
+                    except:
+                        pass
                     newinfo = {
                         'channel_id': before.channel.id,
                         'tts': False,

@@ -86,11 +86,6 @@ class tts(commands.Cog):
             if interaction.channel is self.bot.guild.voice_client.channel:
                 if interaction.user.voice.channel is self.bot.guild.voice_client.channel:
                     await self.bot.guild.voice_client.disconnect()
-                    vcinfo = await self.bot.vc_info.find_one({
-                        'channel_id': interaction.channel_id
-                    }, {
-                        "_id": False  # 内部IDを取得しないように
-                    })
                     new_info = {
                         'channel_id': interaction.channel_id,
                         'tts': False,
