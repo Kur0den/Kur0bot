@@ -341,9 +341,7 @@ class vctool(commands.Cog):
             # 入退出以外は弾く
             if before.channel != after.channel:
                 # 退出
-                if before.channel is not None and before.channel != stage and before.channel.afk is False:
-
-
+                if before.channel is not None and before.channel != stage and before.channel == self.bot.guild.afk_channel:
                     # 通知
                     embed = discord.Embed(title="VC退出", colour=discord.Colour(0xd0021b), description="ユーザーが退出しました", timestamp=datetime.now())
 
@@ -434,7 +432,7 @@ class vctool(commands.Cog):
                             }, newinfo, upsert=True)
 
                 # 入室
-                if after.channel is not None and after.channel != stage and after.channel.afk is False:
+                if after.channel is not None and after.channel != stage and after.channel == self.bot.guild.afk_channel:
                     # オーナー指定
                     vcinfo = await self.bot.vc_info.find_one({
                         'channel_id': after.channel.id
