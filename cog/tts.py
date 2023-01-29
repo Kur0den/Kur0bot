@@ -47,6 +47,7 @@ class tts(commands.Cog):
             if ttsinfo is None and radioinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
                     if kur0info['tts'] is False:
+                        print(kur0info)
                         await interaction.channel.connect()
                         await interaction.response.send_message('接続しました')
                         vcinfo = await self.bot.vc_info.find_one({
