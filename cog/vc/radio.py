@@ -31,55 +31,66 @@ class radio(commands.Cog):
         }, {
             "_id": False  # 内部IDを取得しないように
         })
+        ttsinfo = await self.bot.kur0vc_info.find_one({
+            'channel_id': interaction.channel.id
+        }, {
+            "_id": False  # 内部IDを取得しないように
+        })
         if vcinfo is not None:
             if ttsinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
-                    if radioinfo is None:
-                        await interaction.channel.connect()
-                        await interaction.response.send_message(f'{url} を再生します')
-                        self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
-                        new_info = {
-                            'channel': vcinfo['channel'],
-                            'channel_id': interaction.channel_id,
-                            'owner_id': vcinfo['owner_id'],
-                            'tts': vcinfo['tts'],
-                            'joincall': vcinfo['joincall'],
-                            'radio': True,
-                            'radioURL': str(url),
-                            'mode': vcinfo['mode'],
-                            'dashboard_id': vcinfo['dashboard_id']
-                        }
-                        await self.bot.vc_info.replace_one({
-                            'channel_id': interaction.channel_id
-                        }, new_info, upsert=True)
-                        status = discord.Game(name=f'VCで{url}を再生中', start=datetime.utcnow)
-                        await self.bot.change_presence(activity=status)
-                        return
-                    elif radioinfo['channel_id'] == interaction.channel.id:
-                        self.bot.guild.voice_client.stop()
-                        await interaction.response.send_message(f'現在再生しているラジオを止めて{url} を再生します')
-                        self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
-                        new_info = {
-                            'channel': vcinfo['channel'],
-                            'channel_id': interaction.channel_id,
-                            'owner_id': vcinfo['owner_id'],
-                            'tts': vcinfo['tts'],
-                            'joincall': vcinfo['joincall'],
-                            'radio': True,
-                            'radioURL': str(url),
-                            'mode': vcinfo['mode'],
-                            'dashboard_id': vcinfo['dashboard_id']
-                        }
-                        await self.bot.vc_info.replace_one({
-                            'channel_id': interaction.channel_id
-                        }, new_info, upsert=True)
-                        status = discord.Game(name=f'VCで{url}を再生中', start=datetime.utcnow)
-                        await self.bot.change_presence(activity=status)
-                        return
-                await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
-                return
-        await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
-        return
+                    if ttsinfo['radio'] is False:
+                        if radioinfo is None:
+                            await interaction.channel.connect()
+                            await interaction.response.send_message(f'{url} を再生します')
+                            self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                            new_info = {
+                                'channel': vcinfo['channel'],
+                                'channel_id': interaction.channel_id,
+                                'owner_id': vcinfo['owner_id'],
+                                'tts': vcinfo['tts'],
+                                'joincall': vcinfo['joincall'],
+                                'radio': True,
+                                'radioURL': str(url),
+                                'mode': vcinfo['mode'],
+                                'dashboard_id': vcinfo['dashboard_id']
+                            }
+                            await self.bot.vc_info.replace_one({
+                                'channel_id': interaction.channel_id
+                            }, new_info, upsert=True)
+                            status = discord.Game(name=f'VCで{url}を再生中', start=datetime.utcnow)
+                            await self.bot.change_presence(activity=status)
+                            return
+                        elif radioinfo['channel_id'] == interaction.channel.id:
+                            self.bot.guild.voice_client.stop()
+                            await interaction.response.send_message(f'現在再生しているラジオを止めて{url} を再生します')
+                            self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(url))
+                            new_info = {
+                                'channel': vcinfo['channel'],
+                                'channel_id': interaction.channel_id,
+                                'owner_id': vcinfo['owner_id'],
+                                'tts': vcinfo['tts'],
+                                'joincall': vcinfo['joincall'],
+                                'radio': True,
+                                'radioURL': str(url),
+                                'mode': vcinfo['mode'],
+                                'dashboard_id': vcinfo['dashboard_id']
+                            }
+                            await self.bot.vc_info.replace_one({
+                                'channel_id': interaction.channel_id
+                            }, new_info, upsert=True)
+                            status = discord.Game(name=f'VCで{url}を再生中', start=datetime.utcnow)
+                            await self.bot.change_presence(activity=status)
+                        else:
+                            await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
+                    else:
+                        await interaction.response.send_message('既に<@1069207409781915668>がラジオモードとして接続されています\nTTSモードとして使用するか<@1069207409781915668>をVCから切断して再度コマンドを実行してください')
+                else:
+                    await interaction.response.send_message('接続に失敗しました\nこのコマンドは接続しているVCの聞き専チャンネルで使用してください')
+            else:
+                await interaction.response.send_message('他のチャンネルですでにbotが使用されているため使用できません')
+        else:
+            await interaction.response.send_message('このコマンドは接続しているVCの聞き専チャンネルで使用してください')
 
     @group.command(name='disconnect', description='VCから切断します')
     @app_commands.guild_only()
