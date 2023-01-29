@@ -42,7 +42,7 @@ async def on_ready():
     bot.db = bot.dbclient["TTSBot"]
     bot.vc_info = bot.db.vc_info
     bot.kur0db = bot.dbclient["Kur0Bot"]
-    bot.kur0vc_info = bot.db.vc_info
+    bot.kur0vc_info = bot.kur0db.vc_info
 
     # cogをロード
     for file in os.listdir('./cog'):
