@@ -31,7 +31,7 @@ class radio(commands.Cog):
         }, {
             "_id": False  # 内部IDを取得しないように
         })
-        ttsbotinfo = await self.bot.kur0vc_info.find_one({
+        ttsbotinfo = await self.bot.ttsvc_info.find_one({
             'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
