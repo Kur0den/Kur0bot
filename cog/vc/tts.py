@@ -38,7 +38,7 @@ class tts(commands.Cog):
         }, {
             "_id": False  # 内部IDを取得しないように
         })
-        ttsinfo = await self.bot.kur0vc_info.find_one({
+        ttsbotinfo = await self.bot.kur0vc_info.find_one({
             'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
@@ -46,7 +46,7 @@ class tts(commands.Cog):
         if vcinfo is not None:
             if ttsinfo is None and radioinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
-                    if ttsinfo['tts'] is False:
+                    if ttsbotinfo['tts'] is False:
                         await interaction.channel.connect()
                         await interaction.response.send_message('接続しました')
                         vcinfo = await self.bot.vc_info.find_one({

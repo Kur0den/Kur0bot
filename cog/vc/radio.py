@@ -31,7 +31,7 @@ class radio(commands.Cog):
         }, {
             "_id": False  # 内部IDを取得しないように
         })
-        ttsinfo = await self.bot.kur0vc_info.find_one({
+        ttsbotinfo = await self.bot.kur0vc_info.find_one({
             'channel_id': interaction.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
@@ -39,7 +39,7 @@ class radio(commands.Cog):
         if vcinfo is not None:
             if ttsinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
-                    if ttsinfo['radio'] is False:
+                    if ttsbotinfo['radio'] is False:
                         if radioinfo is None:
                             await interaction.channel.connect()
                             await interaction.response.send_message(f'{url} を再生します')
