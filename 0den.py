@@ -62,23 +62,6 @@ async def on_ready():
     bot.siritori = True
 
     # VC機能系定義
-
-    bot.vc1 = bot.get_channel(981800095760670730)
-    bot.vc2 = bot.get_channel(981800262165495828)
-    bot.vc3 = bot.get_channel(981800316116803636)
-    bot.vc1_owner = None
-    bot.vc2_owner = None
-    bot.vc3_owner = None
-    bot.vc1_dash = None
-    bot.vc2_dash = None
-    bot.vc3_dash = None
-
-    bot.afk_id = 979780593388781639
-
-    bot.vc1_status = 'Normal'
-    bot.vc2_status = 'Normal'
-    bot.vc3_status = 'Normal'
-
     bot.tts_file = '.tts_voice'
     try:
         shutil.rmtree(bot.tts_file)
