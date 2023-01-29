@@ -41,7 +41,7 @@ async def on_ready():
     bot.dbclient = motor.AsyncIOMotorClient('mongodb://localhost:27017')
     bot.db = bot.dbclient["TTSBot"]
     bot.vc_info = bot.db.vc_info
-    bot.kur0db = bot.dbclient["kur0Bot"]
+    bot.kur0db = bot.dbclient["Kur0Bot"]
     bot.kur0vc_info = bot.db.vc_info
 
     # cogをロード
