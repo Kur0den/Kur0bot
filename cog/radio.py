@@ -115,7 +115,6 @@ class radio(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         beforeinfo = None
-        afterinfo = None
         try:
             beforeinfo = await self.bot.vc_info.find_one({
                 'channel_id': before.channel.id
