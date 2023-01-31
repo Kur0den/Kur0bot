@@ -47,7 +47,6 @@ class tts(commands.Cog):
             if ttsinfo is None and radioinfo is None:
                 if interaction.user.voice.channel is interaction.channel:
                     if kur0info['tts'] is False:
-                        print(kur0info)
                         await interaction.channel.connect()
                         await interaction.response.send_message('接続しました')
                         vcinfo = await self.bot.vc_info.find_one({
@@ -223,8 +222,7 @@ class tts(commands.Cog):
                     g_tts.save(f'./.tts_voice/{name}.mp3')
                     self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
         elif member.id is self.bot.user.id:
-            if before.channel is not None and after.channel is None and beforeinfo['tts'] is True:
-                await self.bot.guild.voice_client.disconnect()
+            pass
 
 
 async def setup(bot: commands.Bot) -> None:

@@ -11,9 +11,13 @@ class disconnect(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         stage = self.bot.get_channel(884734698759266324)
+        print('発火')
         if member.id == self.bot.user.id:
+            print('発火')
             if before.channel != after.channel:
-                if before.channel is not None and before.channel != stage and before.channel == self.bot.guild.afk_channel:
+                print('発火')
+                if before.channel is not None and before.channel != stage and before.channel != self.bot.guild.afk_channel:
+                    print('発火')
                     try:
                         await self.bot.guild.voice_client.disconnect()
                     except:
