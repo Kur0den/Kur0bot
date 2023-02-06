@@ -22,6 +22,7 @@ async def siritori_reset(self):
     
     if n_member != 'None':
         #siritori_fine = -int(self.bot.config['siritori_fine'])
+        #TODO:実装時にこれ元に戻す
         siritori_fine = 0
         async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
             await session.patch(url=f'{self.bot.ub_url}{n_member.id}', json={'cash': siritori_fine, 'reason': f'しりとり罰金'})
