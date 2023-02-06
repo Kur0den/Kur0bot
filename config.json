@@ -13,6 +13,10 @@
     "reply_money_min":      "10",
     "reply_money_max":      "30",
     "reply_origin_bonus":   "10",
-  
-    "siritori_fine":    "100"
+
+    "siritori_fine":        "100",
+
+    "vc1_name":             "VC-1(128Kbps)",
+    "vc2_name":             "VC-2(128Kbps)",
+    "vc3_name":             "VC-3(64Kbps)"
 }

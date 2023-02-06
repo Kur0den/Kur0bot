@@ -4,5 +4,6 @@ pytz
 python-dotenv
 jishaku
 python-dateutil
+Motor
 gTTS
 ffmpeg
