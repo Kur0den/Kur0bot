@@ -97,9 +97,8 @@ class Siritori(commands.Cog):
             return
         await interaction.response.send_message('しりとり部屋以外では実行できません',ephemeral=True)
     
-    @commands.command()
-    @commands.check(is_siritori_ch) # しりとりチャンネル
-    async def show(self, ctx, page=1):
+    @group.command(name='history', description='履歴を表示します')
+    async def history(self, interaction, page=1):
         if not self.bot.siritori:
             return
         tango_count = 1
@@ -116,15 +115,16 @@ class Siritori(commands.Cog):
             pages[page_count] = page_naiyou
             page_count += 1
             page_naiyou = ''
-        await ctx.send(embed=discord.Embed(title='履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
+        await interaction.responce.send_message(embed=discord.Embed(title='履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
         return
     
-    @commands.command(name='len')
-    @commands.check(is_siritori_ch) # しりとりチャンネル
-    async def _len(self, ctx):
+    
+    
+    @group.command(name='len', description='連結回数を表示します')
+    async def _len(self, interaction):
         if not self.bot.siritori:
             return
-        await ctx.send(embed=discord.Embed(title='現在の連結回数', description=len(self.bot.siritori_list), color=0x00ffff))
+        await interaction.responce.send_message(embed=discord.Embed(title='現在の連結回数', description=len(self.bot.siritori_list), color=0x00ffff))
     
     @commands.Cog.listener()
     async def on_message(self, message):
