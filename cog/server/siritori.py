@@ -21,10 +21,10 @@ async def siritori_reset(self):
             break
     
     if n_member != 'None':
-        siritori_fine = -int(self.bot.config['siritori_fine'])
-        # siritori_fine = -siritori_fine
+        #siritori_fine = -int(self.bot.config['siritori_fine'])
+        siritori_fine = 0
         async with aiohttp.ClientSession(headers=self.bot.ub_header) as session:
-            await session.patch(url=f'{self.bot.ub_url}{n_member.id}', json={'cash': siritori_fine, 'reason': f'しりとり罰金'}) 
+            await session.patch(url=f'{self.bot.ub_url}{n_member.id}', json={'cash': siritori_fine, 'reason': f'しりとり罰金'})
     
     msg = await self.bot.siritori_ch.send(embed=discord.Embed(title='チャンネルリセット中...', description='しりとりが終了しました', color=0x00ffff))
     await self.bot.siritori_ch.purge(limit=None, check=purge_check)
@@ -98,7 +98,7 @@ class Siritori(commands.Cog):
         await interaction.response.send_message('しりとり部屋以外では実行できません',ephemeral=True)
     
     @group.command(name='history', description='履歴を表示します')
-    async def history(self, interaction, page=1):
+    async def history(self, interaction: discord.Interaction, page: int =1):
         if not self.bot.siritori:
             return
         tango_count = 1

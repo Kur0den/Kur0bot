@@ -49,8 +49,7 @@ async def on_ready():
     # UnbelievaBoatのAPI系のやつを定義
     UB_API_TOKEN = os.environ.get('UNB_TOKEN')
     bot.ub_url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
-    bot.ub_header = {'Authorization': UB_API_TOKEN,
-                     'Accept': 'application/json'}
+    bot.ub_header = {'Authorization': UB_API_TOKEN, 'Accept': 'application/json'}
 
     # しりとり機能のやつ定義
     bot.siritori_ch = bot.get_channel(982967189109878804)
