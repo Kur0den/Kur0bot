@@ -235,7 +235,7 @@ class Siritori(commands.Cog):
             return
         if not payload.channel_id == 982967189109878804:
             return
-        message =  await (self.bot.guild.get_channel(982967189109878804).fetch_message(payload.message_id))
+        message = await (self.bot.guild.get_channel(982967189109878804).fetch_message(payload.message_id))
         if not message.author == self.bot.user:
             return
         if message.interaction == None:
