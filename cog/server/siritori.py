@@ -33,7 +33,7 @@ class comment_modal(discord.ui.Modal):
     async def on_submit(self, interaction) -> None:
         self.stop()
         embed = discord.Embed(colour=interaction.user.top_role.color, description=self.read.value)
-        embed.set_footer(text='comment')
+        embed.set_footer(text=f'こめんと')
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar.url)
         await interaction.response.send_message(embed=embed)
 
@@ -153,14 +153,13 @@ class Siritori(commands.Cog):
             await Paginator.Simple(InitialPage=page,ephemeral=show).start(interaction, pages=pages)
         except KeyError:
             await Paginator.Simple(ephemeral=show).start(interaction, pages=pages)
-        # await interaction.responce.send_message(embed=discord.Embed(title='履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
         return
 
     @group.command(name='len', description='連結回数を表示します')
     async def _len(self, interaction):
         if not self.bot.siritori:
             return
-        await interaction.responce.send_message(embed=discord.Embed(title='現在の連結回数', description=len(self.bot.siritori_list), color=0x00ffff))
+        await interaction.response.send_message(embed=discord.Embed(title='現在の連結回数', description=len(self.bot.siritori_list), color=0x00ffff), ephemeral=True)
     
     @group.command(name='comment', description='しりとりとは関係ないコメントを送信できます')
     async def name(self, interaction: discord.Interaction):
@@ -181,7 +180,7 @@ class Siritori(commands.Cog):
         if r.fullmatch(message.content) == None:
             await message.delete()
             embed = discord.Embed(title="エラー", colour=discord.Colour(0xff0000), description="しりとりはひらがなで投稿してください")
-            await message.channel.send(content=message.author.mention, embed=embed, delete_after=30)
+            await message.channel.send(content=message.author.mention, embed=embed, delete_after=15)
             return
 
         if message.content in self.bot.siritori_list:
@@ -200,44 +199,60 @@ class Siritori(commands.Cog):
                 break
         if message.author == next_message.author:
             await message.delete()
-            await message.channel.send(embed=discord.Embed(title=f'同じ人が続けて投稿することはできません', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+            await message.channel.send(embed=discord.Embed(title=f'同じ人が続けて投稿することはできません', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
             return
 
         if next_message.content[-1] != message.content[0]:
-            print(1)
             r = re.compile('[\u30FC\u3041\u3043\u3045\u3047\u3049\u3063\u3083\u3085\u3087]')
             if r.fullmatch(next_message.content[-1]) != None:
                 if next_message.content[-2] != message.content[0]:
                     if r.fullmatch(next_message.content[-2]) != None:
                         if next_message.content[-3] != message.content[0]:
                             await message.delete()
-                            await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+                            await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                             return
                         else:
                             pass
                     else:
                         await message.delete()
-                        await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+                        await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                         return
                 else:
                     pass
             else:
                 await message.delete()
-                await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+                await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                 return
-
 
         if message.content.endswith('ん'):
             print('ん！！！！！')
             await siritori_reset(self)
             return
-        
 
-        
         self.bot.siritori_list.append(message.content)
-        
-        
-    
-    # TODO:ゴミ箱のリアクション付与でコメントが削除できるようにしろ
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if not self.bot.siritori:
+            return
+        if not payload.channel_id == 982967189109878804:
+            return
+        message =  await (self.bot.guild.get_channel(982967189109878804).fetch_message(payload.message_id))
+        if not message.author == self.bot.user:
+            return
+        if message.interaction == None:
+            return
+        member = self.bot.guild.get_member(payload.user_id)
+        if not message.interaction.type == discord.InteractionType.application_command:
+            return
+        if not message.interaction.user == member:
+            return
+        if not message.embeds[0].footer.text == 'こめんと':
+            return
+        if not payload.emoji.name == '🗑️':
+            return
+        await message.delete()
+
+
 async def setup(bot):
     await bot.add_cog(Siritori(bot))
