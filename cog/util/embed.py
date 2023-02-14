@@ -136,7 +136,7 @@ class EmbedMakerView(discord.ui.View):
   async def title_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
-      placeholder = 'embedのタイトルを入力', 
+      placeholder = 'Embedのタイトルを入力', 
       required = False
     )
     await self.do(interaction, button, text_input)
@@ -145,7 +145,7 @@ class EmbedMakerView(discord.ui.View):
   async def url_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
-      placeholder = 'embedのURLを入力', 
+      placeholder = 'URLを入力', 
       required = False
     )
     await self.do(interaction, button, text_input)
@@ -164,7 +164,7 @@ class EmbedMakerView(discord.ui.View):
   async def color_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
-      placeholder = '16進数のカラーコードまたは色数値', 
+      placeholder = '16進数のカラーコードまたは色数値を入力', 
       required = False
     )
     text_input.convert = lambda x: int(x) if x.isnumeric() else int(x.lstrip('#'), base = 16)
@@ -190,7 +190,7 @@ class EmbedMakerView(discord.ui.View):
   async def author_button(self, interaction, button):
     name_input = discord.ui.TextInput(
       label = 'Author Name', 
-      placeholder = 'Author Nameを入力', 
+      placeholder = '名前を入力', 
       required = False
     )
     name_input.key = 'name'
@@ -213,7 +213,7 @@ class EmbedMakerView(discord.ui.View):
   async def thumbnail_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
-      placeholder = 'サムネイルの画像URL', 
+      placeholder = 'サムネイルの画像URLを入力', 
       required = False
     )
     text_input.key = 'url'
@@ -223,7 +223,7 @@ class EmbedMakerView(discord.ui.View):
   async def image_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
-      placeholder = '画像のURLを入力してください', 
+      placeholder = '画像のURLを入力', 
       required = False
     )
     text_input.key = 'url'
@@ -239,7 +239,7 @@ class EmbedMakerView(discord.ui.View):
     text_input.key = 'text'
     icon_input = discord.ui.TextInput(
       label = 'Footer Icon URL', 
-      placeholder = 'URLを入力', 
+      placeholder = 'アイコンのURLを入力', 
       required = False
     )
     icon_input.key = 'icon_url'
@@ -259,7 +259,7 @@ class EmbedMakerView(discord.ui.View):
     )
     inline_input = discord.ui.TextInput(
       label = 'Field Inline (Optional)', 
-      placeholder = '"1"を入力することによって、inline化されます。',
+      placeholder = '"1"を入力することによって、inline化できます。',
       required = False
     )
     index_input = discord.ui.TextInput(
@@ -324,7 +324,7 @@ class EmbedMakerView(discord.ui.View):
     )
     inline_input = discord.ui.TextInput(
       label = 'Field Inline (Optional)', 
-      placeholder = '"1"を入力することによって、inline化されます。',
+      placeholder = '"1"を入力することによって、inline化できます。',
       required = False,
       default = str(int(field['inline']))
     )
@@ -367,7 +367,7 @@ class EmbedMakerView(discord.ui.View):
     # ?tag no modal selects
     text_input = discord.ui.TextInput(
       label = 'Field Index (Optional)', 
-      placeholder = 'フィールド(n+1)を削除。未指定で最後のフィールド',
+      placeholder = 'フィールド(n+1)を削除。未指定で最後のフィールドを指定します。',
       required = False
     )
     
@@ -418,7 +418,7 @@ class EmbedMakerView(discord.ui.View):
   async def import_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = 'JSON', 
-      placeholder = 'JSONを張り付けて下さい。',
+      placeholder = 'JSONを貼り付けて下さい。',
       style = discord.TextStyle.long
       #more than 4000 characters needs files/pastebin
     ) 
