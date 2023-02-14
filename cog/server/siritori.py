@@ -177,7 +177,7 @@ class Siritori(commands.Cog):
         if message.author.bot or message.content.startswith(self.bot.command_prefix):
             return
 
-        r = re.compile('[\u3040-\u309F]+')
+        r = re.compile('([\u3040-\u309F]|\u30FC)+')
         if r.fullmatch(message.content) == None:
             await message.delete()
             embed = discord.Embed(title="エラー", colour=discord.Colour(0xff0000), description="しりとりはひらがなで投稿してください")
@@ -188,6 +188,44 @@ class Siritori(commands.Cog):
             await message.delete()
             await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url))
             return
+
+        messages = [message async for message in message.channel.history(limit=10)]
+        i = 0
+        for m in messages:
+            if i == 0:
+                i += 1
+                continue
+            elif m.author.bot == False:
+                next_message=m
+                break
+        if message.author == next_message.author:
+            await message.delete()
+            await message.channel.send(embed=discord.Embed(title=f'同じ人が続けて投稿することはできません', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+            return
+
+        if next_message.content[-1] != message.content[0]:
+            print(1)
+            r = re.compile('[\u30FC\u3041\u3043\u3045\u3047\u3049\u3063\u3083\u3085\u3087]')
+            if r.fullmatch(next_message.content[-1]) != None:
+                if next_message.content[-2] != message.content[0]:
+                    if r.fullmatch(next_message.content[-2]) != None:
+                        if next_message.content[-3] != message.content[0]:
+                            await message.delete()
+                            await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+                            return
+                        else:
+                            pass
+                    else:
+                        await message.delete()
+                        await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+                        return
+                else:
+                    pass
+            else:
+                await message.delete()
+                await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=30)
+                return
+
 
         if message.content.endswith('ん'):
             print('ん！！！！！')
