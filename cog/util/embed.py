@@ -46,7 +46,7 @@ class EmbedMakerView(discord.ui.View):
   async def interaction_check(self, interaction):
     if interaction.user == self.interaction.user:
       return True
-    await interaction.response.send_message('こレはあなたが実行したものではないです', ephemeral = True)
+    await interaction.response.send_message('あなたの実行したコマンドではないため操作はできません', ephemeral = True)
     return False
 
   async def on_error(self, interaction, error, item):
@@ -132,7 +132,7 @@ class EmbedMakerView(discord.ui.View):
       self.clear_fields_button.disabled = True
       self.edit_field_select.disabled = True
   
-  @discord.ui.button(label = 'タイトル', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Title', style = discord.ButtonStyle.blurple)
   async def title_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
@@ -150,7 +150,7 @@ class EmbedMakerView(discord.ui.View):
     )
     await self.do(interaction, button, text_input)
     
-  @discord.ui.button(label = '説明', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Description', style = discord.ButtonStyle.blurple)
   async def description_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
@@ -160,7 +160,7 @@ class EmbedMakerView(discord.ui.View):
     )
     await self.do(interaction, button, text_input)
     
-  @discord.ui.button(label = 'カラー', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Color', style = discord.ButtonStyle.blurple)
   async def color_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
@@ -170,7 +170,7 @@ class EmbedMakerView(discord.ui.View):
     text_input.convert = lambda x: int(x) if x.isnumeric() else int(x.lstrip('#'), base = 16)
     await self.do(interaction, button, text_input)
 
-  @discord.ui.button(label = 'タイムスタンプ', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Timestamp', style = discord.ButtonStyle.blurple)
   async def timestamp_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
@@ -189,8 +189,8 @@ class EmbedMakerView(discord.ui.View):
   @discord.ui.button(label = 'Author', style = discord.ButtonStyle.blurple)
   async def author_button(self, interaction, button):
     name_input = discord.ui.TextInput(
-      label = '名前', 
-      placeholder = '名前を入力', 
+      label = 'Author Name', 
+      placeholder = 'Author Nameを入力', 
       required = False
     )
     name_input.key = 'name'
@@ -201,7 +201,7 @@ class EmbedMakerView(discord.ui.View):
     )
     url_input.key = 'url'
     icon_input = discord.ui.TextInput(
-      label = 'アイコンのURL', 
+      label = 'Author Icon URL', 
       placeholder = 'アイコンのURLを入力', 
       required = False
     )
@@ -209,7 +209,7 @@ class EmbedMakerView(discord.ui.View):
     text_inputs = [name_input, url_input, icon_input]
     await self.do(interaction, button, *text_inputs, method = 'set_author')
 
-  @discord.ui.button(label = 'サムネイル', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Thumbnail', style = discord.ButtonStyle.blurple)
   async def thumbnail_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
@@ -219,7 +219,7 @@ class EmbedMakerView(discord.ui.View):
     text_input.key = 'url'
     await self.do(interaction, button, text_input, method = 'set_thumbnail')
     
-  @discord.ui.button(label = '画像', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Image', style = discord.ButtonStyle.blurple)
   async def image_button(self, interaction, button):
     text_input = discord.ui.TextInput(
       label = button.label, 
@@ -229,16 +229,16 @@ class EmbedMakerView(discord.ui.View):
     text_input.key = 'url'
     await self.do(interaction, button, text_input, method = 'set_image')
   
-  @discord.ui.button(label = 'フッター', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Image', style = discord.ButtonStyle.blurple)
   async def footer_button(self, interaction, button):
     text_input = discord.ui.TextInput(
-      label = 'フッターテキスト', 
+      label = 'Footer Text', 
       placeholder = 'フッターの内容を入力', 
       required = False
     )
     text_input.key = 'text'
     icon_input = discord.ui.TextInput(
-      label = 'フッターのアイコンURL', 
+      label = 'Footer Icon URL', 
       placeholder = 'URLを入力', 
       required = False
     )
@@ -246,24 +246,24 @@ class EmbedMakerView(discord.ui.View):
     text_inputs = [text_input, icon_input]
     await self.do(interaction, button, *text_inputs, method = 'set_footer')
 
-  @discord.ui.button(label = 'フィールドを追加', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Add Field', style = discord.ButtonStyle.blurple)
   async def add_field_button(self, interaction, button):
     name_input = discord.ui.TextInput(
-      label = 'フィールドの名前',
+      label = 'Field Name',
       placeholder = 'フィールドの名前を入力'
     )
     value_input = discord.ui.TextInput(
-      label = 'フィールドの名前を入力', 
-      placeholder = 'The value of the field.',
+      label = 'Field Value', 
+      placeholder = 'フィールドの内容を入力',
       style = discord.TextStyle.long
     )
     inline_input = discord.ui.TextInput(
-      label = 'フィールドをinline化するか (オプション)', 
+      label = 'Field Inline (Optional)', 
       placeholder = '"1"を入力することによって、inline化されます。',
       required = False
     )
     index_input = discord.ui.TextInput(
-      label = 'どこに入れるか (Optional)',
+      label = 'Field Index (Optional)',
       placeholder = 'フィールドをどこに入れるか指定できます。',
       required = False
     )
@@ -307,23 +307,23 @@ class EmbedMakerView(discord.ui.View):
     self.embed = embed
     self.embed_dict = copy.deepcopy(embed.to_dict())
 
-  @discord.ui.select(placeholder = 'フィールドを編集', options = [discord.SelectOption(label = 'invisible option', description = 'because options cant be empty')])
+  @discord.ui.select(placeholder = 'Edit Field', options = [discord.SelectOption(label = 'invisible option', description = 'because options cant be empty')])
   async def edit_field_select(self, interaction, select):
     index = int(select.values[0].lstrip('Field ')) - 1
     field = self.embed_dict['fields'][index]
     name_input = discord.ui.TextInput(
-      label = 'フィールドの名前', 
+      label = 'Field Name', 
       placeholder = 'フィールドの名前を入力',
       default = field['name']
     )
     value_input = discord.ui.TextInput(
-      label = 'フィールドの説明', 
+      label = 'Field Value', 
       placeholder = 'フィールドの説明を入力',
       style = discord.TextStyle.long,
       default = field['value']
     )
     inline_input = discord.ui.TextInput(
-      label = 'フィールドをinline化するか (オプション)', 
+      label = 'Field Inline (Optional)', 
       placeholder = '"1"を入力することによって、inline化されます。',
       required = False,
       default = str(int(field['inline']))
@@ -362,12 +362,12 @@ class EmbedMakerView(discord.ui.View):
     self.embed = embed
     self.embed_dict = copy.deepcopy(embed.to_dict())
     
-  @discord.ui.button(label = 'フィールドを削除', style = discord.ButtonStyle.blurple)
+  @discord.ui.button(label = 'Remove Field', style = discord.ButtonStyle.blurple)
   async def remove_field_button(self, interaction, button):
     # ?tag no modal selects
     text_input = discord.ui.TextInput(
-      label = 'どれを削除するか(オプション)', 
-      placeholder = '順番に1,2,3...となっています。',
+      label = 'Field Index (Optional)', 
+      placeholder = 'フィールド(n+1)を削除。未指定で最後のフィールド',
       required = False
     )
     
@@ -380,7 +380,7 @@ class EmbedMakerView(discord.ui.View):
     if text_input.value.strip().isnumeric():
       index = int(text_input.value)
     else:
-      index = len(self.embed_dict['フィールド']) - 1
+      index = len(self.embed_dict['fields']) - 1
     
     embed = discord.Embed.from_dict(copy.deepcopy(self.embed_dict))
 
@@ -396,14 +396,14 @@ class EmbedMakerView(discord.ui.View):
 
     await modal.interaction.response.edit_message(embed = embed, view = self)
     
-  @discord.ui.button(label = 'フィールドリセット', style = discord.ButtonStyle.red)
+  @discord.ui.button(label = 'Clear Fields', style = discord.ButtonStyle.red)
   async def clear_fields_button(self, interaction, button):
     self.embed.clear_fields()
     self.embed_dict = copy.deepcopy(self.embed.to_dict())
     self.update_fields()
     await interaction.response.edit_message(embed = self.embed, view = self)
 
-  @discord.ui.button(label = 'リセット', style = discord.ButtonStyle.red)
+  @discord.ui.button(label = 'Reset', style = discord.ButtonStyle.red)
   async def reset_button(self, interaction, button):
 
     if self.embed_original == self.embed_dict:
@@ -456,7 +456,7 @@ class EmbedMakerView(discord.ui.View):
     else:
       await interaction.response.send_message(text.format(data), ephemeral = True)
   
-  @discord.ui.button(label = '終了', style = discord.ButtonStyle.red)
+  @discord.ui.button(label = 'Stop', style = discord.ButtonStyle.red)
   async def stop_button(self, interaction, button):
     await interaction.response.edit_message(view = None)
     self.stop()
