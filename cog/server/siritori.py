@@ -1,20 +1,41 @@
 import datetime
 
+import re
 import aiohttp
 import discord
 import Paginator
 from discord import app_commands
 from discord.ext import commands
 
-#TODO:ボタン作れ
-# class historypage(discord.ui.view):
-    
 
 def purge_check(m):
     return not m.embeds[0].title in ['しりとりヘルプ', 'チャンネルリセット中...'] if bool(m.embeds) else True
 
 def is_siritori_ch(ctx):
     return ctx.channel.id == 982967189109878804
+
+class comment_modal(discord.ui.Modal):
+    def __init__(self):
+        super().__init__(
+            title="コメント",
+            timeout=1024,
+        )
+
+        self.read = discord.ui.TextInput(
+            label="コメント内容",
+            style=discord.TextStyle.long,
+            placeholder="発言したい内容",
+            max_length=128,
+            required=True,
+        )
+        self.add_item(self.read)
+
+    async def on_submit(self, interaction) -> None:
+        self.stop()
+        embed = discord.Embed(colour=interaction.user.top_role.color, description=self.read.value)
+        embed.set_footer(text='comment')
+        embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=embed)
 
 async def siritori_reset(self):
     self.bot.siritori = False
@@ -140,6 +161,11 @@ class Siritori(commands.Cog):
         if not self.bot.siritori:
             return
         await interaction.responce.send_message(embed=discord.Embed(title='現在の連結回数', description=len(self.bot.siritori_list), color=0x00ffff))
+    
+    @group.command(name='comment', description='しりとりとは関係ないコメントを送信できます')
+    async def name(self, interaction: discord.Interaction):
+        modal=comment_modal()
+        await interaction.response.send_modal(modal)
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -148,7 +174,14 @@ class Siritori(commands.Cog):
         if not message.channel.id == 982967189109878804:
             return
 
-        if message.author.bot or message.content.startswith(self.bot.command_prefix) or message.content.startswith('!'):
+        if message.author.bot or message.content.startswith(self.bot.command_prefix):
+            return
+
+        r = re.compile('[\u3040-\u309F]+')
+        if r.fullmatch(message.content) == None:
+            await message.delete()
+            embed = discord.Embed(title="エラー", colour=discord.Colour(0xff0000), description="しりとりはひらがなで投稿してください")
+            await message.channel.send(content=message.author.mention, embed=embed, delete_after=30)
             return
 
         if message.content in self.bot.siritori_list:
@@ -159,9 +192,14 @@ class Siritori(commands.Cog):
         if message.content.endswith('ん'):
             print('ん！！！！！')
             await siritori_reset(self)
+            return
+        
+
         
         self.bot.siritori_list.append(message.content)
         
         
+    
+    # TODO:ゴミ箱のリアクション付与でコメントが削除できるようにしろ
 async def setup(bot):
     await bot.add_cog(Siritori(bot))
