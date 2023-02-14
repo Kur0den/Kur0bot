@@ -2,9 +2,13 @@ import datetime
 
 import aiohttp
 import discord
-from discord.ext import commands
+import Paginator
 from discord import app_commands
+from discord.ext import commands
 
+#TODO:ボタン作れ
+# class historypage(discord.ui.view):
+    
 
 def purge_check(m):
     return not m.embeds[0].title in ['しりとりヘルプ', 'チャンネルリセット中...'] if bool(m.embeds) else True
@@ -97,13 +101,13 @@ class Siritori(commands.Cog):
             await interaction.response.send(embed=discord.Embed(f'過去100メッセージに{interaction.user.mention}が送信した”{moji}”という内容のメッセージがみつかりませんでした', color=0xff0000), ephemeral=True)
             return
         await interaction.response.send_message('しりとり部屋以外では実行できません',ephemeral=True)
-    
+
     @group.command(name='history', description='履歴を表示します')
-    async def history(self, interaction: discord.Interaction, page: int =1):
+    async def history(self, interaction: discord.Interaction, page: int = 1, show: bool = False):
         if not self.bot.siritori:
             return
         tango_count = 1
-        page_count = 1
+        page_count = 0
         pages = {}
         page_naiyou = ''
         for r in range(0, len(self.bot.siritori_list), 10):
@@ -113,30 +117,40 @@ class Siritori(commands.Cog):
                 else:
                     page_naiyou += f"\n{tango_count}. {tango}"
                 tango_count += 1
-            pages[page_count] = page_naiyou
+            pages[page_count] = discord.Embed(title='履歴', description=page_naiyou)
             page_count += 1
             page_naiyou = ''
-        await interaction.responce.send_message(embed=discord.Embed(title='履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
+        
+        page-=1
+        
+        match show: # 公開するかどうかの設定を反転
+            case True:
+                show = False
+            case False:
+                show = True
+        try:
+            await Paginator.Simple(InitialPage=page,ephemeral=show).start(interaction, pages=pages)
+        except KeyError:
+            await Paginator.Simple(ephemeral=show).start(interaction, pages=pages)
+        # await interaction.responce.send_message(embed=discord.Embed(title='履歴', description=f'```{pages[page]}```').set_footer(text=f'{page}/{page_count-1}'))
         return
-    
-    
-    
+
     @group.command(name='len', description='連結回数を表示します')
     async def _len(self, interaction):
         if not self.bot.siritori:
             return
         await interaction.responce.send_message(embed=discord.Embed(title='現在の連結回数', description=len(self.bot.siritori_list), color=0x00ffff))
-    
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if not self.bot.siritori:
             return
         if not message.channel.id == 982967189109878804:
             return
-        
+
         if message.author.bot or message.content.startswith(self.bot.command_prefix) or message.content.startswith('!'):
             return
-        
+
         if message.content in self.bot.siritori_list:
             await message.delete()
             await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url))
