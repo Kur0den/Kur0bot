@@ -108,6 +108,7 @@ class Siritori(commands.Cog):
                     if msg.content == moji:
                         await msg.delete()
                 self.bot.siritori_list.remove(moji)
+                self.bot.siritori_idlist.pop('moji')
                 await interaction.response.send_message(embed=discord.Embed(title=f'”{moji}”を削除しました', color=0x00ffff))
                 return
             
@@ -116,6 +117,7 @@ class Siritori(commands.Cog):
                     await msg.delete()
                     self.bot.siritori_list.remove(moji)
                     await interaction.responce.send_message(embed=discord.Embed(title=f'”{moji}”を削除しました', color=0x00ffff))
+                    self.bot.siritori_idlist.pop('moji')
                     return
             await interaction.response.send(embed=discord.Embed(f'過去100メッセージに{interaction.user.mention}が送信した”{moji}”という内容のメッセージがみつかりませんでした', color=0xff0000), ephemeral=True)
             return
@@ -191,26 +193,25 @@ class Siritori(commands.Cog):
             await siritori_reset(self)
             return
 
-        messages = [message async for message in message.channel.history(limit=10)]
-        i = 0
-        for m in messages:
-            if i == 0:
-                i += 1
-                continue
-            elif m.author.bot == False:
-                next_message=m
-                break
+        try:
+            next_content = self.bot.siritori_list[(len(self.bot.siritori_list)-1)]
+        except IndexError:
+            self.bot.siritori_list.append(message.content)
+            return
+        print(next_content)
+        next_message = await (self.bot.guild.get_channel(982967189109878804).fetch_message(self.bot.siritori_idlist[next_content]))
+
         if message.author == next_message.author:
             await message.delete()
             await message.channel.send(embed=discord.Embed(title=f'同じ人が続けて投稿することはできません', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
             return
 
-        if next_message.content[-1] != message.content[0]:
+        if next_content[-1] != message.content[0]:
             r = re.compile('[\u30FC\u3041\u3043\u3045\u3047\u3049\u3063\u3083\u3085\u3087]')
-            if r.fullmatch(next_message.content[-1]) != None:
-                if next_message.content[-2] != message.content[0]:
-                    if r.fullmatch(next_message.content[-2]) != None:
-                        if next_message.content[-3] != message.content[0]:
+            if r.fullmatch(next_content[-1]) != None:
+                if next_content[-2] != message.content[0]:
+                    if r.fullmatch(next_content[-2]) != None:
+                        if next_content[-3] != message.content[0]:
                             await message.delete()
                             await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                             return
@@ -226,7 +227,6 @@ class Siritori(commands.Cog):
                 await message.delete()
                 await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                 return
-
 
         self.bot.siritori_list.append(message.content)
 
