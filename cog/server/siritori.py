@@ -186,6 +186,11 @@ class Siritori(commands.Cog):
             await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url))
             return
 
+        if message.content.endswith('ん'):
+            print('ん！！！！！')
+            await siritori_reset(self)
+            return
+
         messages = [message async for message in message.channel.history(limit=10)]
         i = 0
         for m in messages:
@@ -222,10 +227,6 @@ class Siritori(commands.Cog):
                 await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                 return
 
-        if message.content.endswith('ん'):
-            print('ん！！！！！')
-            await siritori_reset(self)
-            return
 
         self.bot.siritori_list.append(message.content)
 
