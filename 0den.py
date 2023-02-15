@@ -49,16 +49,25 @@ async def on_ready():
     # UnbelievaBoatのAPI系のやつを定義
     UB_API_TOKEN = os.environ.get('UNB_TOKEN')
     bot.ub_url = 'https://unbelievaboat.com/api/v1/guilds/733707710784340100/users/'
-    bot.ub_header = {'Authorization': UB_API_TOKEN,
-                     'Accept': 'application/json'}
+    bot.ub_header = {'Authorization': UB_API_TOKEN, 'Accept': 'application/json'}
+
+    # DataBase
+    bot.dbclient = motor.AsyncIOMotorClient('mongodb://localhost:27017')
+    bot.db = bot.dbclient["Kur0Bot"]
+    bot.profiles_collection = bot.db.profiles
+    bot.vc_info = bot.db.vc_info
+    bot.ttsdb = bot.dbclient["TTSBot"]
+    bot.ttsvc_info = bot.ttsdb.vc_info
 
     # しりとり機能のやつ定義
     bot.siritori_ch = bot.get_channel(982967189109878804)
     bot.siritori_list = []
     async for msg in bot.siritori_ch.history(limit=None):
-        if msg.author.bot or msg.content.startswith(bot.command_prefix) or msg.content.startswith('!') or msg.content in bot.siritori_list:
+        if msg.author.bot or msg.content.startswith(bot.command_prefix) or msg.content in bot.siritori_list:
             continue
         bot.siritori_list.insert(0, msg.content)
+
+
     bot.siritori = True
 
     # VC機能系定義
@@ -71,13 +80,6 @@ async def on_ready():
 
     bot.botrole = bot.guild.get_role(734059242977230969)
 
-    # DataBase
-    bot.dbclient = motor.AsyncIOMotorClient('mongodb://localhost:27017')
-    bot.db = bot.dbclient["Kur0Bot"]
-    bot.profiles_collection = bot.db.profiles
-    bot.vc_info = bot.db.vc_info
-    bot.ttsdb = bot.dbclient["TTSBot"]
-    bot.ttsvc_info = bot.ttsdb.vc_info
 
     # config.jsonをロード
     try:

@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+import Paginator
 
 class Dropdown(discord.ui.Select):
     def __init__(self):
@@ -33,11 +34,20 @@ class Slashtest(commands.Cog):
 
     @app_commands.command()
     @app_commands.guild_only()
+    @app_commands.guilds(733707710784340100)
     async def test(self, interaction): 
 
         view = DropdownView()
         await interaction.response.send_message('いえい！！！！！！', view=view)
     
+    @app_commands.command()
+    @app_commands.guild_only()
+    @app_commands.guilds(733707710784340100)
+    async def pagetest(self, interaction):
+        embeds = [discord.Embed(title="First embed"),
+            discord.Embed(title="Second embed"),
+            discord.Embed(title="Third embed")]
+        await Paginator.Simple().start(interaction, pages=embeds)
 
 async def setup(bot):
     await bot.add_cog(Slashtest(bot))
