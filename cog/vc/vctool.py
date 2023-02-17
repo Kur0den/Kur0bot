@@ -124,7 +124,8 @@ class dashboard(discord.ui.View):
                 await self.bot.vc_info.replace_one({
                     'channel_id': interaction.channel.id
                 }, newinfo, upsert=True)
-                await interaction.channel.edit(name=interaction.channel.name)
+                name = interaction.channel.name.replace("🔒", "")
+                await interaction.channel.edit(name=name)
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
