@@ -179,13 +179,12 @@ class Siritori(commands.Cog):
         r = re.compile('([\u3040-\u309F]|\u30FC)+')
         if r.fullmatch(message.content) == None:
             await message.delete()
-            embed = discord.Embed(title="エラー", colour=discord.Colour(0xff0000), description="しりとりはひらがなで投稿してください")
-            await message.channel.send(content=message.author.mention, embed=embed, delete_after=15)
+            await message.channel.send(embed=discord.Embed(title='しりとりはひらがなで投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
             return
 
         if message.content in self.bot.siritori_list:
             await message.delete()
-            await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url))
+            await message.channel.send(embed=discord.Embed(title=f'”{message.content}” はすでに使用されています', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
             return
 
         if message.content.endswith('ん'):
@@ -197,6 +196,7 @@ class Siritori(commands.Cog):
             next_content = self.bot.siritori_list[(len(self.bot.siritori_list)-1)]
         except IndexError:
             self.bot.siritori_list.append(message.content)
+            self.bot.siritori_idlist.update({message.content:message.id})
             return
         print(next_content)
         next_message = await (self.bot.guild.get_channel(982967189109878804).fetch_message(self.bot.siritori_idlist[next_content]))
@@ -228,6 +228,7 @@ class Siritori(commands.Cog):
                 await message.channel.send(embed=discord.Embed(title=f'前の人が投稿した最後の文字が最初に来る単語を投稿してください', color=0xff0000).set_author(name=message.author.name, icon_url=message.author.display_avatar.url), delete_after=15)
                 return
 
+        self.bot.siritori_idlist.update({message.content:message.id})
         self.bot.siritori_list.append(message.content)
 
     @commands.Cog.listener()
