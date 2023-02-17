@@ -62,10 +62,12 @@ async def on_ready():
     # しりとり機能のやつ定義
     bot.siritori_ch = bot.get_channel(982967189109878804)
     bot.siritori_list = []
+    bot.siritori_idlist = {}
     async for msg in bot.siritori_ch.history(limit=None):
         if msg.author.bot or msg.content.startswith(bot.command_prefix) or msg.content in bot.siritori_list:
             continue
         bot.siritori_list.insert(0, msg.content)
+        bot.siritori_idlist.update({msg.content:msg.id})
 
 
     bot.siritori = True
