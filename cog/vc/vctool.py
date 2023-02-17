@@ -124,6 +124,7 @@ class dashboard(discord.ui.View):
                 await self.bot.vc_info.replace_one({
                     'channel_id': interaction.channel.id
                 }, newinfo, upsert=True)
+                await interaction.channel.edit(name=interaction.channel.name)
                 await interaction.response.send_message('通常モードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでに通常モードに設定されています', ephemeral=True)
@@ -173,8 +174,7 @@ class dashboard(discord.ui.View):
                 await self.bot.vc_info.replace_one({
                     'channel_id': interaction.channel.id
                 }, newinfo, upsert=True)
-                channel = vcinfo['channel']
-                await interaction.channel.edit(name=f"🔒"+self.bot.config[f"vc{channel}_name"])
+                await interaction.channel.edit(name=f"🔒"+interaction.channel.name)
                 await interaction.response.send_message('ロックモードに設定しました', ephemeral=True)
             else:
                 await interaction.response.send_message('すでにロックモードに設定されています', ephemeral=True)
@@ -193,10 +193,10 @@ class dashboard(discord.ui.View):
         channel = vcinfo['channel']
         if vcinfo['owner_id'] == interaction.user.id:
             if interaction.channel.nsfw == False:
-                await interaction.channel.edit(name=f"🔞"+self.bot.config[f"vc{channel}_name"], nsfw=True)
+                await interaction.channel.edit(nsfw=True)
                 await interaction.response.send_message('NSFWを設定しました', ephemeral=True)
             else:
-                await interaction.channel.edit(name=self.bot.config[f"vc{channel}_name"], nsfw=False)
+                await interaction.channel.edit(nsfw=False)
                 await interaction.response.send_message('NSFWを解除しました', ephemeral=True)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)

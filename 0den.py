@@ -66,7 +66,6 @@ async def on_ready():
     async for msg in bot.siritori_ch.history(limit=None):
         if msg.author.bot or msg.content.startswith(bot.command_prefix) or msg.content in bot.siritori_list:
             continue
-        await bot.dbsiritori_log.insert_many()
         bot.siritori_list.insert(0, msg.content)
         # TODO:ここの書き込みのとこ何とかしろ
 
