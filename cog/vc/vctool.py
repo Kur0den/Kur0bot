@@ -216,15 +216,27 @@ class dashboard(discord.ui.View):
             await interaction.response.send_modal(modal)
             await modal.wait()
             if modal.value == '':
-                match vcinfo['channel']:
-                    case 1:
-                        await interaction.channel.edit(name=self.bot.config['vc1_name'])
-                    case 2:
-                        await interaction.channel.edit(name=self.bot.config['vc2_name'])
-                    case 3:
-                        await interaction.channel.edit(name=self.bot.config['vc3_name'])
+                if vcinfo['mode'] == 'Lock':
+                    match vcinfo['channel']:
+                        case 1:
+                            await interaction.channel.edit(name='🔒'+self.bot.config['vc1_name'])
+                        case 2:
+                            await interaction.channel.edit(name='🔒'+self.bot.config['vc2_name'])
+                        case 3:
+                            await interaction.channel.edit(name='🔒'+self.bot.config['vc3_name'])
+                else:
+                    match vcinfo['channel']:
+                        case 1:
+                            await interaction.channel.edit(name=self.bot.config['vc1_name'])
+                        case 2:
+                            await interaction.channel.edit(name=self.bot.config['vc2_name'])
+                        case 3:
+                            await interaction.channel.edit(name=self.bot.config['vc3_name'])
             else:
-                await interaction.channel.edit(name=modal.value)
+                if vcinfo['mode'] == 'Lock':
+                    await interaction.channel.edit(name='🔒'+modal.value)
+                else:
+                    await interaction.channel.edit(name=modal.value)
         else:
             await interaction.response.send_message('VCチャンネルのオーナーではないため実行できません', ephemeral=True)
 
