@@ -118,7 +118,7 @@ class thmanager(commands.Cog):
 
                 await self.noticech.send(embed=embed)
                 print(f'スレッドロック: {after.name}')
-                return 
+                return
             
             elif before.archived is False and after.archived is True or before.locked is False and after.locked is True:
                 embed = discord.Embed(title="スレッド通知", colour=0xFFFF, description="スレッドがアーカイブされました", timestamp=datetime.now())
@@ -132,7 +132,7 @@ class thmanager(commands.Cog):
 
                 await self.noticech.send(embed=embed)
                 print(f'スレッドアーカイブ: {after.name}')
-                return 
+                return
             
 
             
@@ -183,7 +183,17 @@ class thmanager(commands.Cog):
         else:
             await interaction.response.send_message('このコマンドはスレッド又はフォーラムチャンネルでのみ実行可能です',ephemeral=True)
 
-
+    @group.command(name="pin", description="メッセージをピン留めします")
+    @app_commands.guild_only()
+    async def pin(self, interaction, message_id):
+        if interaction.channel.type is (discord.ChannelType.public_thread or discord.ChannelType.private_thread):
+            if interaction.user.id is interaction.channel.owner.id:
+                await interaction.channel.pin(message_id)
+                await interaction.response.send_message("ピン留めしました。", ephemeral=True)
+            else:
+                await interaction.response.send_message('スレッドの作成者ではないため実行できません',ephemeral=True)
+        else:
+            await interaction.response.send_message('このコマンドはスレッド又はフォーラムチャンネルでのみ実行可能です',ephemeral=True)
 
 
 
