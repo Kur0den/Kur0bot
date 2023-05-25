@@ -58,6 +58,7 @@ async def on_ready():
     bot.vc_info = bot.db.vc_info
     bot.ttsdb = bot.dbclient["TTSBot"]
     bot.ttsvc_info = bot.ttsdb.vc_info
+    bot.ttsvc_lang = bot.ttsdb.vc_lang
 
     # しりとり機能のやつ定義
     bot.siritori_ch = bot.get_channel(982967189109878804)
