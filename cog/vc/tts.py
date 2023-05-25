@@ -131,7 +131,7 @@ class tts(commands.Cog):
         app_commands.Choice(name="日本語", value="ja"),
         app_commands.Choice(name="英語", value="en"),
         app_commands.Choice(name="フランス語", value="fr"),
-        app_commands.Choice(name="中国語", value="cn"),
+        # app_commands.Choice(name="中国語", value="cn"), ないっぽい？
         app_commands.Choice(name="スペイン語", value="es"),
         app_commands.Choice(name="韓国語", value="ko"),
         app_commands.Choice(name="タイ語", value="th"),
