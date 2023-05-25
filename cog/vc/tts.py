@@ -124,6 +124,52 @@ class tts(commands.Cog):
         else:
             await interaction.response.send_message('なぜか実行できませんでした', ephemeral=True)
 
+    
+    # 言語変更
+    @group.command(name='lang', description='読み上げる言語を設定します')
+    @app_commands.choices(trans=[
+        app_commands.Choice(name="日本語", value="ja"),
+        app_commands.Choice(name="英語", value="en"),
+        app_commands.Choice(name="フランス語", value="fr"),
+        app_commands.Choice(name="中国語", value="cn"),
+        app_commands.Choice(name="スペイン語", value="es"),
+        app_commands.Choice(name="韓国語", value="ko"),
+        app_commands.Choice(name="タイ語", value="th"),
+    ])
+    async def set_lang(self, interaction: discord.Interaction, trans:app_commands.Choice[str]):
+        user_info = await self.bot.ttsvc_lang.find_one({
+            "user_id": interaction.user.id
+        }, {
+            "_id": None
+        })
+        if user_info is None:
+            try:
+                new_data = {
+                    "user_id": interaction.user.id,
+                    "lang": trans.value
+                }
+                await self.bot.ttsvc_lang.replace_one({
+                    "user_id": interaction.user.id
+                }, new_data)
+                await interaction.response.send_message(f"あなたのttsの読み上げ言語を{trans.name}に変更しました！", ephemeral=True)
+            except:
+                await interaction.response.send_message("失敗しました", ephemeral=True)
+        else:
+            try:
+                new_data = {
+                    "user_id": interaction.user.id,
+                    "lang": trans.value
+                }
+                await self.bot.ttsvc_lang.replace_one({
+                    "user_id": interaction.user.id
+                }, new_data)
+                await interaction.response.send_message(f"あなたのttsの読み上げ言語を{trans.name}に変更しました！", ephemeral=True)
+            except Exception:
+                await interaction.response.send_message("失敗しました", ephemeral=True)
+        
+        
+        
+    
     # メッセージ取得
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -131,6 +177,11 @@ class tts(commands.Cog):
             'channel_id': message.channel.id
         }, {
             "_id": False  # 内部IDを取得しないように
+        })
+        lang_info = await self.bot.ttsvc_lang.find_one({
+            "user_id": message.author.id
+        }, {
+            "_id": False
         })
         try:
             if vcinfo['tts'] is True:
@@ -150,8 +201,12 @@ class tts(commands.Cog):
                             pass
                         else:
                             message = usernick + ":" + message
+                        if lang_info is None:
+                            lang = "ja"
+                        elif lang_info is not None:
+                            lang = lang_info["lang"]
                         if not self.bot.guild.voice_client.is_playing():
-                            g_tts = gTTS(text=message, lang='ja', tld='jp')
+                            g_tts = gTTS(text=message, lang=lang)
                             name = uuid.uuid1()
                             g_tts.save(f'./.tts_voice/{name}.mp3')
                             self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
@@ -159,7 +214,7 @@ class tts(commands.Cog):
                             message_queue.append(message)
                             while self.bot.guild.voice_client.is_playing():
                                 await asyncio.sleep(0.1)
-                            g_tts = gTTS(message_queue.popleft(), lang='ja', tld='jp')
+                            g_tts = gTTS(message_queue.popleft(), lang=lang)
                             name = uuid.uuid1()
                             g_tts.save(f'./.tts_voice/{name}.mp3')
                             self.bot.guild.voice_client.play(discord.FFmpegPCMAudio(f"./.tts_voice/{name}.mp3"))
