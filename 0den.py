@@ -56,6 +56,7 @@ async def on_ready():
     bot.db = bot.dbclient["Kur0Bot"]
     bot.profiles_collection = bot.db.profiles
     bot.vc_info = bot.db.vc_info
+    bot.lb_data = bot.db.lb_data
     bot.ttsdb = bot.dbclient["TTSBot"]
     bot.ttsvc_info = bot.ttsdb.vc_info
 

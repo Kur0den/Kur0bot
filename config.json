@@ -14,6 +14,9 @@
     "reply_money_max":      "30",
     "reply_origin_bonus":   "10",
 
+    "login_bounus_min": "10",
+    "login_bounus_max": "100",
+
     "siritori_fine":        "100",
 
     "vc1_name":             "VC-1(128Kbps)",
