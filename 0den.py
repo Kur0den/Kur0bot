@@ -22,8 +22,7 @@ bot = commands.Bot(
     command_prefix='k/',
     case_insensitive=True,
     activity=discord.Activity(
-        name='くろでんのくろでんによるくろでんのためのぼっと', type=discord.ActivityType.playing),
-    intents=discord.Intents.all(),
+        name='くろでんによるみうちのためのぼっと', type=discord.ActivityType.playing),
 )
 
 guild_id = 733707710784340100
